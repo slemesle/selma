@@ -207,7 +207,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
 
         SimpleMapper mapper = Selma.getMapper(SimpleMapper.class);
 
-        List<String> in = new ArrayList<>();
+        List<String> in = new ArrayList<String>();
         in.add("coucou");
         in.add(null);
         in.add("coco");
@@ -222,7 +222,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
 
         SimpleMapper mapper = Selma.getMapper(SimpleMapper.class);
 
-        HashSet<String> in = new HashSet<>();
+        HashSet<String> in = new HashSet<String>();
         in.add("coucou");
         in.add(null);
         in.add("coco");
@@ -237,7 +237,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
 
         SimpleMapper mapper = Selma.getMapper(SimpleMapper.class);
 
-        HashSet<String> in = new HashSet<>();
+        HashSet<String> in = new HashSet<String>();
         in.add("coucou");
         in.add(null);
         in.add("coco");
@@ -251,7 +251,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
 
         SimpleMapper mapper = Selma.getMapper(SimpleMapper.class);
 
-        LinkedHashSet<String> in = new LinkedHashSet<>();
+        LinkedHashSet<String> in = new LinkedHashSet<String>();
         in.add("coucou");
         in.add(null);
         in.add("coco");
@@ -276,7 +276,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
 
         SimpleMapper mapper = Selma.getMapper(SimpleMapper.class);
 
-        Map<String, String> in = new HashMap<>();
+        Map<String, String> in = new HashMap<String, String>();
         in.put("coucou", "coucou");
         in.put(null, "test");
         in.put("coco", null);
@@ -291,7 +291,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
 
         SimpleMapper mapper = Selma.getMapper(SimpleMapper.class);
 
-        TreeMap<String, Date> in = new TreeMap<>();
+        TreeMap<String, Date> in = new TreeMap<String, Date>();
         in.put("coucou", new Date());
         in.put("NoNull", new Date (0));
         in.put("coco", null);
@@ -306,7 +306,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
 
         SimpleMapper mapper = Selma.getMapper(SimpleMapper.class);
 
-        Map<BigInteger, Date> in = new LinkedHashMap<>();
+        Map<BigInteger, Date> in = new LinkedHashMap<BigInteger, Date>();
         in.put(new BigInteger("1234567890987654321"), new Date());
         in.put(new BigInteger("54321234567890"), new Date (0));
         in.put(new BigInteger("98765432345678987654"), null);

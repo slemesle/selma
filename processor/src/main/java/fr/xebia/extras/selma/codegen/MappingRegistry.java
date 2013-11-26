@@ -13,7 +13,7 @@ public class MappingRegistry {
 
 
     public MappingRegistry(MapperGeneratorContext context) {
-        this.registryMap = new HashMap<>();
+        this.registryMap = new HashMap<InOutType, MappingBuilder>();
         this.context = context;
     }
 

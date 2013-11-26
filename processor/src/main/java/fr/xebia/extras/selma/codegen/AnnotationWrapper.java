@@ -69,7 +69,7 @@ public class AnnotationWrapper {
 
     public List<String> getAsStrings(String parameterName) {
 
-        List<String> res = new ArrayList<>();
+        List<String> res = new ArrayList<String>();
         AnnotationValue myValue = map.get(parameterName);
         if (myValue.getValue() instanceof List) {
             List<? extends AnnotationValue> values = (List<? extends AnnotationValue>) myValue.getValue();

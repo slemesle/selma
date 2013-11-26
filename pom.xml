@@ -12,6 +12,7 @@
     <modules>
         <module>processor</module>
         <module>selma</module>
+        <module>examples</module>
     </modules>
 
     <dependencyManagement>
@@ -35,34 +36,13 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <testSource>7</testSource>
-                    <testTarget>7</testTarget>
-                    <source>7</source>
-                    <target>7</target>
+                    <testSource>6</testSource>
+                    <testTarget>6</testTarget>
+                    <source>6</source>
+                    <target>6</target>
                     <encoding>UTF-8</encoding>
                     <compilerArgument>-Xlint:unchecked</compilerArgument>
-                    <proc>none</proc>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>default-compile</id>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                        <configuration>
-                            <proc>none</proc>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>default-test-compile</id>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                        <configuration>
-                            <proc>none</proc>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

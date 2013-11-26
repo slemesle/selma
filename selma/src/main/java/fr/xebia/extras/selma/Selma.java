@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Selma {
 
-    private static final Map<String, Object> mappers = new ConcurrentHashMap<>();
+    private static final Map<String, Object> mappers = new ConcurrentHashMap<String, Object>();
 
     /**
      * Retrieve the generated Mapper for the corresponding interface in the classpath and instantiate it with default factory.

@@ -43,7 +43,7 @@ public class TestCompiler {
         GEN_DIR = basePath + "/target/it/generated-sources/mapping";
         TARGET_DIR = basePath + "/target/dependency";
 
-        classPath = new ArrayList<>();
+        classPath = new ArrayList<File>();
 
         classPath.addAll(findJars());
         environments = new HashMap<String, TestCompilerEnv>();
@@ -76,23 +76,32 @@ public class TestCompiler {
 
 
     private final Collection<? extends File> findJars() {
-        List<File> res = new ArrayList<>();
+        List<File> res = new ArrayList<File>();
         Path p = Paths.get(TARGET_DIR);
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(p, "*.jar")){
-
+        DirectoryStream<Path> stream = null;
+        try {
+            stream = Files.newDirectoryStream(p, "*.jar");
             for (Path path : stream) {
                 res.add(path.toFile());
             }
 
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            if (stream != null){
+                try {
+                    stream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return res;
     }
 
 
     private void processCompileAnnotation(Class<?> aClass, List<File> classes) {
-        List<Compile> compiles = new ArrayList<>();
+        List<Compile> compiles = new ArrayList<Compile>();
         Compile compile = aClass.getAnnotation(Compile.class);
         if (compile != null){
             compiles.add(compile);
@@ -119,7 +128,7 @@ public class TestCompiler {
     }
 
     private Collection<? extends File> listFilesIn(File file) {
-        Collection<File> res = new ArrayList<>();
+        Collection<File> res = new ArrayList<File>();
 
         if ( file.exists() ) {
             File[] files = file.listFiles();
@@ -174,7 +183,7 @@ public class TestCompiler {
     }
 
     private List<File> getSourceFiles(Class<?>  ... classes) {
-        List<File> liste = new ArrayList<>();
+        List<File> liste = new ArrayList<File>();
         for (Class<?> aClass : classes) {
             liste.add(new File(String.format("%s/%s.java", SRC_DIR, aClass.getCanonicalName().replace('.', '/'))));
         }
@@ -221,7 +230,7 @@ public class TestCompiler {
             if (!initialized.get()){
                 this.aClass = aClass;
 
-                classes = new ArrayList<>();
+                classes = new ArrayList<File>();
 
                 processCompileAnnotation(aClass, classes);
 

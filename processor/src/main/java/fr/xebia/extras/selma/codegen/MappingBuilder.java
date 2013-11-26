@@ -20,7 +20,7 @@ import static fr.xebia.extras.selma.codegen.MappingSourceNode.*;
  */
 public abstract class MappingBuilder {
 
-    private static final List<MappingSpecification> mappingSpecificationList = new LinkedList<>();
+    private static final List<MappingSpecification> mappingSpecificationList = new LinkedList<MappingSpecification>();
 
     static {  // init specs here
 
@@ -168,14 +168,15 @@ public abstract class MappingBuilder {
             MappingBuilder getBuilder(final MapperGeneratorContext context, final InOutType inOutType) {
 
                 // We have a collection
-                final TypeMirror generic = inOutType.inAsDeclaredType().getTypeArguments().get(0);
+                final TypeMirror genericIn = inOutType.inAsDeclaredType().getTypeArguments().get(0);
+                final TypeMirror genericOut = inOutType.outAsDeclaredType().getTypeArguments().get(0);
                 // emit writer loop for collection and choose an implementation
                 String impl;
                 if (inOutType.outAsTypeElement().getKind() == ElementKind.CLASS) {
                     // Use given class for collection
                     impl = inOutType.out().toString();
                 } else {
-                    impl = CollectionsRegistry.findImplementationForType(inOutType.outAsTypeElement()) + "<" + generic.toString() + ">";
+                    impl = CollectionsRegistry.findImplementationForType(inOutType.outAsTypeElement()) + "<" + genericOut.toString() + ">";
                 }
                 final String implementation = impl;
                 return new MappingBuilder() {
@@ -186,10 +187,10 @@ public abstract class MappingBuilder {
                         final String tmpVar = vars.tmpVar("Collection");
                         MappingSourceNode node = root.body(assign(String.format("%s %s", implementation, tmpVar), String.format("new %s(%s.size())", implementation, vars.inGetter())))
                                 .child(vars.setOrAssign(tmpVar))
-                                .child(mapCollection(itemVar, generic.toString(), vars.inGetter()));
+                                .child(mapCollection(itemVar, genericIn.toString(), vars.inGetter()));
 
                         context.pushStackForBody(node,
-                                new SourceNodeVars().withInOutType(new InOutType(generic, generic))
+                                new SourceNodeVars().withInOutType(new InOutType(genericIn, genericOut))
                                         .withInField(itemVar)
                                         .withOutField(String.format("%s.add", tmpVar)).withAssign(false));
 
@@ -338,7 +339,7 @@ public abstract class MappingBuilder {
             type = (ArrayType) type.getComponentType();
         }
 
-        return new AbstractMap.SimpleEntry<>(type.getComponentType(), new Integer(res));
+        return new AbstractMap.SimpleEntry<TypeMirror, Integer>(type.getComponentType(), new Integer(res));
     }
 
     public static MappingBuilder getBuilderFor(final MapperGeneratorContext context, final InOutType inOutType) {
@@ -368,7 +369,7 @@ public abstract class MappingBuilder {
     }
 
     private static List<String> collectEnumValues(TypeElement typeElement) {
-        List<String> res = new ArrayList<>();
+        List<String> res = new ArrayList<String>();
 
         final List<? extends Element> elementInList = typeElement.getEnclosedElements();
         for (Element field : ElementFilter.fieldsIn(elementInList)) {

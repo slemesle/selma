@@ -20,14 +20,14 @@ import java.util.*;
  *  Process the @Mapper and generate the corresponding implementations
  */
 @SupportedAnnotationTypes({"fr.xebia.extras.selma.Mapper"})
-@SupportedSourceVersion(SourceVersion.RELEASE_7)
+@SupportedSourceVersion(SourceVersion.RELEASE_6)
 public final class MapperProcessor extends AbstractProcessor {
 
 
-    private final HashMap<String, List<ExecutableElement>> remainingMapperTypes = new HashMap<>();
+    private final HashMap<String, List<ExecutableElement>> remainingMapperTypes = new HashMap<String, List<ExecutableElement>>();
 
 
-    protected static final Set<String> exclusions = new HashSet<>(Arrays.asList("equals", "getClass", "hashCode", "toString", "notify", "notifyAll", "wait", "clone", "finalize"));
+    protected static final Set<String> exclusions = new HashSet<String>(Arrays.asList("equals", "getClass", "hashCode", "toString", "notify", "notifyAll", "wait", "clone", "finalize"));
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -35,7 +35,7 @@ public final class MapperProcessor extends AbstractProcessor {
 
         try {
             generateMappingClassses();
-        } catch (IOException | NullPointerException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             StringWriter writer = new StringWriter();
             e.printStackTrace(new PrintWriter(writer));
@@ -116,7 +116,7 @@ public final class MapperProcessor extends AbstractProcessor {
         if (remainingMapperTypes.containsKey(type)) {
             elementList = remainingMapperTypes.get(type);
         } else {
-            elementList = new ArrayList<>();
+            elementList = new ArrayList<ExecutableElement>();
             remainingMapperTypes.put(type, elementList);
         }
         elementList.add(executableElement);

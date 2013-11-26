@@ -38,7 +38,7 @@ public class FactoredBeanMapperIT extends IntegrationTestBase {
 
 
         Assert.assertEquals(
-                new HashSet<>(Arrays.asList(PersonOut.class.getSimpleName(),
+                new HashSet<String>(Arrays.asList(PersonOut.class.getSimpleName(),
                         AddressOut.class.getSimpleName(),
                         CityOut.class.getSimpleName()))
                 , factory.builtClasses);
@@ -62,7 +62,7 @@ public class FactoredBeanMapperIT extends IntegrationTestBase {
 
 
         Assert.assertEquals(
-                new HashSet<>(Arrays.asList(PersonOut.class.getSimpleName(),
+                new HashSet<String>(Arrays.asList(PersonOut.class.getSimpleName(),
                         AddressOut.class.getSimpleName(),
                         CityOut.class.getSimpleName()))
                 , factory.builtClasses);
@@ -71,7 +71,7 @@ public class FactoredBeanMapperIT extends IntegrationTestBase {
 
     private class TestFactory extends DefaultFactory {
 
-        Set<String> builtClasses = new HashSet<>();
+        Set<String> builtClasses = new HashSet<String>();
 
         @Override
         public <T> T newInstance(Class<T> aClass) {

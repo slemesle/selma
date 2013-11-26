@@ -13,7 +13,7 @@ import java.util.concurrent.*;
  */
 public class CollectionsRegistry {
 
-    static final Map<String, String> registry = new HashMap<>();
+    static final Map<String, String> registry = new HashMap<String, String>();
 
     static {
 

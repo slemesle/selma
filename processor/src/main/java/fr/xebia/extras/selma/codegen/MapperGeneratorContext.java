@@ -36,10 +36,10 @@ public class MapperGeneratorContext {
     public MapperGeneratorContext(ProcessingEnvironment processingEnvironment, SourceConfiguration configuration) {
         this.elements = processingEnvironment.getElementUtils();
         this.type = processingEnvironment.getTypeUtils();
-        this.stack = new LinkedList<>();
+        this.stack = new LinkedList<StackElem>();
         this.processingEnv = processingEnvironment;
-        mappingRegistry = new HashMap<>();
-        methodStack = new LinkedList<>();
+        mappingRegistry = new HashMap<InOutType, MappingMethod>();
+        methodStack = new LinkedList<MappingMethod>();
 
         this.configuration = configuration;
     }

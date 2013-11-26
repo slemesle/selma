@@ -30,7 +30,7 @@ public class BeanWrapper {
     }
 
     private Map<String, FieldItem> buildFieldGraph() {
-        HashMap<String, FieldItem> result = new HashMap<>();
+        HashMap<String, FieldItem> result = new HashMap<String, FieldItem>();
 
         final List<? extends Element> elementInList = context.elements.getAllMembers(typeElement);
 
