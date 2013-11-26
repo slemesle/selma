@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.xebia.extras</groupId>
-    <artifactId>xmapper</artifactId>
+    <artifactId>selma</artifactId>
     <version>1.0-SNAPSHOT</version>
     <description>Mapping converter utility</description>
 
