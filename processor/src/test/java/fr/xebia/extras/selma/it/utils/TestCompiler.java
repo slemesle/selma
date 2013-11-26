@@ -135,7 +135,7 @@ public class TestCompiler {
         return res;
     }
 
-    private boolean compile(DiagnosticCollector<JavaFileObject> diagnostics, List<File> classes){
+    private boolean compile(DiagnosticCollector<JavaFileObject> diagnostics, List<File> classes) throws IOException {
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 //        List<String> processorOptions = getProcessorOptions( testMethod );
 
@@ -168,6 +168,8 @@ public class TestCompiler {
         for (Diagnostic<? extends JavaFileObject > diagnostic : diagnostics.getDiagnostics()) {
             System.out.println(diagnostic.toString());
         }
+
+        fileManager.close();
         return res;
     }
 
@@ -227,7 +229,7 @@ public class TestCompiler {
 
                 Thread.currentThread().setContextClassLoader(
                         new URLClassLoader(
-                                new URL[]{new File(OUT_DIR).toURI().toURL()},
+                                new URL[]{new File(OUT_DIR + "/").toURI().toURL()},
                                 Thread.currentThread().getContextClassLoader()
                         )
                 );
