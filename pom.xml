@@ -5,34 +5,30 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.xebia.extras</groupId>
-    <artifactId>selma</artifactId>
+    <artifactId>selma-parent</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <description>Mapping converter utility</description>
+    <modules>
+        <module>processor</module>
+        <module>selma</module>
+    </modules>
 
-    <dependencies>
+    <dependencyManagement>
+        <dependencies>
 
-        <dependency>
-            <groupId>com.squareup</groupId>
-            <artifactId>javawriter</artifactId>
-            <version>2.2.1</version>
-        </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.10</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.5</version>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.10</version>
-            <scope>test</scope>
-        </dependency>
-
-    </dependencies>
 
     <build>
+    <pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -132,6 +128,7 @@
                 </executions>
             </plugin>
         </plugins>
+    </pluginManagement>
     </build>
     <profiles>
         <profile>

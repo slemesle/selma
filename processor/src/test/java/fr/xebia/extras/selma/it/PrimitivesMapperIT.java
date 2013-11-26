@@ -6,7 +6,6 @@ import fr.xebia.extras.selma.it.mappers.SimpleMapper;
 import fr.xebia.extras.selma.it.utils.Compile;
 import fr.xebia.extras.selma.it.utils.IntegrationTestBase;
 import fr.xebia.extras.selma.Selma;
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -30,8 +29,8 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
 
         String res = mapper.convert(COUCOU);
 
-        Assert.assertEquals(COUCOU, res);
-        Assert.assertFalse(COUCOU == res);
+        assertEquals(COUCOU, res);
+        assertFalse(COUCOU == res);
     }
 
     @Test
@@ -41,7 +40,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
 
         String res = mapper.convert((String)null);
 
-        Assert.assertNull(res);
+        assertNull(res);
     }
 
     @Test
@@ -51,7 +50,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
 
         int res = mapper.convert(3);
 
-        Assert.assertEquals(3, res);
+        assertEquals(3, res);
     }
 
 
@@ -62,7 +61,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
 
         boolean res = mapper.convert(true);
 
-        Assert.assertEquals(true, res);
+        assertEquals(true, res);
     }
 
     @Test
@@ -72,7 +71,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
 
         byte res = mapper.convert(((byte)'c'));
 
-        Assert.assertEquals(((byte)'c'), res);
+        assertEquals(((byte)'c'), res);
     }
 
     @Test
@@ -82,7 +81,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
 
         char res = mapper.convert(('c'));
 
-        Assert.assertEquals('c', res);
+        assertEquals('c', res);
     }
 
     @Test
@@ -93,7 +92,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
         char[] in = {'c', 'd', 'b'};
         char[] res = mapper.convert(in);
 
-        Assert.assertArrayEquals(in, res);
+        assertArrayEquals(in, res);
     }
 
 
@@ -116,7 +115,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
         Character[] in = {'c', null, 'b'};
         Character[] res = mapper.convert(in);
 
-        org.junit.Assert.assertArrayEquals(in,res);
+        assertArrayEquals(in,res);
     }
 
 
@@ -140,7 +139,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
         String[] in = {"coucou", null, "cocu"};
         String[] res = mapper.convert(in);
 
-        org.junit.Assert.assertArrayEquals(in,res);
+        assertArrayEquals(in,res);
     }
 
 
@@ -164,8 +163,8 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
         Integer in = 10;
         Integer res = mapper.convert(in);
 
-        Assert.assertEquals(in, res);
-        Assert.assertTrue(in != res);
+        assertEquals(in, res);
+        assertTrue(in != res);
     }
 
     @Test
@@ -176,8 +175,8 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
         BigInteger in = new BigInteger("145654326543676");
         BigInteger res = mapper.convertBigInt(in);
 
-        Assert.assertEquals(in, res);
-        Assert.assertTrue(in != res);
+        assertEquals(in, res);
+        assertTrue(in != res);
     }
 
     @Test
@@ -188,8 +187,8 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
         Date in = new Date();
         Date res = mapper.convertDate(in);
 
-        Assert.assertEquals(in, res);
-        Assert.assertTrue(in != res);
+        assertEquals(in, res);
+        assertTrue(in != res);
     }
 
     @Test
@@ -200,7 +199,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
         Integer in = null;
         Integer res = mapper.convert(in);
 
-        Assert.assertNull(res);
+        assertNull(res);
     }
 
     @Test
@@ -214,7 +213,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
         in.add("coco");
         List<String> res = mapper.convert(in);
 
-        Assert.assertEquals(in, res);
+        assertEquals(in, res);
     }
 
 
@@ -229,7 +228,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
         in.add("coco");
         HashSet<String> res = mapper.convert(in);
 
-        Assert.assertEquals(in, res);
+        assertEquals(in, res);
     }
 
 
@@ -244,7 +243,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
         in.add("coco");
         HashSet<String> res = mapper.convertSetToHashSet(in);
 
-        Assert.assertEquals(in, res);
+        assertEquals(in, res);
     }
 
     @Test
@@ -258,7 +257,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
         in.add("coco");
         Set<String> res = mapper.convertLnkedHashSetToSet(in);
 
-        Assert.assertEquals(in, res);
+        assertEquals(in, res);
     }
 
     @Test
@@ -269,7 +268,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
         HashSet<String> in = null;
         HashSet<String> res = mapper.convert(in);
 
-        Assert.assertNull(res);
+        assertNull(res);
     }
 
     @Test
@@ -284,7 +283,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
         in.put("ddd", "ddd");
         Map<String, String> res = mapper.convert(in);
 
-        Assert.assertEquals(in, res);
+        assertEquals(in, res);
     }
 
     @Test
@@ -299,7 +298,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
         in.put("ddd", new Date(61223555));
         Map<String, Date> res = mapper.convertStringToDateMap(in);
 
-        Assert.assertEquals(in, res);
+        assertEquals(in, res);
     }
 
     @Test
@@ -314,7 +313,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
         in.put(new BigInteger("767876567898765434890"), new Date(61223555));
         Map<BigInteger, Date> res = mapper.convertBigIntToDateMap(in);
 
-        Assert.assertEquals(in, res);
+        assertEquals(in, res);
     }
 
     @Test
@@ -325,7 +324,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
         Map<String, String> in = null;
         Map<String, String> res = mapper.convert(in);
 
-        Assert.assertNull(res);
+        assertNull(res);
     }
 
 
@@ -337,7 +336,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
         EnumIn in = EnumIn.VAL_2;
         EnumOut res = mapper.convert(in);
 
-        Assert.assertEquals(in.name(), res.name());
+        assertEquals(in.name(), res.name());
     }
 
     @Test
@@ -348,7 +347,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
         EnumIn in = null;
         EnumOut res = mapper.convert(in);
 
-        Assert.assertNull(res);
+        assertNull(res);
     }
 
 
@@ -360,7 +359,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
         String[][] in = new String[][]{{"coucou", null, "coucou"}, {"coucou", null, "coucou"}};
         String[][] res = mapper.convert(in);
 
-        Assert.assertArrayEquals(in, res);
+        assertArrayEquals(in, res);
     }
 
     @Test
@@ -371,7 +370,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
         String[][] in = null;
         String[][] res = mapper.convert(in);
 
-        Assert.assertNull(res);
+        assertNull(res);
     }
 
     @Test
@@ -383,7 +382,7 @@ public class PrimitivesMapperIT extends IntegrationTestBase {
         String[][][] in = new String[][][]{{{"coucou", null, "coucou"}, {"tutu", "bad","tata"}}, {{"coucou", null, "coucou"}, {"coucou", null, "coucou"}}, {{"BUbu", null, "BUbu"}, {"POUPOU", null, "POUPOU"}}};
         String[][][] res = mapper.convert(in);
 
-        Assert.assertArrayEquals(in, res);
+        assertArrayEquals(in, res);
     }
 
 

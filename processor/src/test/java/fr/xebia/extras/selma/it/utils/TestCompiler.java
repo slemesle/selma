@@ -41,7 +41,7 @@ public class TestCompiler {
         SRC_DIR = basePath + "/src/test/java";
         OUT_DIR = basePath + "/target/it/classes";
         GEN_DIR = basePath + "/target/it/generated-sources/mapping";
-        TARGET_DIR = basePath + "/target";
+        TARGET_DIR = basePath + "/target/dependency";
 
         classPath = new ArrayList<>();
 
