@@ -56,7 +56,7 @@ public class TestCompiler {
 
 
 
-    public TestCompilerEnv compileFor(Class<? extends IntegrationTestBase> aClass) throws Exception{
+    public synchronized TestCompilerEnv compileFor(Class<? extends IntegrationTestBase> aClass) throws Exception{
         TestCompilerEnv res;
 
 
@@ -66,6 +66,7 @@ public class TestCompiler {
 
         res = new TestCompilerEnv();
         res.init(aClass);
+        Thread.sleep(500);
         environments.put(aClass.getCanonicalName(),res);
         return res;
     }

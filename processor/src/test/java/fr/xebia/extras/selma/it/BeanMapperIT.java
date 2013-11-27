@@ -43,6 +43,7 @@ public class BeanMapperIT extends IntegrationTestBase {
         personIn.setEnumIn(EnumIn.VAL_2);
 
 
+
         PersonOut res = mapper.convertFrom(personIn);
 
         Assert.assertNotNull(res);
