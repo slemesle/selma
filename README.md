@@ -16,10 +16,16 @@
 
 [![Build Status](https://buildhive.cloudbees.com/job/slemesle/job/selma/badge/icon)](https://buildhive.cloudbees.com/job/slemesle/job/selma/)
 
+# What is Selma ?
 
-# Selma you know for mapping
+Selma stands for *Stupid Simple Staticaly Linked Mapper*.
+In fact it is on one side an Annotation Processor that generate Java code to handle the mapping from field to field at compile time. On the other side, it is a Runtime library to instantiate and invoke the generated Mapper.
 
-Just add Selma to your build, define a Mapper interface:
+
+# How does it works ?
+
+First add selma-processor as a provided dependency and selma as a compile dependency to your build.
+Then, define a Mapper interface describing the mapping you want:
 
 ```java
 @Mapper
