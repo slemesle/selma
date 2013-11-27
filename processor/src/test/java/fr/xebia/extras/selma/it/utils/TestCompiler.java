@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.charset.Charset;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -46,11 +47,11 @@ public class TestCompiler {
     private final String OUT_DIR;
     private final String GEN_DIR;
     private final String TARGET_DIR;
-    private final  List<File> classPath;
+    private final List<File> classPath;
     private final Map<String, TestCompilerEnv> environments;
 
 
-    private TestCompiler(){
+    private TestCompiler() {
 
         String basePath = System.getProperty("user.dir");
 
@@ -70,27 +71,22 @@ public class TestCompiler {
         return INSTANCE;
     }
 
+    public synchronized TestCompilerEnv compileFor(Class<? extends IntegrationTestBase> aClass) throws Exception {
+        synchronized (INSTANCE) {
+            TestCompilerEnv res;
 
 
-    public synchronized TestCompilerEnv compileFor(Class<? extends IntegrationTestBase> aClass) throws Exception{
-        TestCompilerEnv res;
+            if (environments.containsKey(aClass.getCanonicalName())) {
+                return environments.get(aClass.getCanonicalName());
+            }
 
-
-        if (environments.containsKey(aClass.getCanonicalName())){
-            return environments.get(aClass.getCanonicalName());
+            res = new TestCompilerEnv();
+            res.init(aClass);
+            Thread.sleep(500);
+            environments.put(aClass.getCanonicalName(), res);
+            return res;
         }
-
-        res = new TestCompilerEnv();
-        res.init(aClass);
-        Thread.sleep(500);
-        environments.put(aClass.getCanonicalName(),res);
-        return res;
     }
-
-
-
-
-
 
     private final Collection<? extends File> findJars() {
         List<File> res = new ArrayList<File>();
@@ -104,8 +100,8 @@ public class TestCompiler {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
-            if (stream != null){
+        } finally {
+            if (stream != null) {
                 try {
                     stream.close();
                 } catch (IOException e) {
@@ -116,15 +112,14 @@ public class TestCompiler {
         return res;
     }
 
-
     private void processCompileAnnotation(Class<?> aClass, List<File> classes) {
         List<Compile> compiles = new ArrayList<Compile>();
         Compile compile = aClass.getAnnotation(Compile.class);
-        if (compile != null){
+        if (compile != null) {
             compiles.add(compile);
         }
         compile = aClass.getSuperclass().getAnnotation(Compile.class);
-        if (compile != null){
+        if (compile != null) {
             compiles.add(compile);
         }
 
@@ -132,7 +127,7 @@ public class TestCompiler {
             String[] packages = res.withPackage();
             for (int i = 0; i < packages.length; i++) {
                 String aPackage = packages[i];
-                classes.addAll( listFilesIn(new File(String.format("%s/%s", SRC_DIR, aPackage.replace('.', '/')))));
+                classes.addAll(listFilesIn(new File(String.format("%s/%s", SRC_DIR, aPackage.replace('.', '/')))));
             }
 
             Class<?>[] classesTab = res.withClasses();
@@ -147,13 +142,12 @@ public class TestCompiler {
     private Collection<? extends File> listFilesIn(File file) {
         Collection<File> res = new ArrayList<File>();
 
-        if ( file.exists() ) {
+        if (file.exists()) {
             File[] files = file.listFiles();
-            for ( int i = 0; i < files.length; i++ ) {
-                if ( files[i].isDirectory() ) {
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isDirectory()) {
                     res.addAll(listFilesIn(files[i]));
-                }
-                else {
+                } else {
                     res.add(files[i]);
                 }
             }
@@ -165,41 +159,54 @@ public class TestCompiler {
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 //        List<String> processorOptions = getProcessorOptions( testMethod );
 
-        StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
+        StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, Charset.forName("UTF-8"));
 
-        Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromFiles( classes );
+        Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromFiles(classes);
 
         try {
-            fileManager.setLocation( StandardLocation.CLASS_PATH, classPath );
-            fileManager.setLocation( StandardLocation.CLASS_OUTPUT, Arrays.asList(new File(OUT_DIR)) );
-            fileManager.setLocation( StandardLocation.SOURCE_OUTPUT, Arrays.asList( new File( GEN_DIR ) ) );
-        }
-        catch ( IOException e ) {
-            throw new RuntimeException( e );
+            fileManager.setLocation(StandardLocation.CLASS_PATH, classPath);
+            fileManager.setLocation(StandardLocation.CLASS_OUTPUT, Arrays.asList(new File(OUT_DIR)));
+            fileManager.setLocation(StandardLocation.SOURCE_OUTPUT, Arrays.asList(new File(GEN_DIR)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         JavaCompiler.CompilationTask task = compiler.getTask(
                 null,
                 fileManager,
                 diagnostics,
-                /*processorOptions*/null,
+                /*processorOptions*/Arrays.asList("-source", "6"),
                 null,
                 compilationUnits
         );
-        task.setProcessors( Arrays.asList( new MapperProcessor()) );
+        task.setProcessors(Arrays.asList(new MapperProcessor()));
 
 
-        boolean res  =  task.call();
+        boolean res = task.call();
 
-        for (Diagnostic<? extends JavaFileObject > diagnostic : diagnostics.getDiagnostics()) {
+        for (Diagnostic<? extends JavaFileObject> diagnostic : diagnostics.getDiagnostics()) {
             System.out.println(diagnostic.toString());
         }
 
-        fileManager.close();
+        fileManager.flush();
+
+//        initiateClassLoader(fileManager);
+
         return res;
     }
 
-    private List<File> getSourceFiles(Class<?>  ... classes) {
+    private void initiateClassLoader(StandardJavaFileManager fileManager) {
+        ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+        if(contextClassLoader == null){
+            contextClassLoader = getClass().getClassLoader();
+        }
+        if (!(contextClassLoader instanceof TestClassLoader)) {
+            ClassLoader loader =  new TestClassLoader(contextClassLoader, fileManager.getClassLoader( StandardLocation.CLASS_OUTPUT));
+            Thread.currentThread().setContextClassLoader(loader);
+        }
+    }
+
+    private List<File> getSourceFiles(Class<?>... classes) {
         List<File> liste = new ArrayList<File>();
         for (Class<?> aClass : classes) {
             liste.add(new File(String.format("%s/%s.java", SRC_DIR, aClass.getCanonicalName().replace('.', '/'))));
@@ -207,25 +214,23 @@ public class TestCompiler {
         return liste;
     }
 
-
-    private  void createOutputDirs() {
-        File directory = new File( OUT_DIR );
-        deleteDirectory( directory );
+    private void createOutputDirs() {
+        File directory = new File(OUT_DIR);
+        deleteDirectory(directory);
         directory.mkdirs();
 
-        directory = new File( GEN_DIR );
-        deleteDirectory( directory );
+        directory = new File(GEN_DIR);
+        deleteDirectory(directory);
         directory.mkdirs();
     }
 
-    private  void deleteDirectory(File path) {
-        if ( path.exists() ) {
+    private void deleteDirectory(File path) {
+        if (path.exists()) {
             File[] files = path.listFiles();
-            for ( int i = 0; i < files.length; i++ ) {
-                if ( files[i].isDirectory() ) {
-                    deleteDirectory( files[i] );
-                }
-                else {
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isDirectory()) {
+                    deleteDirectory(files[i]);
+                } else {
                     files[i].delete();
                 }
             }
@@ -233,18 +238,16 @@ public class TestCompiler {
         path.delete();
     }
 
-
     class TestCompilerEnv {
+        final AtomicBoolean initialized = new AtomicBoolean(false);
         DiagnosticCollector<JavaFileObject> diagnostics;
         boolean compilationResult;
         List<File> classes;
-        final AtomicBoolean initialized = new AtomicBoolean(false);
         boolean shouldFail;
         Class<?> aClass;
 
-
-        private synchronized void init(Class<?> aClass)throws Exception {
-            if (!initialized.get()){
+        private synchronized void init(Class<?> aClass) throws Exception {
+            if (!initialized.get()) {
                 this.aClass = aClass;
 
                 classes = new ArrayList<File>();
@@ -270,13 +273,12 @@ public class TestCompiler {
             }
         }
 
-
         protected boolean compilationSuccess() {
             return compilationResult;
         }
 
-        protected void assertCompilation(){
-            Assert.assertTrue(String.format( "Compilation of class %s result should be %s", aClass.getSimpleName(), !shouldFail), !shouldFail == compilationResult );
+        protected void assertCompilation() {
+            Assert.assertTrue(String.format("Compilation of class %s result should be %s", aClass.getSimpleName(), !shouldFail), !shouldFail == compilationResult);
         }
 
         public DiagnosticCollector<JavaFileObject> diagnostics() {

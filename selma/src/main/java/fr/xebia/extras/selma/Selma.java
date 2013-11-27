@@ -67,12 +67,8 @@ public class Selma {
         if (!mappers.containsKey(mapperKey)) {
 
 
-            // Check that
-            // - clazz is an interface
-            // - the implementation type implements clazz
-            // - clazz is annotated with @Mapper
-            //
-            // Use privileged action
+
+            // First look for the context class loader
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
             if ( classLoader == null ) {
