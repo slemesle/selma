@@ -9,25 +9,24 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
+ * 
  */
 package fr.xebia.extras.selma.beans;
 
-import fr.xebia.extras.selma.Mapper;
+import fr.xebia.extras.selma.Factory;
 
 /**
- * Created with IntelliJ IDEA.
- * User: slemesle
- * Date: 27/11/2013
- * Time: 00:10
- * To change this template use File | Settings | File Templates.
+ *
+ * Custom Mapping show case
  */
-@Mapper(ignoreMissingProperties = true, withMapper = CustomMappings.class)
-public interface Order2OrderDto {
+public class CustomMappings {
 
-    OrderDto to(Order in);
 
+    public static String productTypeToString(ProductType in, Factory factory){
+
+        return in.toString();
+    }
 }

@@ -61,6 +61,7 @@ public class OrderServiceTest {
         in.getProducts().get(0).getTags().add("Geek");
         in.getProducts().get(0).getTags().add("Gadget");
         in.getProducts().get(0).getTags().add("Electronic");
+        in.getProducts().get(0).setType(ProductType.SERVICE);
 
         final OrderService service = new OrderService();
 
@@ -81,6 +82,7 @@ public class OrderServiceTest {
         Assert.assertEquals(in.getProducts().get(0).getCode(), res.getProducts().get(0).getCode());
         Assert.assertEquals(in.getProducts().get(0).getLabel(), res.getProducts().get(0).getLabel());
         Assert.assertEquals(in.getProducts().get(0).getPrice(), res.getProducts().get(0).getPrice(), 0d);
+        Assert.assertEquals(in.getProducts().get(0).getType().toString(), res.getProducts().get(0).getType());
 
 
     }

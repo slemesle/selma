@@ -34,6 +34,16 @@ public class Product {
     private double price;
     private Set<String> tags;
 
+    public ProductType getType() {
+        return type;
+    }
+
+    public void setType(ProductType type) {
+        this.type = type;
+    }
+
+    private ProductType type;
+
     public String getCode() {
         return code;
     }

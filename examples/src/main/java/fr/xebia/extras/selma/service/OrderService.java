@@ -22,11 +22,7 @@ import fr.xebia.extras.selma.beans.Order2OrderDto;
 import fr.xebia.extras.selma.beans.OrderDto;
 
 /**
- * Created with IntelliJ IDEA.
- * User: slemesle
- * Date: 27/11/2013
- * Time: 00:12
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class OrderService {
 
