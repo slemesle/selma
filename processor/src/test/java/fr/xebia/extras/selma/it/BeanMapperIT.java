@@ -40,6 +40,8 @@ public class BeanMapperIT extends IntegrationTestBase {
     @Test
     public void beanMapper_should_map_properties()throws Exception{
 
+
+        System.out.println(System.getProperty("java.classpath"));
         BeanMapper mapper = Selma.getMapper(BeanMapper.class);
 
         PersonIn personIn = new PersonIn();
