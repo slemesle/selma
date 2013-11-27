@@ -16,6 +16,8 @@
 
 [![Build Status](https://buildhive.cloudbees.com/job/slemesle/job/selma/badge/icon)](https://buildhive.cloudbees.com/job/slemesle/job/selma/)
 
+![S3lm4 logo](http://github.com/slemesle/selma/resources/S3lm4.png)
+
 # What is S3lm4 ?
 
 S3lm4 stands for ***Stupid Simple Staticaly Linked Mapper***.
