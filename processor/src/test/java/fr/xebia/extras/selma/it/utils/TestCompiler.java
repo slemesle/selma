@@ -64,7 +64,7 @@ public class TestCompiler {
 
         classPath.addAll(findJars());
         environments = new HashMap<String, TestCompilerEnv>();
-
+        createOutputDirs();
     }
 
     public static TestCompiler getInstance() {
@@ -82,7 +82,7 @@ public class TestCompiler {
 
             res = new TestCompilerEnv();
             res.init(aClass);
-            Thread.sleep(500);
+//            Thread.sleep(500);
             environments.put(aClass.getCanonicalName(), res);
             return res;
         }
@@ -254,7 +254,7 @@ public class TestCompiler {
 
                 processCompileAnnotation(aClass, classes);
 
-                createOutputDirs();
+//                createOutputDirs();
 
                 Thread.currentThread().setContextClassLoader(
                         new URLClassLoader(
