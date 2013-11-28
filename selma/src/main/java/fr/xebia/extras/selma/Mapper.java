@@ -53,4 +53,14 @@ public @interface Mapper {
      */
     Class<?>[] withMapper() default {};
 
+    /**
+     * Add one or more class for which instance should be passed to the out bean constructor.
+     * This aims to replace the use of a Factory, in fact if you need a factory, most of the time it is because beans
+     * have a specific constructor parameter that need to be filled in.
+     *
+     * @return
+     */
+    Class<?>[] withConstructorParameter() default {};
+
+
 }
