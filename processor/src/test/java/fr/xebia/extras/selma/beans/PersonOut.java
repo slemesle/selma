@@ -39,6 +39,17 @@ public class PersonOut {
     private AddressOut address;
     private AddressOut addressBis;
 
+    private Boolean natural;
+
+
+    public Boolean isNatural() {
+        return natural;
+    }
+
+    public void setNatural(Boolean natural) {
+        this.natural = natural;
+    }
+
     public EnumOut getEnumIn() {
         return enumIn;
     }

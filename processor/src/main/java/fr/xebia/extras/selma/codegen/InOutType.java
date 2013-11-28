@@ -55,9 +55,23 @@ public class InOutType {
         return result;
     }
 
+    @Override
+    public String
+    toString() {
+        final StringBuilder sb = new StringBuilder("InOutType{");
+        sb.append("in=").append(in);
+        sb.append(", out=").append(out);
+        sb.append('}');
+        return sb.toString();
+    }
+
     public InOutType(TypeMirror in, TypeMirror out) {
         this.in = in;
         this.out = out;
+
+        if (in == null || out == null ){
+            throw new IllegalArgumentException(String.format("in type %s and out type %s can not be null", in, out));
+        }
     }
 
     public boolean areSamePrimitive() {
@@ -135,4 +149,5 @@ public class InOutType {
     public boolean inIsPrimitive() {
         return in.getKind().isPrimitive();
     }
+
 }

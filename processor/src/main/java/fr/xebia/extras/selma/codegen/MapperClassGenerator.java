@@ -105,14 +105,12 @@ public class MapperClassGenerator {
             return false;
         }
 
-        InOutType inOutType = methodWrapper.inOutType();
-
         if (!methodWrapper.element().getModifiers().contains(javax.lang.model.element.Modifier.STATIC) || !methodWrapper.element().getModifiers().contains(javax.lang.model.element.Modifier.PUBLIC)) {
             context.warn(methodWrapper.element(), "Custom mapping method should be *public static* (Fix modifiers of the method) on %s", methodWrapper.getSimpleName());
             res = false;
         }
 
-        if(inOutType.out().getKind() == TypeKind.VOID){
+        if(!methodWrapper.hasReturnType()){
             context.warn(methodWrapper.element(), "Custom mapping method can not be void (Add the targeted return type) on %s", methodWrapper.getSimpleName());
             res = false;
         }

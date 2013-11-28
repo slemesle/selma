@@ -162,16 +162,21 @@ public class MapperMethodGenerator {
                     break;
                 }
 
-                MappingBuilder mappingBuilder = findBuilderFor(new InOutType(inBean.getTypeFor(field), outBean.getTypeFor(field)));
+                try {
+                    MappingBuilder mappingBuilder = findBuilderFor(new InOutType(inBean.getTypeFor(field), outBean.getTypeFor(field)));
+                    if (mappingBuilder != null) {
+                        ptr = ptr.child(mappingBuilder.build(context, new SourceNodeVars(field, inBean, outBean)
+                                .withInOutType(new InOutType(inBean.getTypeFor(field), outBean.getTypeFor(field))).withAssign(false)));
 
-                if (mappingBuilder != null) {
-                    ptr = ptr.child(mappingBuilder.build(context, new SourceNodeVars(field, inBean, outBean)
-                            .withInOutType(new InOutType(inBean.getTypeFor(field), outBean.getTypeFor(field))).withAssign(false)));
-
-                    generateStack(context);
-                } else {
-                    handleNotSupported(inOutType, ptr);
+                        generateStack(context);
+                    } else {
+                        handleNotSupported(inOutType, ptr);
+                    }
+                } catch (Exception e) {
+                    System.out.printf("Error while searching builder for field %s on %s mapper", field, inOutType.toString());
+                    e.printStackTrace();
                 }
+
 
                 ptr = lastChild(ptr);
             }

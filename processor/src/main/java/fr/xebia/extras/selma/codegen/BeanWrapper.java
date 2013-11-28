@@ -48,7 +48,7 @@ public class BeanWrapper {
     private Map<String, FieldItem> buildFieldGraph() {
         HashMap<String, FieldItem> result = new HashMap<String, FieldItem>();
 
-        final List<? extends Element> elementInList = context.elements.getAllMembers(typeElement);
+        final List<? extends Element> elementInList = typeElement.getEnclosedElements();
 
         final List<VariableElement> fields = ElementFilter.fieldsIn(elementInList);
 
@@ -84,9 +84,21 @@ public class BeanWrapper {
     private boolean isGetterFor(ExecutableElement method, VariableElement field) {
 
         String methodName = method.getSimpleName().toString();
-        String getterName = (field.asType().getKind() == TypeKind.BOOLEAN ? "is" : "get") + field.getSimpleName().toString();
+
+        String getterName = (isBoolean(field) ? "is" : "get") + field.getSimpleName().toString();
 
         return method.getParameters().size() == 0 && method.getReturnType().toString().equals(field.asType().toString()) && methodName.equalsIgnoreCase(getterName);
+    }
+
+    private boolean isBoolean(VariableElement field) {
+
+        boolean res = false;
+
+        res = (field.asType().getKind() == TypeKind.BOOLEAN);
+        if (!res){
+            res = Boolean.class.getName().equals(field.asType().toString());
+        }
+        return res;
     }
 
 

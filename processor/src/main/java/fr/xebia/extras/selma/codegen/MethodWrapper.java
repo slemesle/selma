@@ -22,6 +22,7 @@ import fr.xebia.extras.selma.Mapper;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
 
@@ -118,5 +119,10 @@ public class MethodWrapper {
         } else {
             return false;
         }
+    }
+
+    public boolean hasReturnType() {
+
+        return method.getReturnType() != null && method.getReturnType().getKind() != TypeKind.VOID;
     }
 }

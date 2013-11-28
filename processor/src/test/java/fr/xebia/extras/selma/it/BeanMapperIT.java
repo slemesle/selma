@@ -50,6 +50,7 @@ public class BeanMapperIT extends IntegrationTestBase {
         personIn.setFirstName("Odile");
         personIn.setLastName("Dere");
         personIn.setMale(true);
+        personIn.setNatural(Boolean.TRUE);
 
         personIn.setIndices(new Long[]{23l, 42l, null, 55l});
 
@@ -72,6 +73,7 @@ public class BeanMapperIT extends IntegrationTestBase {
         org.junit.Assert.assertArrayEquals(personIn.getIndices(), res.getIndices());
         org.junit.Assert.assertEquals(personIn.getTags(), res.getTags());
         org.junit.Assert.assertEquals(personIn.getEnumIn().name(), res.getEnumIn().name());
+        Assert.assertTrue(personIn.isNatural().booleanValue() == res.isNatural().booleanValue());
     }
 
 

@@ -41,6 +41,7 @@ public class PersonIn {
     private EnumIn enumIn;
     private AddressIn address;
     private AddressIn addressBis;
+    private Boolean natural;
 
     public EnumIn getEnumIn() {
         return enumIn;
@@ -122,5 +123,13 @@ public class PersonIn {
 
     public void setAddressBis(AddressIn addressBis) {
         this.addressBis = addressBis;
+    }
+
+    public void setNatural(Boolean natural) {
+        this.natural = natural;
+    }
+
+    public Boolean isNatural() {
+        return natural;
     }
 }
