@@ -22,10 +22,10 @@ import fr.xebia.extras.selma.beans.AddressOutWithDataSource;
 import fr.xebia.extras.selma.beans.DataSource;
 
 /**
- *
+ * Demonstrate Sourced beans
  */
 @Mapper(withConstructorParameter = DataSource.class)
-public interface DataSourceBeanMapper {
+public interface SourcedBeanMapper {
 
 
     AddressOutWithDataSource asAddressOut(AddressIn in);
