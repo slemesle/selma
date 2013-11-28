@@ -21,7 +21,7 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Target;
 
 /**
- * Annotation de Mapper
+ * Mapper annotation used to denote interfaces that needs mappers implementation to be built.
  */
 @Target({ElementType.TYPE})
 @Inherited
@@ -52,6 +52,5 @@ public @interface Mapper {
      * These methods will be called to handle custom mapping of in bean to the OutType
      */
     Class<?>[] withMapper() default {};
-
 
 }

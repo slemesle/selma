@@ -18,8 +18,9 @@
 package fr.xebia.extras.selma;
 
 /**
+ * A Factory is a bean used by generated Mappers to instantiate beans.
  *
- *
+ * @see DefaultFactory
  */
 public interface Factory {
 

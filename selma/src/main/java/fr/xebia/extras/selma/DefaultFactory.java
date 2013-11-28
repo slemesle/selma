@@ -17,7 +17,8 @@
 package fr.xebia.extras.selma;
 
 /**
- * This is the default factory that creates bean using the default constructor
+ * This is the default factory that creates bean using the default void constructor.
+ * Mappers retrieved in Selma without a provided Factory will use this class to instantiate beans.
  */
 public class DefaultFactory implements Factory {
 

@@ -21,6 +21,20 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * Selma is the only class used to gain access to the Mappers implementations generated at compile time.
+ *
+ * It offers a Builder API to retrieve the Mapper you want :
+ * <code>
+ *      // Without factory
+ *     Selma.mapper(MapperInterface.class).build();
+ *
+ *     // With factory
+ *     Selma.mapper(MapperInterface.class).withFactory(factoryInstance).build();
+ * </code>
+ *
+ * It also offers two simple static methods getMapper(MapperInterface.class) offering the same service level.
+ *
+ * Please notice that Selma holds a cache of the instantiated Mappers, and will maintain them as Singleton.
  *
  */
 public class Selma {
@@ -90,7 +104,7 @@ public class Selma {
             } catch (IllegalAccessException e) {
                 throw new IllegalArgumentException(String.format("Instantiation of Mapper class %s failed : %s", mapperClass.getName(), e.getMessage()), e);
             } catch (ClassNotFoundException e) {
-                throw new IllegalArgumentException(String.format("Instantiation of Mapper class %s failed : %s", mapperClass.getName(), e.getMessage()), e);
+                throw new IllegalArgumentException(String.format("Instantiation of Mapper class %s failed : %s", mapperClass.getName(), e.toString()), e);
             } catch (NoSuchMethodException e) {
                 throw new IllegalArgumentException(String.format("Instantiation of Mapper class %s failed (No constructor with Factory parameter !) : %s", mapperClass.getName(), e.getMessage()), e);
             } catch (InvocationTargetException e) {
@@ -104,7 +118,10 @@ public class Selma {
         return (T) mappers.get(mapperKey);
     }
 
-
+    /**
+     * Builder style API to get Mapper for holding the class parameter
+     * @param <T>
+     */
     public static final class XMapperFactoryBuilder<T> {
         private final Class<T> mapperClass;
 
@@ -121,6 +138,10 @@ public class Selma {
         }
     }
 
+    /**
+     * Builder style API to get Mapper with a provided Factory
+     * @param <T>
+     */
     public static class XMapperFactoredBuilder<T> {
         private final Class<T> mapperClass;
         private final Factory factory;
