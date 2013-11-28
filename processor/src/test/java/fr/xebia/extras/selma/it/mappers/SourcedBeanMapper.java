@@ -24,7 +24,7 @@ import fr.xebia.extras.selma.beans.DataSource;
 /**
  * Demonstrate Sourced beans
  */
-@Mapper(withConstructorParameter = DataSource.class)
+@Mapper(withSourceParameter = DataSource.class)
 public interface SourcedBeanMapper {
 
 
