@@ -15,8 +15,9 @@
 <!--                                                                           -->
 
 [![Build Status](https://buildhive.cloudbees.com/job/slemesle/job/selma/badge/icon)](https://buildhive.cloudbees.com/job/slemesle/job/selma/)
+[![Build Status](https://travis-ci.org/slemesle/selma.png?branch=master)](https://travis-ci.org/slemesle/selma)
 
-![S3lm4 logo](https://raw.github.com/slemesle/selma/master/resources/S3lm4.png)
+![S3lm4 logo](https://raw.github.com/slemesle/selma/master/resources/S3lm4.png) or ![S3lm4 logo](https://raw.github.com/slemesle/selma/master/resources/logo-v2.png)
 
 # What is S3lm4 ?
 
