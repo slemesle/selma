@@ -28,7 +28,6 @@ import fr.xebia.extras.selma.beans.DataSource;
 public interface DataSourceBeanMapper {
 
 
-
     AddressOutWithDataSource asAddressOut(AddressIn in);
 
 

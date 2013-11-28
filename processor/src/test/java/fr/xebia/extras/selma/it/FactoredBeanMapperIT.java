@@ -22,8 +22,6 @@ import fr.xebia.extras.selma.beans.*;
 import fr.xebia.extras.selma.it.mappers.BeanMapper;
 import fr.xebia.extras.selma.it.mappers.CustomMapperSupport;
 import fr.xebia.extras.selma.it.mappers.CustomStaticMapper;
-import fr.xebia.extras.selma.it.mappers.DataSourceBeanMapper;
-import fr.xebia.extras.selma.it.mappers.DataSourceBeanMapper;
 import fr.xebia.extras.selma.it.utils.Compile;
 import fr.xebia.extras.selma.it.utils.IntegrationTestBase;
 import org.junit.Assert;
