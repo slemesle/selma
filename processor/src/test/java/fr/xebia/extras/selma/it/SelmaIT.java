@@ -17,7 +17,10 @@
 
 package fr.xebia.extras.selma.it;
 
+import fr.xebia.extras.selma.beans.CityOut;
+import fr.xebia.extras.selma.beans.DataSource;
 import fr.xebia.extras.selma.it.mappers.BadMapperSignature;
+import fr.xebia.extras.selma.it.mappers.SelmaSourcedTestMapper;
 import fr.xebia.extras.selma.it.mappers.SelmaTestMapper;
 import fr.xebia.extras.selma.it.utils.Compile;
 import fr.xebia.extras.selma.it.utils.IntegrationTestBase;
@@ -29,7 +32,7 @@ import org.junit.Test;
 
 /**
  */
-@Compile(withClasses = SelmaTestMapper.class)
+@Compile(withClasses = {SelmaTestMapper.class, SelmaSourcedTestMapper.class})
 public class SelmaIT extends IntegrationTestBase {
 
 
@@ -51,11 +54,30 @@ public class SelmaIT extends IntegrationTestBase {
     }
 
 
+    @Test
+    public void xmapper_static_with_source_should_return_same_mapper_in_two_times_call(){
+
+
+        DataSource dataSource = new DataSource();
+        SelmaSourcedTestMapper mapper = Selma.getMapper(SelmaSourcedTestMapper.class, dataSource);
+        Assert.assertTrue(mapper == Selma.getMapper(SelmaSourcedTestMapper.class, dataSource));
+
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void xmapper_should_raise_illegal_given_not_fitting_source(){
+
+        CityOut dataSource = new CityOut();
+        SelmaSourcedTestMapper mapper = Selma.getMapper(SelmaSourcedTestMapper.class, dataSource);
+        Assert.assertTrue(mapper == Selma.getMapper(SelmaSourcedTestMapper.class, dataSource));
+    }
+
+
     @Test(expected = IllegalArgumentException.class)
     public void xmapper_should_raise_illegalArgException_on_not_existing_mapper(){
 
         BadMapperSignature mapper = Selma.mapper(BadMapperSignature.class);
-
     }
 
 

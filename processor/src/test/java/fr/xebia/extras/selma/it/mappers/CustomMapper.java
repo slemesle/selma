@@ -18,6 +18,8 @@ package fr.xebia.extras.selma.it.mappers;
 
 import fr.xebia.extras.selma.beans.CityIn;
 import fr.xebia.extras.selma.beans.CityOut;
+import fr.xebia.extras.selma.beans.CityOutWithDataSource;
+import fr.xebia.extras.selma.beans.DataSource;
 
 /**
  *
@@ -25,12 +27,26 @@ import fr.xebia.extras.selma.beans.CityOut;
  */
 public class CustomMapper {
 
-    public CustomMapper(){
+    private final DataSource dataSource;
 
+    public CustomMapper(DataSource dataSource){
+        this.dataSource = dataSource;
+    }
+
+    public CustomMapper(){
+        dataSource = null;
     }
 
     public CityOut mapCity(CityIn cityIn){
         CityOut cityOut = new CityOut();
+        cityOut.setName(cityIn.getName() + " Mapped by CustomMapper");
+        cityOut.setCapital(cityIn.isCapital());
+        cityOut.setPopulation(cityIn.getPopulation() + 10000);
+        return cityOut;
+    }
+
+    public CityOutWithDataSource asCityOut(CityIn cityIn){
+        CityOutWithDataSource cityOut = new CityOutWithDataSource(dataSource);
         cityOut.setName(cityIn.getName() + " Mapped by CustomMapper");
         cityOut.setCapital(cityIn.isCapital());
         cityOut.setPopulation(cityIn.getPopulation() + 10000);
