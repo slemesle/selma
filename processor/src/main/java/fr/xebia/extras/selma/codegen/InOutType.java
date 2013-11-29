@@ -150,4 +150,35 @@ public class InOutType {
         return in.getKind().isPrimitive();
     }
 
+    public boolean areSameDeclared() {
+        return !differs() && areDeclared();
+    }
+
+    public boolean outIsDeclared() {
+        return out.getKind() == TypeKind.DECLARED;
+    }
+
+    public boolean isPrimitiveToDeclared() {
+        return inIsPrimitive() && outIsDeclared();
+    }
+
+    public TypeKind inKind() {
+        return in.getKind();
+    }
+
+    public boolean isDeclaredToPrimitive() {
+        return outIsPrimitive() && inIsDeclared();
+    }
+
+    private boolean outIsPrimitive() {
+        return out().getKind().isPrimitive();
+    }
+
+    private boolean inIsDeclared() {
+        return in.getKind() == TypeKind.DECLARED;
+    }
+
+    public TypeKind outKind() {
+        return out.getKind();
+    }
 }

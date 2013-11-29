@@ -20,10 +20,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.ArrayType;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
+import javax.lang.model.type.*;
 import javax.lang.model.util.ElementFilter;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -53,7 +50,7 @@ public abstract class MappingBuilder {
                         if (context.depth > 0) {
                             root.body(set(vars.outSetterPath(), vars.inGetter()));
                         } else {
-                            root.body(assignOutPrime(inOutType.in().toString()));
+                            root.body(assignOutPrime());
                         }
                         return root.body;
                     }
@@ -62,7 +59,7 @@ public abstract class MappingBuilder {
 
             @Override
             boolean match(final MapperGeneratorContext context, final InOutType inOutType) {
-                return inOutType.areSamePrimitive();
+                return inOutType.areSamePrimitive() || areMatchingBoxedToPrimitive(inOutType, context);
             }
         });
 
@@ -105,7 +102,7 @@ public abstract class MappingBuilder {
         });
 
         // Map String or Boxed Primitive
-        mappingSpecificationList.add(new SameDeclaredMappingSpecification() {
+        mappingSpecificationList.add(new MappingSpecification() {
             @Override
             MappingBuilder getBuilder(final MapperGeneratorContext context, final InOutType inOutType) {
                 return new MappingBuilder() {
@@ -120,11 +117,14 @@ public abstract class MappingBuilder {
 
             @Override
             boolean match(final MapperGeneratorContext context, final InOutType inOutType) {
-                if (super.match(context, inOutType)) {
+                boolean res;
+                if(inOutType.areSameDeclared()) {
                     DeclaredType declaredType = inOutType.inAsDeclaredType();
-                    return (isBoxedPrimitive(declaredType, context) || String.class.getName().equals(declaredType.toString()));
+                    res =  (isBoxedPrimitive(declaredType, context) || String.class.getName().equals(declaredType.toString()));
+                } else {
+                    res = isMatchingPrimitiveToBoxed(inOutType, context);
                 }
-                return false;
+                return res;
             }
         });
 
@@ -341,6 +341,25 @@ public abstract class MappingBuilder {
 
     }
 
+    private static boolean areMatchingBoxedToPrimitive(InOutType inOutType, MapperGeneratorContext context) {
+        boolean res = false;
+        if (inOutType.isDeclaredToPrimitive()){
+            PrimitiveType inAsPrimitive = getUnboxedPrimitive(inOutType.inAsDeclaredType(), context);
+            res = inAsPrimitive != null && inAsPrimitive.getKind() == inOutType.outKind();
+        }
+        return res;
+    }
+
+    private static boolean isMatchingPrimitiveToBoxed(InOutType inOutType, MapperGeneratorContext context) {
+        boolean res = false;
+
+        if (inOutType.isPrimitiveToDeclared()){
+            PrimitiveType outAsPrimitive = getUnboxedPrimitive(inOutType.outAsDeclaredType(), context);
+            res = outAsPrimitive != null && outAsPrimitive.getKind() == inOutType.inKind();
+        }
+        return res;
+    }
+
     MappingSourceNode root;
 
     private MappingBuilder() {
@@ -414,13 +433,16 @@ public abstract class MappingBuilder {
     }
 
     private static boolean isBoxedPrimitive(DeclaredType declaredType, MapperGeneratorContext context) {
-        boolean res = false;
+        return getUnboxedPrimitive(declaredType, context) != null;
+    }
+
+    private static PrimitiveType getUnboxedPrimitive(DeclaredType declaredType, MapperGeneratorContext context) {
+        PrimitiveType res = null;
         final PackageElement typePackage = context.elements.getPackageOf(declaredType.asElement());
         final PackageElement javaLang = context.elements.getPackageElement("java.lang");
         if (typePackage.getSimpleName().equals(javaLang.getSimpleName())) {
             try {
-                context.type.unboxedType(declaredType);
-                res = true;
+                res = context.type.unboxedType(declaredType);
             } catch (IllegalArgumentException ignored) {
             }
         }

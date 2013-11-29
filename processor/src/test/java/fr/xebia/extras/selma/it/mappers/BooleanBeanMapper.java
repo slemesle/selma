@@ -28,5 +28,8 @@ public interface BooleanBeanMapper {
 
     BooleanBean asBooleanBean(BooleanBean in);
 
+    Boolean asBoolean(boolean in);
+
+    boolean asBoolean(Boolean in);
 
 }

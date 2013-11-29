@@ -78,30 +78,36 @@ public class MapperMethodGenerator {
         } else {
             methodNode = mapMethodNotFinal(inOutType.in().toString(), inOutType.out().toString(), name, override);
         }
+
+        MappingSourceNode ptrBis = blank(), ptrBisRoot = ptrBis;
         MappingSourceNode ptr = methodNode;
 
 
         TypeMirror typeElement = inOutType.in();
 
-        if (!inOutType.inIsPrimitive()) {
-            ptr = methodNode.body(declareOut(inOutType.out().toString()))
-                    .child(controlNull("in"));
-        }
+        ptr = methodNode.body(declareOut(inOutType.out()));
 
         MappingBuilder mappingBuilder = findBuilderFor(inOutType);
 
         if (mappingBuilder != null) {
-            ptr = ptr.body(mappingBuilder.build(context, new SourceNodeVars().withInOutType(inOutType).withAssign(true)));
+            ptrBis = ptrBis.body(mappingBuilder.build(context, new SourceNodeVars().withInOutType(inOutType).withAssign(true)));
 
             generateStack(context);
 
         } else if (inOutType.areDeclared()) {
-            ptr = ptr.body(instantiateOut(inOutType.out().toString(), context.newParams()));
+            ptrBis = ptrBis.body(instantiateOut(inOutType.out().toString(), context.newParams()));
             context.depth++;
-            ptr = ptr.child(generate(inOutType));
+            ptrBis = ptrBis.child(generate(inOutType));
             context.depth--;
         } else {
-            handleNotSupported(inOutType, ptr);
+            handleNotSupported(inOutType, ptrBis);
+        }
+
+        if (!inOutType.inIsPrimitive()) {
+            ptr = ptr.child(controlNull("in"));
+            ptr.body(ptrBisRoot.body);
+        } else {
+            ptr.child(ptrBisRoot.body);
         }
 
         // Give it a try

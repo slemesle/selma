@@ -74,4 +74,21 @@ public class BooleanBeanMapperIT extends IntegrationTestBase {
         Assert.assertTrue(res.getPrimitiveIs());
     }
 
+    @Test
+    public void should_map_primitive_boolean_to_boxed_boolean(){
+
+        BooleanBeanMapper mapper = Selma.mapper(BooleanBeanMapper.class);
+        Boolean res =  mapper.asBoolean(true);
+        Assert.assertTrue(res);
+    }
+
+    @Test
+    public void should_map_boxed_boolean_to_primitive_boolean(){
+
+        BooleanBeanMapper mapper = Selma.mapper(BooleanBeanMapper.class);
+        boolean res =  mapper.asBoolean(Boolean.TRUE);
+        Assert.assertTrue(res);
+    }
+
+
 }

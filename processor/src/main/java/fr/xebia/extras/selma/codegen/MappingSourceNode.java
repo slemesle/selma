@@ -19,6 +19,8 @@ package fr.xebia.extras.selma.codegen;
 import com.squareup.javawriter.JavaWriter;
 import fr.xebia.extras.selma.SelmaConstants;
 
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
 import java.util.EnumSet;
 
@@ -164,20 +166,20 @@ public abstract class MappingSourceNode {
         };
     }
 
-    public static MappingSourceNode assignOutPrime(final String outType) {
+    public static MappingSourceNode assignOutPrime() {
         return new MappingSourceNode() {
             @Override
             void writeNode(JavaWriter writer) throws IOException {
-                writer.emitStatement("%s out = in", outType);
+                writer.emitStatement("out = in");
             }
         };
     }
 
-    public static MappingSourceNode declareOut(final String outType) {
+    public static MappingSourceNode declareOut(final TypeMirror outType) {
         return new MappingSourceNode() {
             @Override
-            void writeNode(JavaWriter writer) throws IOException {
-                writer.emitStatement("%s out = null", outType);
+            void writeNode(JavaWriter writer) throws IOException {  // declaring out should support both primitive and declared default value (null / primitive)
+                writer.emitStatement("%s out %s", outType, (outType.getKind().isPrimitive() ? "= fr.xebia.extras.selma.SelmaConstants.DEFAULT_"+outType.getKind() : "= null"));
             }
         };
     }
