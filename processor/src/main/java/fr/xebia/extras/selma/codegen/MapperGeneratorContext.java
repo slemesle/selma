@@ -44,7 +44,7 @@ public class MapperGeneratorContext {
     LinkedList<StackElem> stack;
 
     // Maintain a registry of known mapping methods
-    private HashMap<InOutType, MappingMethod> mappingRegistry;
+    private HashMap<String, MappingMethod> mappingRegistry;
 
     // Handle method stack to build all mapping method not already built
     LinkedList<MappingMethod> methodStack;
@@ -55,7 +55,7 @@ public class MapperGeneratorContext {
         this.type = processingEnvironment.getTypeUtils();
         this.stack = new LinkedList<StackElem>();
         this.processingEnv = processingEnvironment;
-        mappingRegistry = new HashMap<InOutType, MappingMethod>();
+        mappingRegistry = new HashMap<String, MappingMethod>();
         methodStack = new LinkedList<MappingMethod>();
 
         this.configuration = configuration;
@@ -117,12 +117,12 @@ public class MapperGeneratorContext {
 
     private MappingMethod getMappingMethod(InOutType inOutType, MappingMethod mappingMethod) {
 
-        if (mappingRegistry.containsKey(inOutType)) {
-            return mappingRegistry.get(inOutType);
+        if (mappingRegistry.containsKey(inOutType.toString())) {
+            return mappingRegistry.get(inOutType.toString());
         }
         // This is a new mapping method we should ensure it will be built and present in registry for later use
         methodStack.push(mappingMethod);
-        mappingRegistry.put(inOutType, mappingMethod);
+        mappingRegistry.put(inOutType.toString(), mappingMethod);
 
         return mappingMethod;
     }

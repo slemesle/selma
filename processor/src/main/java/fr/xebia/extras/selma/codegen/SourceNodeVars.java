@@ -122,7 +122,7 @@ public class SourceNodeVars {
     }
 
     public boolean inTypeIsPrime() {
-        return inOutType.areSamePrimitive();
+        return inOutType.inIsPrimitive();
     }
 
 
