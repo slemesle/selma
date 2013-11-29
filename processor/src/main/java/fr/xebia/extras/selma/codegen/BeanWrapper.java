@@ -85,9 +85,15 @@ public class BeanWrapper {
 
         String methodName = method.getSimpleName().toString();
 
-        String getterName = (isBoolean(field) ? "is" : "get") + field.getSimpleName().toString();
+        String getterName = String.format("get%s", field.getSimpleName());
+        boolean methodsEquals = false;
+        if (isBoolean(field)){ // Here we should try is prefix and get prefix
 
-        return method.getParameters().size() == 0 && method.getReturnType().toString().equals(field.asType().toString()) && methodName.equalsIgnoreCase(getterName);
+            methodsEquals = methodName.equalsIgnoreCase(String.format("is%s", field.getSimpleName()));
+        }
+        methodsEquals =  methodsEquals || methodName.equalsIgnoreCase(getterName);
+
+        return method.getParameters().size() == 0 && method.getReturnType().toString().equals(field.asType().toString()) && methodsEquals;
     }
 
     private boolean isBoolean(VariableElement field) {
