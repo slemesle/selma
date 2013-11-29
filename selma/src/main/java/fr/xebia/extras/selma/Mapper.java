@@ -63,4 +63,11 @@ public @interface Mapper {
     Class<?>[] withSourceParameter() default {};
 
 
+    /**
+     * For test purpose, this allow to disable use of *final* modifier for generated mappers classes
+     * @return
+     */
+    boolean finalMappers() default true;
+
+
 }

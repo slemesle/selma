@@ -153,6 +153,8 @@ public class MapperClassGenerator {
 
                 if ((inOutType.in().getKind() != TypeKind.DECLARED || inOutType.out().getKind() != TypeKind.DECLARED) && builder == null) {
                     context.error(mapperMethod, "In type : %s and Out type : %s differs and this kind of conversion is not supported here", inOutType.in(), inOutType.out());
+                } else {
+                    context.mappingMethod(methodWrapper.inOutType(), methodWrapper.getSimpleName());
                 }
             }
 
@@ -184,7 +186,11 @@ public class MapperClassGenerator {
                 writer.emitSingleLineComment(GENERATED_BY_XMAPPER);
                 writer.emitPackage(packageName);
                 writer.emitEmptyLine();
-                writer.beginType(adapterName, "class", EnumSet.of(PUBLIC, FINAL), null, strippedTypeName);
+                if (configuration.isFinalMappers()){
+                    writer.beginType(adapterName, "class", EnumSet.of(PUBLIC, FINAL), null, strippedTypeName);
+                } else {
+                    writer.beginType(adapterName, "class", EnumSet.of(PUBLIC), null, strippedTypeName);
+                }
                 writer.emitEmptyLine();
                 firstMethod = false;
 

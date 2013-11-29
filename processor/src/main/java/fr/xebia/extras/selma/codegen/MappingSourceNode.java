@@ -99,6 +99,28 @@ public abstract class MappingSourceNode {
     }
 
 
+    public static MappingSourceNode mapMethodNotFinal(final String inType, final String outType, final String name, final boolean override) {
+
+        return new MappingSourceNode() {
+            @Override
+            void writeNode(JavaWriter writer) throws IOException {
+
+                writer.emitJavadoc("Mapping method overridden by Selma");
+                if (override) {
+                    writer.emitAnnotation(Override.class);
+                }
+                writer.beginMethod(outType, name, EnumSet.of(PUBLIC), inType, SelmaConstants.IN_VAR);
+
+                writeBody(writer);
+
+                writer.emitStatement("return out");
+                writer.endMethod();
+                writer.emitEmptyLine();
+            }
+        };
+    }
+
+
     public static MappingSourceNode controlNull(final String field) {
         return new MappingSourceNode() {
             @Override

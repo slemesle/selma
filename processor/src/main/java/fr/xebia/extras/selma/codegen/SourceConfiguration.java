@@ -29,6 +29,8 @@ public class SourceConfiguration {
     private boolean ignoreMissingProperties;
     private boolean ignoreNotSupported;
     private List<String> sourceClass;
+    private boolean finalMappers;
+
 
     private SourceConfiguration(){}
 
@@ -37,8 +39,17 @@ public class SourceConfiguration {
 
         res.ignoreMissingProperties(annotationWrapper.getAsBoolean("ignoreMissingProperties"));
         res.ignoreNotSupported(annotationWrapper.getAsBoolean("ignoreNotSupported"));
+        res.finalMappers(annotationWrapper.getAsBoolean("finalMappers"));
         res.sourceClass(annotationWrapper.getAsStrings("withSourceParameter"));
         return res;
+    }
+
+    private void finalMappers(boolean finalMappers) {
+        this.finalMappers = finalMappers;
+    }
+
+    public boolean isFinalMappers() {
+        return finalMappers;
     }
 
     private void sourceClass(List<String> source){

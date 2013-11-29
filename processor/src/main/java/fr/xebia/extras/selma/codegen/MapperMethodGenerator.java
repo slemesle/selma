@@ -71,7 +71,13 @@ public class MapperMethodGenerator {
     }
 
     private void buildMappingMethod(JavaWriter writer, InOutType inOutType, String name, boolean override) throws IOException {
-        MappingSourceNode methodNode = mapMethod(inOutType.in().toString(), inOutType.out().toString(), name, override);
+
+        MappingSourceNode methodNode = null;
+        if(configuration.isFinalMappers()){
+            methodNode = mapMethod(inOutType.in().toString(), inOutType.out().toString(), name, override);
+        } else {
+            methodNode = mapMethodNotFinal(inOutType.in().toString(), inOutType.out().toString(), name, override);
+        }
         MappingSourceNode ptr = methodNode;
 
 
