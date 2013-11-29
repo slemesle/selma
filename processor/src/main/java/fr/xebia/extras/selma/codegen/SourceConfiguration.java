@@ -16,18 +16,19 @@
  */
 package fr.xebia.extras.selma.codegen;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
- * Created with IntelliJ IDEA.
- * User: slemesle
- * Date: 21/11/2013
- * Time: 12:55
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class SourceConfiguration {
 
 
     private boolean ignoreMissingProperties;
     private boolean ignoreNotSupported;
+    private List<String> sourceClass;
 
     private SourceConfiguration(){}
 
@@ -36,7 +37,12 @@ public class SourceConfiguration {
 
         res.ignoreMissingProperties(annotationWrapper.getAsBoolean("ignoreMissingProperties"));
         res.ignoreNotSupported(annotationWrapper.getAsBoolean("ignoreNotSupported"));
+        res.sourceClass(annotationWrapper.getAsStrings("withSourceParameter"));
         return res;
+    }
+
+    private void sourceClass(List<String> source){
+        this.sourceClass = source;
     }
 
     private SourceConfiguration ignoreNotSupported(boolean b) {
@@ -57,4 +63,7 @@ public class SourceConfiguration {
         return ignoreNotSupported;
     }
 
+    public List<String> getSourceClass() {
+        return sourceClass != null ? sourceClass : Collections.EMPTY_LIST;
+    }
 }

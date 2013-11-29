@@ -18,37 +18,38 @@ package fr.xebia.extras.selma.it.mappers;
 
 import fr.xebia.extras.selma.beans.CityIn;
 import fr.xebia.extras.selma.beans.CityOut;
-import fr.xebia.extras.selma.Factory;
+import fr.xebia.extras.selma.beans.DataSource;
 
 /**
  *
  */
-public class BadCustomMapper {
+public abstract class BadCustomMapper {
 
 
-    CityOut notPublicNotStaticMethod(CityIn in, Factory factory){
+    public static CityOut staticMethod(CityIn in) {
         return null;
     }
 
-    public static void voidMethod(CityIn in, Factory factory){
-        return ;
-    }
-
-    public static CityOut noParameterMethod(){
+    CityOut notPublicStaticMethod(CityIn in) {
         return null;
     }
 
-    public static CityOut oneParameterMethod( CityIn in){
+    public void voidMethod(CityIn in) {
+        return;
+    }
+
+    public CityOut noParameterMethod() {
         return null;
     }
 
-    public static CityOut threeParameterMethod( CityIn in, CityIn in2, CityIn in3){
+    public CityOut twoParameterMethod(CityIn in, DataSource dataSource) {
         return null;
     }
 
-    public static CityOut withoutFactoryMethod( CityIn in, CityIn in2){
+    public CityOut threeParameterMethod(CityIn in, CityIn in2, CityIn in3) {
         return null;
     }
 
 
+    public abstract CityOut abstractMethod(CityIn in);
 }

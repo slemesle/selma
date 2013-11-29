@@ -34,38 +34,45 @@ public class FailingCustomMapperIT extends IntegrationTestBase {
     public void should_raise_compilation_error_when_no_valid_mapping_method_found() throws Exception {
 
         assertCompilationError(EmptyCustomMapper.class, "public class EmptyCustomMapper {", "No valid mapping method found in custom selma class ");
-
     }
 
     @Test
-    public void should_raise_warning_for_not_public_static_valid_method() throws Exception {
+    public void should_raise_warning_for_not_public_valid_method() throws Exception {
 
-        assertCompilationError(BadCustomMapper.class, "public class BadCustomMapper {", "No valid mapping method found in custom selma class ");
-        assertCompilationWarning(BadCustomMapper.class, "CityOut notPublicNotStaticMethod(CityIn in, Factory factory){", "Custom mapping method should be *public static* (Fix modifiers of the method) on notPublicNotStaticMethod");
+        assertCompilationError(BadCustomMapper.class, "public abstract class BadCustomMapper {", "No valid mapping method found in custom selma class ");
+        assertCompilationWarning(BadCustomMapper.class, "CityOut notPublicStaticMethod(CityIn in) {", "Custom mapping method should be *public* (Fix modifiers of the method) on notPublicStaticMethod");
 
     }
 
     @Test
     public void should_raise_warning_for_void_method() throws Exception {
 
-        assertCompilationError(BadCustomMapper.class, "public class BadCustomMapper {", "No valid mapping method found in custom selma class ");
-        assertCompilationWarning(BadCustomMapper.class, "void voidMethod(CityIn in, Factory factory){", "Custom mapping method can not be void (Add the targeted return type) on voidMethod");
+        assertCompilationError(BadCustomMapper.class, "public abstract class BadCustomMapper {", "No valid mapping method found in custom selma class ");
+        assertCompilationWarning(BadCustomMapper.class, "public void voidMethod(CityIn in) {", "Custom mapping method can not be void (Add the targeted return type) on voidMethod");
     }
 
     @Test
-    public void should_raise_warning_for_method_not_having_2_parameters() throws Exception {
+    public void should_raise_warning_for_method_not_having_1_parameter() throws Exception {
 
-        assertCompilationError(BadCustomMapper.class, "public class BadCustomMapper {", "No valid mapping method found in custom selma class ");
-        assertCompilationWarning(BadCustomMapper.class, "public static CityOut noParameterMethod(){", "Custom mapping method should take two parameters but there is 0 on noParameterMethod");
-        assertCompilationWarning(BadCustomMapper.class, "public static CityOut oneParameterMethod( CityIn in){", "Custom mapping method should take two parameters but there is 1 on oneParameterMethod");
-        assertCompilationWarning(BadCustomMapper.class, "public static CityOut threeParameterMethod( CityIn in, CityIn in2, CityIn in3){", "Custom mapping method should take two parameters but there is 3 on threeParameterMethod");
+        assertCompilationError(BadCustomMapper.class, "public abstract class BadCustomMapper {", "No valid mapping method found in custom selma class ");
+        assertCompilationWarning(BadCustomMapper.class, "public CityOut noParameterMethod() {", "Custom mapping method should take one parameter but there is 0 on noParameterMethod");
+        assertCompilationWarning(BadCustomMapper.class, "public CityOut twoParameterMethod(CityIn in, DataSource dataSource) {", "Custom mapping method should take one parameter but there is 2 on twoParameterMethod");
+        assertCompilationWarning(BadCustomMapper.class, "public CityOut threeParameterMethod(CityIn in, CityIn in2, CityIn in3) {", "Custom mapping method should take one parameter but there is 3 on threeParameterMethod");
     }
 
     @Test
-    public void should_raise_warning_for_method_having_second_parameter_not_a_factory() throws Exception {
+    public void should_raise_warning_for_static_methods() throws Exception {
 
-        assertCompilationError(BadCustomMapper.class, "public class BadCustomMapper {", "No valid mapping method found in custom selma class ");
-        assertCompilationWarning(BadCustomMapper.class, "public static CityOut withoutFactoryMethod( CityIn in, CityIn in2){", String.format("Custom mapping method second parameter should be of type %s on withoutFactoryMethod", Factory.class.getName()));
+        assertCompilationError(BadCustomMapper.class, "public abstract class BadCustomMapper {", "No valid mapping method found in custom selma class ");
+        assertCompilationWarning(BadCustomMapper.class, "public static CityOut staticMethod(CityIn in) {", "Custom mapping method can not be *static* (Fix modifiers of the method) on staticMethod");
     }
+
+    @Test
+    public void should_raise_warning_for_abstract_method() throws Exception {
+
+        assertCompilationError(BadCustomMapper.class, "public abstract class BadCustomMapper {", "No valid mapping method found in custom selma class ");
+        assertCompilationWarning(BadCustomMapper.class, "public abstract CityOut abstractMethod(CityIn in);", "Custom mapping method can not be *abstract* (Fix modifiers of the method) on abstractMethod");
+    }
+
 
 }

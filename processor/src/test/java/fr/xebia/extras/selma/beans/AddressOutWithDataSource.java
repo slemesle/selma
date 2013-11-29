@@ -27,23 +27,23 @@ import java.util.List;
  */
 public class AddressOutWithDataSource {
 
-    CityOut city;
+    CityOutWithDataSource city;
     String street;
     int number;
     List<String> extras;
     boolean principal;
 
-    private final DataSource dataSource;
+    public final DataSource dataSource;
 
     public AddressOutWithDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public CityOut getCity() {
+    public CityOutWithDataSource getCity() {
         return city;
     }
 
-    public void setCity(CityOut city) {
+    public void setCity(CityOutWithDataSource city) {
         this.city = city;
     }
 

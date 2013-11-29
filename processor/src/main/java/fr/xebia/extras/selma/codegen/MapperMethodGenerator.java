@@ -82,7 +82,6 @@ public class MapperMethodGenerator {
                     .child(controlNull("in"));
         }
 
-//        MappingBuilder mappingBuilder = MappingBuilder.getBuilderFor(context, inOutType);
         MappingBuilder mappingBuilder = findBuilderFor(inOutType);
 
         if (mappingBuilder != null) {
@@ -91,7 +90,7 @@ public class MapperMethodGenerator {
             generateStack(context);
 
         } else if (inOutType.areDeclared()) {
-            ptr = ptr.body(instantiateOut(inOutType.out().toString()));
+            ptr = ptr.body(instantiateOut(inOutType.out().toString(), context.newParams()));
             context.depth++;
             ptr = ptr.child(generate(inOutType));
             context.depth--;
@@ -135,7 +134,6 @@ public class MapperMethodGenerator {
     }
 
     MappingBuilder findBuilderFor(InOutType inOutType) {
-//            MappingBuilder mappingBuilder = MappingBuilder.getBuilderFor(context, inOutType);
         return mappingRegistry.findMappingFor(inOutType);
     }
 

@@ -50,7 +50,7 @@ public class Selma {
      *
      * @throws IllegalArgumentException If for some reason the Mapper class can not be loaded or instantiated
      */
-    public static <T> T getMapper(Class<T> mapperClass) throws IllegalArgumentException {
+    public static <T> T mapper(Class<T> mapperClass) throws IllegalArgumentException {
          return getMapper(mapperClass, null);
     }
 
@@ -60,28 +60,37 @@ public class Selma {
      * @param <T>           The Mapper interface itself
      * @return              Builder for Mapper
      */
-    public static <T> XMapperFactoryBuilder<T> mapper(Class<T> mapperClass) {
+    public static <T,V> T mapper(Class<T> mapperClass, V source) {
 
-        return new XMapperFactoryBuilder<T>(mapperClass);
+        return getMapper(mapperClass,source);
+    }
+
+    /**
+     * Mapper Builder DSL for those who like it like that.
+     * @param mapperClass   The Mapper interface class
+     * @param <T>           The Mapper interface itself
+     * @return              Builder for Mapper
+     */
+    public static <T> T getMapper(Class<T> mapperClass) {
+
+        return getMapper(mapperClass,null);
     }
 
     /**
      * Retrieve the generated Mapper for the corresponding interface in the classpath.
      *
      * @param mapperClass   The Mapper interface class
-     * @param factory       The factory to be used for bean instantiation or null for default
+     * @param source        The Source to be passed to bean constructor or null for default
      * @param <T>           The Mapper interface itself
      * @return              A new Mapper instance or previously instantiated selma
      *
      * @throws IllegalArgumentException If for some reason the Mapper class can not be loaded or instantiated
      */
-    public synchronized static <T> T getMapper(Class<T> mapperClass, Factory factory) throws IllegalArgumentException {
+    public synchronized static <T,V> T getMapper(Class<T> mapperClass, V source) throws IllegalArgumentException {
 
-        final String mapperKey = String.format("%s-%s", mapperClass.getCanonicalName(), factory);
+        final String mapperKey = String.format("%s-%s", mapperClass.getCanonicalName(), source);
+
         if (!mappers.containsKey(mapperKey)) {
-
-
-
             // First look for the context class loader
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
@@ -94,10 +103,10 @@ public class Selma {
             try {
 
                 Class<T> mapperImpl  = (Class<T>) classLoader.loadClass(mapperClass.getCanonicalName() + SelmaConstants.MAPPER_CLASS_SUFFIX);
-                if(factory != null){
-                     mapperInstance =  mapperImpl.getDeclaredConstructor(Factory.class).newInstance(factory);
+                if(source != null){
+                     mapperInstance =  mapperImpl.getDeclaredConstructor(source.getClass()).newInstance(source);
                 } else {
-                    mapperInstance = (T) mapperImpl.newInstance();
+                    mapperInstance = mapperImpl.newInstance();
                 }
             } catch (InstantiationException e) {
                 throw new IllegalArgumentException(String.format("Instantiation of Mapper class %s failed : %s", mapperClass.getName(), e.getMessage()), e);
@@ -106,9 +115,9 @@ public class Selma {
             } catch (ClassNotFoundException e) {
                 throw new IllegalArgumentException(String.format("Instantiation of Mapper class %s failed : %s", mapperClass.getName(), e.toString()), e);
             } catch (NoSuchMethodException e) {
-                throw new IllegalArgumentException(String.format("Instantiation of Mapper class %s failed (No constructor with Factory parameter !) : %s", mapperClass.getName(), e.getMessage()), e);
+                throw new IllegalArgumentException(String.format("Instantiation of Mapper class %s failed (No constructor with %s parameter !) : %s", mapperClass.getName(), source.getClass().getSimpleName() ,e.getMessage()), e);
             } catch (InvocationTargetException e) {
-                throw new IllegalArgumentException(String.format("Instantiation of Mapper class %s failed (No constructor with Factory parameter !) : %s", mapperClass.getName(), e.getMessage()), e);
+                throw new IllegalArgumentException(String.format("Instantiation of Mapper class %s failed (No constructor with %s parameter !) : %s", mapperClass.getName(), source.getClass().getSimpleName(), e.getMessage()), e);
             }
 
             mappers.put(mapperKey, mapperInstance);
@@ -116,44 +125,6 @@ public class Selma {
         }
 
         return (T) mappers.get(mapperKey);
-    }
-
-    /**
-     * Builder style API to get Mapper for holding the class parameter
-     * @param <T>
-     */
-    public static final class XMapperFactoryBuilder<T> {
-        private final Class<T> mapperClass;
-
-        public XMapperFactoryBuilder(Class<T> mapperClass) {
-            this.mapperClass = mapperClass;
-        }
-
-        public T build(){
-            return Selma.getMapper(mapperClass);
-        }
-
-        public XMapperFactoredBuilder<T> withFactory(Factory factory){
-            return new XMapperFactoredBuilder<T>(mapperClass, factory);
-        }
-    }
-
-    /**
-     * Builder style API to get Mapper with a provided Factory
-     * @param <T>
-     */
-    public static class XMapperFactoredBuilder<T> {
-        private final Class<T> mapperClass;
-        private final Factory factory;
-
-        public XMapperFactoredBuilder(Class<T> mapperClass, Factory factory) {
-            this.mapperClass = mapperClass;
-            this.factory = factory;
-        }
-
-        public T build(){
-            return Selma.getMapper(mapperClass, factory);
-        }
     }
 
 }

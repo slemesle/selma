@@ -28,7 +28,7 @@ public class CityOutWithDataSource {
     private  String name;
     private  long population;
     private  boolean capital;
-    private final DataSource dataSource;
+    public final DataSource dataSource;
 
     public CityOutWithDataSource(DataSource dataSource) {
         this.dataSource = dataSource;

@@ -16,7 +16,6 @@
  */
 package fr.xebia.extras.selma.beans;
 
-import fr.xebia.extras.selma.Factory;
 
 /**
  *
@@ -25,7 +24,7 @@ import fr.xebia.extras.selma.Factory;
 public class CustomMappings {
 
 
-    public static String productTypeToString(ProductType in, Factory factory){
+    public String productTypeToString(ProductType in){
 
         return in.toString();
     }

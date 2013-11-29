@@ -436,7 +436,7 @@ public abstract class MappingBuilder {
             @Override
             MappingSourceNode buildNodes(MapperGeneratorContext context, SourceNodeVars vars) throws IOException {
                 context.mappingMethod(inOutType, name);
-                root.body(vars.setOrAssign(String.format("%s(%%s, factory)", name)));
+                root.body(vars.setOrAssign(String.format("%s(%%s)", name)));
                 return root.body;
             }
         };

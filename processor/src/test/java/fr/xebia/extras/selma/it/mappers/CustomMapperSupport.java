@@ -24,7 +24,7 @@ import fr.xebia.extras.selma.Mapper;
  *
  *
  */
-@Mapper(withMapper = CustomStaticMapper.class, ignoreMissingProperties = true)
+@Mapper(withMapper = CustomMapper.class, ignoreMissingProperties = true)
 public interface CustomMapperSupport {
 
     PersonOut mapWithCustom(PersonIn in);

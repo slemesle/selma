@@ -247,14 +247,14 @@ public abstract class MappingSourceNode {
     }
 
 
-    public static MappingSourceNode instantiateOut(final String outType) {
+    public static MappingSourceNode instantiateOut(final String outType, final String params) {
         return new MappingSourceNode() {
             @Override
             void writeNode(JavaWriter writer) throws IOException {
                    /*
                         out = new X();
                    */
-                writer.emitStatement("out = newB(%s.class)", outType);
+                writer.emitStatement("out = new %s(%s)", outType, params);
             }
         };
     }

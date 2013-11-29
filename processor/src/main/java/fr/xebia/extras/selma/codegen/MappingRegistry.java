@@ -57,7 +57,7 @@ public class MappingRegistry {
      * @param customMapper
      * @param method
      */
-    public void pushCustomMapper(String customMapper, MethodWrapper method) {
+    public void pushCustomMapper(final String customMapper, final MethodWrapper method) {
 
 
         InOutType inOutType = method.inOutType();

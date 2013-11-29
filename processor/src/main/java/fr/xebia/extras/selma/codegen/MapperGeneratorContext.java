@@ -48,6 +48,7 @@ public class MapperGeneratorContext {
 
     // Handle method stack to build all mapping method not already built
     LinkedList<MappingMethod> methodStack;
+    private String newParams;
 
     public MapperGeneratorContext(ProcessingEnvironment processingEnvironment, SourceConfiguration configuration) {
         this.elements = processingEnvironment.getElementUtils();
@@ -161,6 +162,14 @@ public class MapperGeneratorContext {
     public void warn(ExecutableElement element, String templateMessage, Object... args) {
         //To change body of created methods use File | Settings | File Templates.
         processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, String.format(templateMessage, args), element);
+    }
+
+    public void setNewParams(String newParams) {
+        this.newParams = newParams;
+    }
+
+    public String newParams() {
+        return newParams;
     }
 
 

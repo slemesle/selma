@@ -20,7 +20,7 @@ import fr.xebia.extras.selma.beans.AddressIn;
 import fr.xebia.extras.selma.beans.CityIn;
 import fr.xebia.extras.selma.beans.PersonIn;
 import fr.xebia.extras.selma.beans.PersonOut;
-import fr.xebia.extras.selma.it.mappers.CustomStaticMapper;
+import fr.xebia.extras.selma.it.mappers.CustomMapper;
 import fr.xebia.extras.selma.it.mappers.CustomMapperSupport;
 import fr.xebia.extras.selma.it.utils.Compile;
 import fr.xebia.extras.selma.it.utils.IntegrationTestBase;
@@ -31,7 +31,7 @@ import org.junit.Test;
 /**
  *
  */
-@Compile(withClasses = {CustomStaticMapper.class, CustomMapperSupport.class})
+@Compile(withClasses = {CustomMapper.class, CustomMapperSupport.class})
 public class CustomMapperIt extends IntegrationTestBase {
 
 
@@ -58,7 +58,7 @@ public class CustomMapperIt extends IntegrationTestBase {
         Assert.assertEquals(personIn.getAddress().getNumber(), res.getAddress().getNumber());
         Assert.assertEquals(personIn.getAddress().getExtras(), res.getAddress().getExtras());
 
-        Assert.assertEquals(personIn.getAddress().getCity().getName() + " Mapped by CustomStaticMapper", res.getAddress().getCity().getName());
+        Assert.assertEquals(personIn.getAddress().getCity().getName() + " Mapped by CustomMapper", res.getAddress().getCity().getName());
         Assert.assertEquals(personIn.getAddress().getCity().getPopulation() + 10000, res.getAddress().getCity().getPopulation());
         Assert.assertEquals(personIn.getAddress().getCity().isCapital(), res.getAddress().getCity().isCapital());
     }
