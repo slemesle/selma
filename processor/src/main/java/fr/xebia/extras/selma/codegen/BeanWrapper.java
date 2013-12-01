@@ -19,8 +19,6 @@ package fr.xebia.extras.selma.codegen;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import java.util.HashMap;
@@ -46,75 +44,53 @@ public class BeanWrapper {
     }
 
     private Map<String, FieldItem> buildFieldGraph() {
-        HashMap<String, FieldItem> result = new HashMap<String, FieldItem>();
-
+        final HashMap<String, FieldItem> result = new HashMap<String, FieldItem>();
         final List<? extends Element> elementInList = typeElement.getEnclosedElements();
-
-        final List<VariableElement> fields = ElementFilter.fieldsIn(elementInList);
-
         final List<ExecutableElement> methods = ElementFilter.methodsIn(elementInList);
 
-        for (VariableElement field : fields) {
+        // looping around all methods
+        for (Iterator<ExecutableElement> it = methods.iterator(); it.hasNext(); ) {
+            ExecutableElement method = it.next();
+            MethodWrapper methodWrapper = new MethodWrapper(method, context);
 
-            ExecutableElement setter = null;
-            ExecutableElement getter = null;
-
-            for (Iterator<ExecutableElement> it = methods.iterator(); it.hasNext(); ) {
-                ExecutableElement method = it.next();
-                if (isGetterFor(method, field)) {
-                    getter = method;
-                    it.remove();
-                } else if (isSetterFor(method, field)) {
-                    setter = method;
-                    it.remove();
-                }
-
-                if (getter != null && setter != null) {
-                    break;
-                }
+            if (methodWrapper.isGetter()) {
+                putGetterField(methodWrapper, result);
+                it.remove();
+            } else if (methodWrapper.isSetter()) {
+                putSetterField(methodWrapper, result);
+                it.remove();
             }
 
-            result.put(field.getSimpleName().toString(), new FieldItem(field, setter, getter));
         }
 
         return result;
     }
 
+    private void putSetterField(MethodWrapper methodWrapper, HashMap<String, FieldItem> result) {
 
-    private boolean isGetterFor(ExecutableElement method, VariableElement field) {
-
-        String methodName = method.getSimpleName().toString();
-
-        String getterName = String.format("get%s", field.getSimpleName());
-        boolean methodsEquals = false;
-        if (isBoolean(field)){ // Here we should try is prefix and get prefix
-
-            methodsEquals = methodName.equalsIgnoreCase(String.format("is%s", field.getSimpleName()));
+        String field = methodWrapper.getFieldName();
+        FieldItem item = result.get(field);
+        if (item != null) {
+            item = new FieldItem(field, methodWrapper, item.getter);
+        } else {
+            item = new FieldItem(field, methodWrapper, null);
         }
-        methodsEquals =  methodsEquals || methodName.equalsIgnoreCase(getterName);
-
-        return method.getParameters().size() == 0 && method.getReturnType().toString().equals(field.asType().toString()) && methodsEquals;
+        result.put(field, item);
     }
 
-    private boolean isBoolean(VariableElement field) {
+    private void putGetterField(MethodWrapper methodWrapper, HashMap<String, FieldItem> result) {
 
-        boolean res = false;
-
-        res = (field.asType().getKind() == TypeKind.BOOLEAN);
-        if (!res){
-            res = Boolean.class.getName().equals(field.asType().toString());
+        String field = methodWrapper.getFieldName();
+        FieldItem item = result.get(field);
+        if (item != null) {
+            item = new FieldItem(item.field, item.setter, methodWrapper);
+        } else {
+            item = new FieldItem(field, null, methodWrapper);
         }
-        return res;
+
+        result.put(field, item);
     }
 
-
-    private static boolean isSetterFor(ExecutableElement method, VariableElement field) {
-
-        String methodName = method.getSimpleName().toString();
-        String getterName = "set" + field.getSimpleName().toString();
-
-        return method.getParameters().size() == 1 && method.getReturnType().getKind() == TypeKind.VOID && methodName.equalsIgnoreCase(getterName) && method.getParameters().get(0).asType().toString().equals(field.asType().toString());
-    }
 
     public Iterable<? extends String> getFields() {
         return fieldsGraph.keySet();
@@ -159,8 +135,12 @@ public class BeanWrapper {
         TypeMirror result = null;
         FieldItem item = fieldsGraph.get(field);
 
-        if (item != null && item.getter != null) {
-            result = item.field.asType();
+        if (item != null) {
+            if (item.getter != null){
+                result = item.getter.returnType();
+            } else {
+                result = item.setter.firstParameterType();
+            }
         }
 
         return result;
@@ -171,20 +151,17 @@ public class BeanWrapper {
     }
 
     public Element getFieldElement(String field) {
-        return fieldsGraph.get(field).field;
+        return fieldsGraph.get(field).getter.element();
     }
-
 
     class FieldItem {
 
-        final VariableElement field;
-
-        final ExecutableElement setter;
-
-        final ExecutableElement getter;
+        final String field;
+        final MethodWrapper setter;
+        final MethodWrapper getter;
 
 
-        FieldItem(VariableElement field, ExecutableElement setter, ExecutableElement getter) {
+        FieldItem(String field, MethodWrapper setter, MethodWrapper getter) {
             this.field = field;
             this.setter = setter;
             this.getter = getter;

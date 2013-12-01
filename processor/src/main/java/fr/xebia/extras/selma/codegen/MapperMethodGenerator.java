@@ -168,7 +168,7 @@ public class MapperMethodGenerator {
                 continue;
             } else {
                 if (isMissingInDestination) {
-                    context.error(inBean.getFieldElement(field), "field " + field + " from in bean is missing in destination bean");
+                    context.error(inBean.getFieldElement(field), String.format("getter for field %s from in bean %s is missing in destination bean %s", field, inOutType.in(), inOutType.out()));
                     break;
                 }
 

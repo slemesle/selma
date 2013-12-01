@@ -474,7 +474,11 @@ public abstract class MappingBuilder {
             // working inside a bean
             root = notNullInField(vars);
             root.body(ptr);
-            root.child(controlNullElse()).body(vars.setOrAssign("null"));
+
+            // Do not set null to primitive type
+            if (!vars.isOutPrimitive()) {
+                root.child(controlNullElse()).body(vars.setOrAssign("null"));
+            }
             return root;
         } else {
             return buildNodes(context, vars);

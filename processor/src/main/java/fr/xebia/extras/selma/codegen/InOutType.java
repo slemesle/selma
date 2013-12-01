@@ -170,7 +170,7 @@ public class InOutType {
         return outIsPrimitive() && inIsDeclared();
     }
 
-    private boolean outIsPrimitive() {
+    protected boolean outIsPrimitive() {
         return out().getKind().isPrimitive();
     }
 

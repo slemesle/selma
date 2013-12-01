@@ -16,15 +16,14 @@
  */
 package fr.xebia.extras.selma.codegen;
 
-import fr.xebia.extras.selma.Factory;
 import fr.xebia.extras.selma.Mapper;
 
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class wraps an ExecutableElement representing a Method
@@ -32,39 +31,30 @@ import java.util.List;
  */
 public class MethodWrapper {
 
+    private static final String GETTER_FORMAT = "(get|is)(.*)";
+    private static final Pattern GETTER_PATTERN = Pattern.compile(GETTER_FORMAT);
+    private static final String SETTER_FORMAT = "set(.*)";
+    private static final Pattern SETTER_PATTERN = Pattern.compile(SETTER_FORMAT);
     private final ExecutableElement method;
-    private final ProcessingEnvironment processingEnv;
-    private boolean ignoreNotSupported = false;
     boolean ignoreMissingProperties = false;
-    private boolean useDuplicate;
+    private String fieldName;
 
     public MethodWrapper(ExecutableElement method, MapperGeneratorContext context) {
         this.method = method;
-        this.processingEnv = context.processingEnv();
 
         AnnotationWrapper annotationWrapper = AnnotationWrapper.buildFor(context, method, Mapper.class);
         if (annotationWrapper != null) {
             ignoreMissingProperties = annotationWrapper.getAsBoolean("ignoreMissingProperties");
-            ignoreNotSupported = annotationWrapper.getAsBoolean("ignoreNotSupported");
-            useDuplicate = annotationWrapper.getAsBoolean("useDuplicate");
         }
-    }
-
-    public String firstParameterTypeString() {
-        return firstParameterType().toString();
     }
 
     public TypeMirror firstParameterType() {
 
-        if (method.getParameters().size() > 0){
+        if (method.getParameters().size() > 0) {
             return method.getParameters().get(0).asType();
         } else {
             return null;
         }
-    }
-
-    public String getReturnType() {
-        return returnType().toString();
     }
 
     public TypeMirror returnType() {
@@ -80,49 +70,59 @@ public class MethodWrapper {
 
     }
 
-    private AnnotationMirror findMapperAnnotation(List<? extends AnnotationMirror> annotationMirrors) {
-        return annotationMirrors.get(0);
-    }
-
     public ExecutableElement element() {
         return method;
-    }
-
-    public boolean ignoreMissingProperties() {
-        return ignoreMissingProperties;
-    }
-
-    public boolean ignoreNotSupported() {
-        return ignoreNotSupported;
-    }
-
-    public boolean isUseDuplicate() {
-        return useDuplicate;
     }
 
     public boolean hasOneParameter() {
         return method.getParameters().size() == 1;
     }
 
-    public boolean hasTwoParameter() {
-        return method.getParameters().size() == 2;
-    }
-
     public int parameterCount() {
         return method.getParameters().size();
-    }
-
-    public boolean secondParameterIsFactory() {
-        if (hasTwoParameter()){
-            TypeMirror typeMirror = method.getParameters().get(1).asType();
-            return Factory.class.getName().equals(typeMirror.toString());
-        } else {
-            return false;
-        }
     }
 
     public boolean hasReturnType() {
 
         return method.getReturnType() != null && method.getReturnType().getKind() != TypeKind.VOID;
+    }
+
+    /**
+     * Determines if the wrapping method represent a getter :
+     * public not void method starting with get or is prefix
+     *
+     * @return
+     */
+    public boolean isGetter() {
+        boolean res = false;
+        if (method.getParameters().size() == 0 && method.getReturnType().getKind() != TypeKind.VOID && method.getModifiers().contains(Modifier.PUBLIC)) {
+            Matcher getterMatcher = GETTER_PATTERN.matcher(method.getSimpleName());
+            res = getterMatcher.matches();
+            if (res) {
+                fieldName = getterMatcher.group(2);
+            }
+        }
+        return res;
+    }
+
+    /**
+     * Determines if the wrapping method is a setter
+     *
+     * @return
+     */
+    public boolean isSetter() {
+        boolean res = false;
+        if (method.getParameters().size() == 1 && method.getReturnType().getKind() == TypeKind.VOID && method.getModifiers().contains(Modifier.PUBLIC)) {
+            Matcher setterMatcher = SETTER_PATTERN.matcher(method.getSimpleName());
+            res = setterMatcher.matches();
+            if (res) {
+                fieldName = setterMatcher.group(1);
+            }
+        }
+        return res;
+    }
+
+    public String getFieldName() {
+        return fieldName;
     }
 }

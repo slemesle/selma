@@ -16,6 +16,8 @@
  */
 package fr.xebia.extras.selma.codegen;
 
+import javax.lang.model.type.TypeMirror;
+
 /**
  * Created with IntelliJ IDEA.
  * User: slemesle
@@ -137,5 +139,9 @@ public class SourceNodeVars {
     public SourceNodeVars withInFieldPrefix(String inFieldPrefix) {
         this.inFieldPrefix = inFieldPrefix;
         return this;
+    }
+
+    public boolean isOutPrimitive() {
+        return inOutType.outIsPrimitive();
     }
 }
