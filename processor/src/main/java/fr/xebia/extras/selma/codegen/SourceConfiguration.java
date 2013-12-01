@@ -40,7 +40,7 @@ public class SourceConfiguration {
         res.ignoreMissingProperties(annotationWrapper.getAsBoolean("ignoreMissingProperties"));
         res.ignoreNotSupported(annotationWrapper.getAsBoolean("ignoreNotSupported"));
         res.finalMappers(annotationWrapper.getAsBoolean("finalMappers"));
-        res.sourceClass(annotationWrapper.getAsStrings("withSourceParameter"));
+        res.sourceClass(annotationWrapper.getAsStrings("withSource"));
         return res;
     }
 

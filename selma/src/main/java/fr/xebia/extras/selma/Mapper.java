@@ -60,7 +60,7 @@ public @interface Mapper {
      *
      * @return
      */
-    Class<?>[] withSourceParameter() default {};
+    Class<?>[] withSource() default {};
 
 
     /**

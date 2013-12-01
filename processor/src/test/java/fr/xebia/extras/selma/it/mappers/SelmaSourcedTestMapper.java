@@ -30,7 +30,7 @@ import fr.xebia.extras.selma.beans.DataSource;
 /**
  *
  */
-@Mapper(withSourceParameter = DataSource.class)
+@Mapper(withSource = DataSource.class)
 public interface SelmaSourcedTestMapper {
 
     String asString(String in);
