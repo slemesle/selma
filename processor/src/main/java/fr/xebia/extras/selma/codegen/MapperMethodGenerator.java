@@ -22,6 +22,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
+import java.util.Set;
 
 import static fr.xebia.extras.selma.codegen.MappingSourceNode.*;
 
@@ -161,6 +162,7 @@ public class MapperMethodGenerator {
         BeanWrapper outBean = new BeanWrapper(context, outTypeElement);
         BeanWrapper inBean = new BeanWrapper(context, (TypeElement) context.type.asElement(inOutType.in()));
 
+        Set<String> outFields = outBean.getSetterFields();
         for (String field : inBean.getFields()) {
 
             boolean isMissingInDestination = !outBean.hasFieldAndSetter(field);
@@ -169,7 +171,7 @@ public class MapperMethodGenerator {
             } else {
                 if (isMissingInDestination) {
                     context.error(inBean.getFieldElement(field), String.format("getter for field %s from in bean %s is missing in destination bean %s", field, inOutType.in(), inOutType.out()));
-                    break;
+                    continue;
                 }
 
                 try {
@@ -190,7 +192,13 @@ public class MapperMethodGenerator {
 
                 ptr = lastChild(ptr);
             }
+            outFields.remove(field);
+        }
 
+        if (!configuration.isIgnoreMissingProperties()){
+            for (String outField : outFields) {
+                context.error(outBean.getSetterElement(outField), String.format("setter for field %s from out bean %s has no getter in in bean %s", outField, inOutType.out(), inOutType.in()));
+            }
         }
         return root.child;
     }

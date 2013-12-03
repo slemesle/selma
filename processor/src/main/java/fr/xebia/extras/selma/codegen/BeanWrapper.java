@@ -21,10 +21,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Wrapper for specific type
@@ -152,6 +149,21 @@ public class BeanWrapper {
 
     public Element getFieldElement(String field) {
         return fieldsGraph.get(field).getter.element();
+    }
+
+    public Set<String> getSetterFields() {
+        Set<String> res = new TreeSet<String>();
+        for (String s : fieldsGraph.keySet()) {
+            if (fieldsGraph.get(s).setter != null){
+                res.add(s);
+            }
+        }
+        return res;
+    }
+
+    public Element getSetterElement(String field) {
+
+        return fieldsGraph.get(field).setter.element();
     }
 
     class FieldItem {
