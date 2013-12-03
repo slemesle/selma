@@ -24,8 +24,6 @@ import fr.xebia.extras.selma.it.mappers.SelmaSourcedTestMapper;
 import fr.xebia.extras.selma.it.mappers.SelmaTestMapper;
 import fr.xebia.extras.selma.it.utils.Compile;
 import fr.xebia.extras.selma.it.utils.IntegrationTestBase;
-import fr.xebia.extras.selma.DefaultFactory;
-import fr.xebia.extras.selma.Factory;
 import fr.xebia.extras.selma.Selma;
 import org.junit.Assert;
 import org.junit.Test;

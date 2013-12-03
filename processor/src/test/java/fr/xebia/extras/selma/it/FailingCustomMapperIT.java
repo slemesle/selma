@@ -21,7 +21,6 @@ import fr.xebia.extras.selma.it.mappers.EmptyCustomMapper;
 import fr.xebia.extras.selma.it.mappers.FailingCustomMapper;
 import fr.xebia.extras.selma.it.utils.Compile;
 import fr.xebia.extras.selma.it.utils.IntegrationTestBase;
-import fr.xebia.extras.selma.Factory;
 import org.junit.Test;
 
 /**

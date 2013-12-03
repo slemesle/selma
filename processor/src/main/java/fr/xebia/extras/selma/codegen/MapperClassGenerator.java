@@ -17,8 +17,6 @@
 package fr.xebia.extras.selma.codegen;
 
 import com.squareup.javawriter.JavaWriter;
-import fr.xebia.extras.selma.DefaultFactory;
-import fr.xebia.extras.selma.Factory;
 import fr.xebia.extras.selma.Mapper;
 import fr.xebia.extras.selma.SelmaConstants;
 

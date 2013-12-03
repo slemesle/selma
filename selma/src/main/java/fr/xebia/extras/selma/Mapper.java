@@ -47,7 +47,7 @@ public @interface Mapper {
      * Add a list of custom mapper class.
      * A custom mapper is a class that gives one or more method :
      *
-     * public static OutType methodName(InType in, Factory factory)
+     * public OutType methodName(InType in)
      *
      * These methods will be called to handle custom mapping of in bean to the OutType
      */
