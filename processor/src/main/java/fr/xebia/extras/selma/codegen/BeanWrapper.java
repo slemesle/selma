@@ -29,6 +29,9 @@ import java.util.*;
  */
 public class BeanWrapper {
 
+
+    private static final Set<String> exclusions = new TreeSet<String>(Arrays.asList("getClass"));
+
     final MapperGeneratorContext context;
     final TypeElement typeElement;
     final Map<String, FieldItem> fieldsGraph;
@@ -42,20 +45,22 @@ public class BeanWrapper {
 
     private Map<String, FieldItem> buildFieldGraph() {
         final HashMap<String, FieldItem> result = new HashMap<String, FieldItem>();
-        final List<? extends Element> elementInList = typeElement.getEnclosedElements();
+        final List<? extends Element> elementInList = context.elements.getAllMembers(typeElement);
         final List<ExecutableElement> methods = ElementFilter.methodsIn(elementInList);
 
         // looping around all methods
         for (Iterator<ExecutableElement> it = methods.iterator(); it.hasNext(); ) {
             ExecutableElement method = it.next();
+
+            if(exclusions.contains(method.getSimpleName().toString())){
+                continue;
+            }
             MethodWrapper methodWrapper = new MethodWrapper(method, context);
 
             if (methodWrapper.isGetter()) {
                 putGetterField(methodWrapper, result);
-                it.remove();
             } else if (methodWrapper.isSetter()) {
                 putSetterField(methodWrapper, result);
-                it.remove();
             }
 
         }

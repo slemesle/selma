@@ -16,6 +16,7 @@
  */
 package fr.xebia.extras.selma.codegen;
 
+
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
@@ -23,14 +24,13 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * Source code generation context
  */
 public class MapperGeneratorContext {
+
 
     private final ProcessingEnvironment processingEnv;
     private final SourceConfiguration configuration;
@@ -159,8 +159,7 @@ public class MapperGeneratorContext {
         processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, String.format(templateMessage, args), typeElement);
     }
 
-    public void warn(ExecutableElement element, String templateMessage, Object... args) {
-        //To change body of created methods use File | Settings | File Templates.
+    public void warn(Element element, String templateMessage, Object... args) {
         processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, String.format(templateMessage, args), element);
     }
 

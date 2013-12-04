@@ -17,6 +17,7 @@
 package fr.xebia.extras.selma.codegen;
 
 import com.squareup.javawriter.JavaWriter;
+import fr.xebia.extras.selma.IgnoreFields;
 import fr.xebia.extras.selma.Mapper;
 import fr.xebia.extras.selma.SelmaConstants;
 
@@ -60,13 +61,14 @@ public class MapperClassGenerator {
 
         element = context.elements.getTypeElement(classe);
 
-        AnnotationWrapper annotationWrapper = AnnotationWrapper.buildFor(context, element, Mapper.class);
-        configuration = SourceConfiguration.buildFrom(annotationWrapper);
+        AnnotationWrapper mapper = AnnotationWrapper.buildFor(context, element, Mapper.class);
+        AnnotationWrapper ignoreFields = AnnotationWrapper.buildFor(context, element, IgnoreFields.class);
+        configuration = SourceConfiguration.buildFrom(mapper, ignoreFields);
         if (registry.contains(origClasse))
             return;
 
         // Here we collect custom mappers
-        collectCustom(annotationWrapper, customMaperFields);
+        collectCustom(mapper, customMaperFields);
         validateTypes();
     }
 

@@ -16,8 +16,10 @@
  */
 package fr.xebia.extras.selma.codegen;
 
+import fr.xebia.extras.selma.IgnoreFields;
 import fr.xebia.extras.selma.Mapper;
 
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeKind;
@@ -124,5 +126,16 @@ public class MethodWrapper {
 
     public String getFieldName() {
         return fieldName;
+    }
+
+    public boolean hasIgnoreFields(){
+        boolean res = false;
+        for (AnnotationMirror annotationMirror : method.getAnnotationMirrors()) {
+            if(annotationMirror.getAnnotationType().toString().equals(IgnoreFields.class.getCanonicalName())){
+                res = true;
+                break;
+            }
+        }
+        return res;
     }
 }

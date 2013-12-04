@@ -90,7 +90,11 @@ public class AnnotationWrapper {
         if (myValue.getValue() instanceof List) {
             List<? extends AnnotationValue> values = (List<? extends AnnotationValue>) myValue.getValue();
             for (AnnotationValue value : values) {
-                res.add(value.toString());
+                if (value.getValue() instanceof String){
+                    res.add((String)value.getValue());
+                }else {
+                    res.add(value.toString());
+                }
             }
         }
 

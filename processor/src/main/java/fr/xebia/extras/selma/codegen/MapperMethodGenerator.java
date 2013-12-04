@@ -17,12 +17,13 @@
 package fr.xebia.extras.selma.codegen;
 
 import com.squareup.javawriter.JavaWriter;
+import fr.xebia.extras.selma.IgnoreFields;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
-import java.util.Set;
+import java.util.*;
 
 import static fr.xebia.extras.selma.codegen.MappingSourceNode.*;
 
@@ -37,6 +38,7 @@ public class MapperMethodGenerator {
     private final MapperGeneratorContext context;
     private final MappingRegistry mappingRegistry;
     private final SourceConfiguration configuration;
+    private final Set<String> ignoredFields;
 
     public MapperMethodGenerator(JavaWriter writer, ExecutableElement mapperMethod, MapperGeneratorContext context, MappingRegistry mappingRegistry, SourceConfiguration configuration) {
         this.writer = writer;
@@ -44,6 +46,11 @@ public class MapperMethodGenerator {
         this.context = context;
         this.configuration = configuration;
         this.mappingRegistry = mappingRegistry;
+        this.ignoredFields = new TreeSet<String>();
+        if (this.mapperMethod.hasIgnoreFields()) {
+            this.ignoredFields.addAll( AnnotationWrapper.buildFor(context, mapperMethod, IgnoreFields.class).getAsStrings("value"));
+        }
+        this.ignoredFields.addAll(configuration.getIgnoredFields());
     }
 
     public static MapperMethodGenerator create(JavaWriter writer, ExecutableElement mapperMethod, MapperGeneratorContext context, MappingRegistry mappingRegistry, SourceConfiguration configuration) {
@@ -166,7 +173,12 @@ public class MapperMethodGenerator {
         for (String field : inBean.getFields()) {
 
             boolean isMissingInDestination = !outBean.hasFieldAndSetter(field);
-            if (isMissingInDestination && configuration.isIgnoreMissingProperties()) {
+            if (isIgnoredField(field)){
+//                context.warn(inBean.getFieldElement(field), "Field %s from in bean will be ignored as @IgnoredFields require", field);
+                continue;
+            }
+
+            if (isMissingInDestination && canBeIgnored(field)) {
                 continue;
             } else {
                 if (isMissingInDestination) {
@@ -197,10 +209,20 @@ public class MapperMethodGenerator {
 
         if (!configuration.isIgnoreMissingProperties()){
             for (String outField : outFields) {
-                context.error(outBean.getSetterElement(outField), String.format("setter for field %s from out bean %s has no getter in in bean %s", outField, inOutType.out(), inOutType.in()));
+
+                if(!isIgnoredField(outField)){
+                    context.error(outBean.getSetterElement(outField), String.format("setter for field %s from out bean %s has no getter in in bean %s", outField, inOutType.out(), inOutType.in()));
+                } else {
+//                    context.warn(outBean.getSetterElement(outField), "Field %s not populated in destination bean will be ignored as @IgnoredFields require", outField);
+                }
             }
         }
         return root.child;
+    }
+
+    private boolean canBeIgnored(String field) {
+
+        return configuration.isIgnoreMissingProperties() || isIgnoredField(field);
     }
 
     private MappingSourceNode lastChild(MappingSourceNode ptr) {
@@ -208,6 +230,19 @@ public class MapperMethodGenerator {
             ptr = ptr.child;
         }
         return ptr;
+    }
+
+
+    public boolean isIgnoredField(String field){
+        boolean res = false;
+        for (String ignoredField : ignoredFields) {
+
+            if(ignoredField.equalsIgnoreCase(field)){
+                res = true;
+                break;
+            }
+        }
+        return res;
     }
 
 

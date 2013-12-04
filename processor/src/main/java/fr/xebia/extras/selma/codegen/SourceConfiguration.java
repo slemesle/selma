@@ -16,9 +16,7 @@
  */
 package fr.xebia.extras.selma.codegen;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  *
@@ -30,18 +28,29 @@ public class SourceConfiguration {
     private boolean ignoreNotSupported;
     private List<String> sourceClass;
     private boolean finalMappers;
+    private Set<String> ignoredFields;
 
 
     private SourceConfiguration(){}
 
-    public static SourceConfiguration buildFrom(AnnotationWrapper annotationWrapper) {
+    public static SourceConfiguration buildFrom(AnnotationWrapper mapper, AnnotationWrapper ignoreFields) {
         SourceConfiguration res = new SourceConfiguration();
 
-        res.ignoreMissingProperties(annotationWrapper.getAsBoolean("ignoreMissingProperties"));
-        res.ignoreNotSupported(annotationWrapper.getAsBoolean("ignoreNotSupported"));
-        res.finalMappers(annotationWrapper.getAsBoolean("finalMappers"));
-        res.sourceClass(annotationWrapper.getAsStrings("withSource"));
+        res.ignoreMissingProperties(mapper.getAsBoolean("ignoreMissingProperties"));
+        res.ignoreNotSupported(mapper.getAsBoolean("ignoreNotSupported"));
+        res.finalMappers(mapper.getAsBoolean("finalMappers"));
+        res.sourceClass(mapper.getAsStrings("withSource"));
+        if(ignoreFields != null){
+            res.ignoredFields(ignoreFields.getAsStrings("value"));
+        } else {
+            res.ignoredFields(Collections.EMPTY_LIST);
+        }
+
         return res;
+    }
+
+    private void ignoredFields(List<String> value) {
+        this.ignoredFields = new TreeSet<String>(value);
     }
 
     private void finalMappers(boolean finalMappers) {
@@ -72,6 +81,10 @@ public class SourceConfiguration {
 
     public boolean isIgnoreNotSupported() {
         return ignoreNotSupported;
+    }
+
+    public Set<String> getIgnoredFields() {
+        return ignoredFields;
     }
 
     public List<String> getSourceClass() {
