@@ -23,7 +23,7 @@ package fr.xebia.extras.selma;
  */
 public class SelmaConstants {
 
-    public static final String MAPPER_CLASS_SUFFIX = "XMapperGeneratedClass";
+    public static final String MAPPER_CLASS_SUFFIX = "SelmaGeneratedClass";
     public static final String IN_VAR = "in";
 
     public static final boolean     DEFAULT_BOOLEAN     = false;

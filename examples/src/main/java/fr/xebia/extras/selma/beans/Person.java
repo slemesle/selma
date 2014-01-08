@@ -9,10 +9,10 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
+ * 
  */
 package fr.xebia.extras.selma.beans;
 
@@ -20,9 +20,9 @@ import java.util.Collection;
 import java.util.Date;
 
 /**
- *
+ * Created by slemesle on 14/12/2013.
  */
-public class PersonOut {
+public class Person {
 
     private String firstName;
     private String lastName;
@@ -30,54 +30,6 @@ public class PersonOut {
     private int age;
     private Long[] indices;
     private Collection<String> tags;
-
-    private EnumOut enumIn;
-    private AddressOut address;
-    private AddressOut addressBis;
-
-    private Boolean natural;
-
-    private String biography;
-
-    public String getBiography() {
-        return biography;
-    }
-
-    public void setBiography(String biography) {
-        this.biography = biography;
-    }
-
-    public Boolean isNatural() {
-        return natural;
-    }
-
-    public void setNatural(Boolean natural) {
-        this.natural = natural;
-    }
-
-    public EnumOut getEnumIn() {
-        return enumIn;
-    }
-
-    public void setEnumIn(EnumOut enumIn) {
-        this.enumIn = enumIn;
-    }
-
-    public Collection<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(Collection<String> tags) {
-        this.tags = tags;
-    }
-
-    public Long[] getIndices() {
-        return indices;
-    }
-
-    public void setIndices(Long[] indices) {
-        this.indices = indices;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -111,19 +63,20 @@ public class PersonOut {
         this.age = age;
     }
 
-    public AddressOut getAddress() {
-        return address;
+    public Long[] getIndices() {
+        return indices;
     }
 
-    public void setAddress(AddressOut address) {
-        this.address = address;
+    public void setIndices(Long[] indices) {
+        this.indices = indices;
     }
 
-    public AddressOut getAddressBis() {
-        return addressBis;
+    public Collection<String> getTags() {
+        return tags;
     }
 
-    public void setAddressBis(AddressOut addressBis) {
-        this.addressBis = addressBis;
+    public void setTags(Collection<String> tags) {
+        this.tags = tags;
     }
+// + Getters and Setters
 }
