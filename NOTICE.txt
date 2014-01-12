@@ -3,3 +3,5 @@ developped by Harmcrest (www.hamcrest.org)
 
 This project uses jacoco
 
+This project uses JavaWriter
+

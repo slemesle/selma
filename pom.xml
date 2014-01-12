@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                           -->
-<!--  Copyright 2013 Séven Le Mesle                                            -->
+<!--  Copyright 2013 Xebia and Séven Le Mesle                                  -->
 <!--                                                                           -->
 <!--  Licensed under the Apache License, Version 2.0 (the "License");          -->
 <!--  you may not use this file except in compliance with the License.         -->
@@ -18,12 +18,38 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
 
     <groupId>fr.xebia.extras</groupId>
     <artifactId>selma-parent</artifactId>
     <packaging>pom</packaging>
     <version>0.1-SNAPSHOT</version>
     <description>Mapping converter utility</description>
+    <scm>
+        <connection>scm:git:git@github.com:xebia-france/selma.git</connection>
+        <developerConnection>scm:git:git@github.com:xebia-france/selma.git</developerConnection>
+        <url>https://github.com/xebia-france/selma</url>
+    </scm>
+    <developers>
+        <developer>
+            <id>1</id>
+            <name>Séven Le Mesle</name>
+            <email>slemesle@xebia.fr</email>
+        </developer>
+    </developers>
+    <licenses>
+        <license>
+            <name>Apache 2</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+
     <modules>
         <module>processor</module>
         <module>selma</module>
