@@ -1,154 +1,429 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Selma by slemesle</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/respond.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <!--[if lt IE 8]>
-    <link rel="stylesheet" href="stylesheets/ie.css">
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
 
-  </head>
-  <body>
-      <div id="header">
-        <nav>
-          <li class="fork"><a href="https://github.com/slemesle/selma">View On GitHub</a></li>
-          <li class="downloads"><a href="https://github.com/slemesle/selma/zipball/master">ZIP</a></li>
-          <li class="downloads"><a href="https://github.com/slemesle/selma/tarball/master">TAR</a></li>
-          <li class="title">DOWNLOADS</li>
-        </nav>
-      </div><!-- end header -->
+        <link rel="shortcut icon" href="favicon.ico">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
 
-    <div class="wrapper">
 
-      <section>
-        <div id="title">
-          <h1>Selma</h1>
-          <p>S3lm4 is Stupid Simple Staticaly Linked Mapper for Java.</p>
-          <hr>
-          <span class="credits left">Project maintained by <a href="https://github.com/slemesle">slemesle</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/selma.css">
+
+        <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+        <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+    </head>
+    <body id="home">
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"><img src="img/logo-v6-mini.png"></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#home">Home</a></li>
+            <li><a href="#get-started">Tutorial</a></li>
+            <li><a href="#documentation">Documentation</a></li>
+          
+          </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li>
+                <a href="https://github.com/slemesle/selma"><i class="icon-github"></i>Github</a>
+              </li>
+            <li><a class="pure-menu-heading" href="https://travis-ci.org/slemesle/selma"><img
+                    src="https://travis-ci.org/slemesle/selma.png?branch=master" alt="Build Status"></a></li>
+             <li>
+            <a class="pure-menu-heading" href="https://buildhive.cloudbees.com/job/slemesle/job/selma/"><img
+                    src="https://buildhive.cloudbees.com/job/slemesle/job/selma/badge/icon" alt="Build Status"></a>
+                  </li>
+            </ul>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+
+        <img src="img/logo-v6-medium.png" alt="S3lm4 logo" align="left" style="padding: 5px;"/>
+
+        <h2> What is <em>Selma</em> ?</h2>
+        <p>
+          <em><b>S3LMa</b></em> stands for <b>S</b>tupid <b>S</b>imple <b>S</b>tatically <b>L</b>inked <b>Ma</b>pper. 
+        </p>
+        <p>It generates static code to map properties from one bean to another. We <b>K</b>eep <b>I</b>t <b>S</b>tupid <b>S</b>imple: convention over configuration, light footprint, easy ot use, easy to learn, are Selma's roots.
+        </p>
+                <p>
+                    On one side, Selma is an <b>Annotation Processor</b> that generate Java code to handle the mapping from field to field at <b>compile time</b>.
+                  </p>
+                  <p>
+                    On the over side, it is an <b>API</b> to instantiate and invoke the <b>generated Mapper </b>implementation.
+                </p><p class="text-right">
+                <a class=" btn btn-primary btn-lg" href="#get-started">Get started &raquo;</a></p>
+      </div>
+    </div>
+    <div class="container home-white">
+      <!-- Example row of columns -->
+      <div class="row" >
+        <div class="col-lg-12 lead">
+          <h2>Why another mapping framework ?</h2>
+          <p>Existings frameworks massively use reflection API to build dynamicaly the mapper. 
+            Well let me see, it's fine !</p>
+            <p> In fact, it can be, but the better mapping framework I know is vanilla Java code with it's long list of if conditions. Because performance are far better, and I have total control on the mapping. More over, the static code is refactoring proof, and easy to debug.
+            </p>
+            <p>But that is painfull :p. Writing all this code is always my preferred part, almost always since there is sometime more than 3 poor little beans. That's where Selma comes, the idea is simple get advantages of the manual mapping without the pain.
+            </p>
         </div>
 
-        
+      </div>
+      <span id="get-started"></span>
+</div>
+<div class="home-grey">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-lg-12 lead">
+        <h2 >The 1 minute tutorial</h2>
+        <h3> First add Selma to your pom </h3>
+        <pre class="prettyprint language-xml">
+          &lt;!-- scope provided because the processor is only needed for the compiler --&gt;
+          &lt;dependency&gt;
+              &lt;groupId&gt;fr.xebia.extras&lt;/groupId&gt;
+              &lt;artifactId&gt;selma-processor&lt;/artifactId&gt;
+              &lt;version&gt;0.1-SNAPSHOT&lt;/version&gt;
+              &lt;scope&gt;provided&lt;/scope&gt;
+          &lt;/dependency&gt;
+
+          &lt;!-- This is the only real dependency you will have in youre binaries --&gt;
+          &lt;dependency&gt;
+              &lt;groupId&gt;fr.xebia.extras&lt;/groupId&gt;
+              &lt;artifactId&gt;selma&lt;/artifactId&gt;
+              &lt;version&gt;0.1-SNAPSHOT&lt;/version&gt;
+          &lt;/dependency&gt;
+        </pre>
+          <p>There are 2 artifacts</p>
+          <ul>
+            <li><strong>selma-processor</strong> It contains the annotation processor and the code generation part. It should be in a provided scope because we need it only at compilation time.</li>
+            <li><strong>selma</strong> Contains the API to work with the generated mappers. We use the default scope because we need the API at runtime.</li>
+          </ul>
+        </div>
+
+      </div>
+            <div class="row">
+
+        <div class="col-lg-12 lead">
+ <h3>Then, declare youre mapper</h3>
+          <p>In Selma, a mapper is an interface annotated with <code>@Mapper</code>.
+            They define the mapping methods we want.</p>
+          <pre class="prettyprint language-java">
+@Mapper
+public interface SelmaMapper {
+
+    OutBean asOutBean(InBean in);
+}
+          </pre>
+          <p> Here we've defined SelmaMapper which maps InBean to an instance of OutBean.</p>
+        </div>
+
+      </div>
+            <div class="row">
+
+        <div class="col-lg-12 lead">
+ <h3>Finaly, use the mapper</h3>
+          <p>In Selma, a mapper is an interface annotated with <code>@Mapper</code>.
+            They define the mapping methods we want.</p>
+          <pre class="prettyprint language-java">
+// Get SelmaMapper
+SelmaMapper mapper = Selma.getMapper(SelmaMapper.class);
+
+// Map my InBean
+OutBean res = mapper.asOutBean(in);
+          </pre>
+
+           <h3>Last, build and enjoy !</h3>
+           <p>
+            Any issue will be reported in the compiler log, it will also give you fix tips.
+           </p>
+
+        </div>
+
+      </div>
+      </div>
+      </div>
+
+    <div class="container">
+      <div class="row">
+
+        <!-- Docs menu -->
+        <div class="col-lg-3">
+          <div id="doc-links" class="doc-links affix-top">
+          <ul class="nav nav-stacked nav-pills ">
+            <li><a href="#documentaion">Documentation</a></li>
+            <li><a href="#mapping">Mapping</a> </li>
+            <li> <a href="#">two</a> </li>
+            <li><a href="#overview">Overview</a> </li>
+            <li> <a href="#">two</a> </li>
+          </ul>
+        </div>
+        </div>
+        <!-- Docs body -->
+        <div class="col-lg-9">
+          <div class="page-header">
+            <h1 id="documentation"> Documentation </h1>
+           </div>
+           <div class=""><p>
+                This is where you go when get stuck !
+                First keep in mind that Selma knows only one thing, generate implementation code for mapper interface.
+              </p>
 
 
+              <h2 id="mapping">Mapping</h2>
+              <p>
+                 Selma match fields using setter and getter names. 
+              </p>
+              <p>What does this mean ?</p>
+              <p>
+                Selma match can map only same field names. We only use setters and getters so don't worry about the inner field name. 
+              </p>
+              <div class="alert alert-danger">
+                By default, missing properties aka properties from in bean does not match any field in out bean and reverse, will break compilation.
+              </div>
 
+                <h3>Let see an example</h3>
+<p>
+First the model object a Person : 
+</p>
+<pre class="prettyprint language-java">
+public class Person {
 
+    private String firstName;
+    private String lastName;
+    private Date birthDay;
+    private int age;
+    private Long[] indices;
+    private Collection<String> tags;
 
+    // + Getters and Setters
+}
+</pre>
 
+<p>
+Then the DTO a PersonDto : 
+</p>
+<pre class="prettyprint language-java">
+public class PersonDto {
 
+    private String firstName;
+    private String lastName;
+    private Date birthDay;
+    private int age;
+    private Long[] indices;
+    private List<String> tags;
 
+    // + Getters and Setters
+}
+</pre>
+<p>
+Now we define the Mapper interface : 
+</p>
+<pre class="prettyprint language-java">
+@Mapper
+public interface PersonMapper {
 
+    PersonDto asPersonDto(Person in);
+}
 
+</pre>
+              <div class="alert alert-info">
+                All properties are exactly matching so this will work.
+              </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<p><a href="https://buildhive.cloudbees.com/job/slemesle/job/selma/"><img src="https://buildhive.cloudbees.com/job/slemesle/job/selma/badge/icon" alt="Build Status"></a>
-<a href="https://travis-ci.org/slemesle/selma"><img src="https://travis-ci.org/slemesle/selma.png?branch=master" alt="Build Status"></a></p>
-
-<p><img src="https://raw.github.com/slemesle/selma/master/resources/logo-v6.png" alt="S3lm4 logo"></p>
-
-<h1>
-<a name="what-is-s3lm4-" class="anchor" href="#what-is-s3lm4-"><span class="octicon octicon-link"></span></a>What is S3lm4 ?</h1>
-
-<p>S3lm4 stands for <strong><em>Stupid Simple Staticaly Linked Mapper</em></strong>.
-In fact it is on one side an Annotation Processor that generate Java code to handle the mapping from field to field at compile time. On the other side, it is a Runtime library to instantiate and invoke the generated Mapper.</p>
-
-<h1>
-<a name="how-does-it-works-" class="anchor" href="#how-does-it-works-"><span class="octicon octicon-link"></span></a>How does it works ?</h1>
-
-<p>First add selma-processor as a provided dependency and selma as a compile dependency to your build.
-Then, define a Mapper interface describing the mapping you want:</p>
-
-<div class="highlight highlight-java"><pre><span class="nd">@Mapper</span>
-<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">SelmaMapper</span> <span class="o">{</span>
-
-    <span class="n">OutBean</span> <span class="nf">asOutBean</span><span class="o">(</span><span class="n">InBean</span> <span class="n">in</span><span class="o">);</span>
-
-<span class="o">}</span>
-</pre></div>
-
-<p>Then ? Well just use the generated Mapper:</p>
-
-<div class="highlight highlight-java"><pre>
-    <span class="n">SelmaMapper</span> <span class="n">mapper</span> <span class="o">=</span> <span class="n">Selma</span><span class="o">.</span><span class="na">mapper</span><span class="o">(</span><span class="n">SelmaMapper</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
-
-    <span class="n">OutBean</span> <span class="n">res</span> <span class="o">=</span> <span class="n">mapper</span><span class="o">.</span><span class="na">asOutBean</span><span class="o">(</span><span class="n">in</span><span class="o">);</span>
-
-</pre></div>
-
-<p>And voilà !</p>
-
-<h2>
-<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
-
-<ul>
-<li>Generate code for mapping bean to bean matching fields to fields
-** Support for nested bean
-** Bean should respect Java property convention</li>
-<li>Maps Enum using identical values</li>
-<li>Maps Collection any to any</li>
-<li>Maps Map any to any</li>
-<li>Use strict memory duplication for all fields</li>
-<li>Support for Factory to instantiate beans is out of the box</li>
-<li>Support Type to Type custom mapping using custom mapping static methods</li>
-<li>Gives full feedback at compilation time</li>
-<li>Break build when mapping does not work Say good bye to mapping errors in production</li>
-</ul><h2>
-<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
-
-<p>First add selma and selma-processor to your pom dependencies:</p>
-
-<div class="highlight highlight-xml"><pre>        <span class="c">&lt;!-- scope provided because the processor is only needed for the compiler --&gt;</span>
-        <span class="nt">&lt;dependency&gt;</span>
-            <span class="nt">&lt;groupId&gt;</span>fr.xebia.extras<span class="nt">&lt;/groupId&gt;</span>
-            <span class="nt">&lt;artifactId&gt;</span>selma-processor<span class="nt">&lt;/artifactId&gt;</span>
-            <span class="nt">&lt;version&gt;</span>0.1-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
-            <span class="nt">&lt;scope&gt;</span>provided<span class="nt">&lt;/scope&gt;</span>
-        <span class="nt">&lt;/dependency&gt;</span>
-
-        <span class="c">&lt;!-- This is the only real dependency you will have in youre binaries --&gt;</span>
-        <span class="nt">&lt;dependency&gt;</span>
-            <span class="nt">&lt;groupId&gt;</span>fr.xebia.extras<span class="nt">&lt;/groupId&gt;</span>
-            <span class="nt">&lt;artifactId&gt;</span>selma<span class="nt">&lt;/artifactId&gt;</span>
-            <span class="nt">&lt;version&gt;</span>0.1-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
-        <span class="nt">&lt;/dependency&gt;</span>
-</pre></div>
-
-<p>Then, as I said earlier, build youre interface with <a href="https://github.com/Mapper" class="user-mention">@Mapper</a> annotation and enjoy.</p>
-
-<p>Checkout the example module to have a deeper look.</p>
-
-<p><strong>Help needed, please report issues and ask for features :)</strong></p>
-      </section>
-
+<div class="panel-group" id="accordion">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+         Generated code is:
+      </h4>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-    
-  </body>
+    <div id="collapseOne" class="panel-collapse collapse in">
+      <div class="panel-body">
+<pre class="prettyprint language-java">
+// GENERATED BY S3LM4
+package fr.xebia.extras.selma.beans;
+
+
+public final class PersonMapperSelmaGeneratedClass
+    implements PersonMapper {
+
+
+  /**
+   * Single constructor
+   */
+  public PersonMapperSelmaGeneratedClass() {
+  }
+
+  /**
+   * Mapping method overridden by Selma
+   */
+  @Override
+  public final PersonDto asPersonDto(Person in) {
+    fr.xebia.extras.selma.beans.PersonDto out = null;
+    if (in != null) {
+      out = new fr.xebia.extras.selma.beans.PersonDto();
+      if (in.getTags() != null) {
+        java.util.ArrayList<java.lang.String> _TagsTmpCollection = new java.util.ArrayList<java.lang.String>(in.getTags().size());
+        out.setTags(_TagsTmpCollection);
+        for (java.lang.String _TagsItem : in.getTags()) {
+          if (_TagsItem != null) {
+            _TagsTmpCollection.add(new java.lang.String(_TagsItem));
+          }
+          else {
+            _TagsTmpCollection.add(null);
+          }
+        }
+      }
+      else {
+        out.setTags(null);
+      }
+      out.setAge(in.getAge());
+      if (in.getBirthDay() != null) {
+        out.setBirthDay(new java.util.Date(in.getBirthDay().getTime()));
+      }
+      else {
+        out.setBirthDay(null);
+      }
+      if (in.getFirstName() != null) {
+        out.setFirstName(new java.lang.String(in.getFirstName()));
+      }
+      else {
+        out.setFirstName(null);
+      }
+      if (in.getIndices() != null) {
+        java.lang.Long[] _IndicesTmpArray = new java.lang.Long[in.getIndices().length];
+        int _IndicesTotalCount = in.getIndices().length;
+        out.setIndices(_IndicesTmpArray);
+        for (int aIndicesIndex = 0 ; aIndicesIndex < _IndicesTotalCount; aIndicesIndex++) {
+          if (in.getIndices()[aIndicesIndex%in.getIndices().length] != null) {
+            _IndicesTmpArray[aIndicesIndex%in.getIndices().length] = new java.lang.Long(in.getIndices()[aIndicesIndex%in.getIndices().length]);
+          }
+          else {
+            _IndicesTmpArray[aIndicesIndex%in.getIndices().length] = null;
+          }
+        }
+      }
+      else {
+        out.setIndices(null);
+      }
+      if (in.getLastName() != null) {
+        out.setLastName(new java.lang.String(in.getLastName()));
+      }
+      else {
+        out.setLastName(null);
+      }
+    }
+    return out;
+  }
+
+}
+</pre>
+      </div>
+    </div>
+  </div>
+  </div>
+
+              <div class="callout callout-danger">
+                <h4>Add the generated source to youre IDE</h4>
+                <p>
+                  Using a maven build, you will find the generated sources under <code>target/generated-sources/annotations</code>.
+                </p>
+
+              </div>
+
+                <h4>Mapper class</h4>
+                <p>
+                  All mappers are generated using the name of the interface with a suffix <code>SelmaGeneratedClass</code>. The class are generated in the same package as the interface and declared <code>final</code>. 
+                </p>
+
+                <h4>Null values</h4>
+                <p>
+                  Selma generated code always protect against NPE.
+                  The mapper will process mapping if value is not null else the mapper will explicitely set null to the destination bean.
+                </p>
+                <h4>Strict copy</h4>
+                <p>
+                  Selma waranty immutability of the in bean, all values setted in the destination bean are strict copy of original values.
+                </p>  
+
+                <h3>
+                  Nested bean
+                </h3>
+                <p>
+                  Mapper code will declare a separated method for each nested bean in the graph.
+                  
+                </p>
+
+           </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <footer>
+        <div id="footer" class="container">
+                    <div class="row">
+
+        <div class="col-lg-12">
+        <p >&copy; Séven Le Mesle and Xebia 2013</p>
+      </div>
+    </div>
+    </div>
+      </footer>
+
+
+
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
+        <script src="http://mathiasbynens.be/demo/jquery.smoothscroll.js"></script>
+        <script src="js/vendor/bootstrap.min.js"></script>
+
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+
+        <script>
+            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src='http://www.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+                <script type="text/javascript">
+      
+  
+  $( function () {
+      $('.nav-collapse').scrollspy();
+      $('html').smoothScroll(500);
+
+      $('#doc-links').affix({
+          offset: { top: $('#doc-links').offset().top -40  }
+      });
+
+   });
+
+        </script>
+    </body>
 </html>
