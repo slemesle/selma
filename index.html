@@ -170,10 +170,10 @@ OutBean res = mapper.asOutBean(in);
         <div class="col-lg-3">
           <div id="doc-links" class="doc-links affix-top">
           <ul class="nav nav-stacked nav-pills ">
-            <li><a href="#documentaion">Documentation</a></li>
+            <li><a href="#documentation">Documentation</a></li>
             <li><a href="#mapping">Mapping</a> </li>
-            <li> <a href="#">two</a> </li>
-            <li><a href="#overview">Overview</a> </li>
+            <li> <a href="#nested-bean">Nested bean</a> </li>
+            <li><a href="#collections">Collections</a> </li>
             <li> <a href="#">two</a> </li>
           </ul>
         </div>
@@ -363,16 +363,41 @@ public final class PersonMapperSelmaGeneratedClass
                 </p>
                 <h4>Strict copy</h4>
                 <p>
-                  Selma waranty immutability of the in bean, all values setted in the destination bean are strict copy of original values.
+                  Selma warrants immutability of the in bean, all values setted in the destination bean are strict copy of original values.
                 </p>  
 
-                <h3>
+                <h3 id="nested-bean">
                   Nested bean
                 </h3>
                 <p>
-                  Mapper code will declare a separated method for each nested bean in the graph.
-                  
+                  Mapper code will declare a single separated method for each nested bean in the graph.
                 </p>
+               <div class="callout callout-danger">
+                   <h4>Declare nested bean methods</h4>
+                   <p>
+                      Selma will override the methods defined in the mapper interface and use it everywhere it is needed.
+                      If they are declared, you will be able to use them from the interface.
+                   </p>
+               </div>
+
+
+               <h3 id="collections">
+                   Collections
+               </h3>
+               <p>
+                    Selma detects class implementing <code>java.util.Collection</code> and either use a default implementation, or the given one.
+               </p>
+               <p>This means that Selma can convert any Collection to another Collection class.
+               Let say you have a LinkedList in the inBean and an ArrayList in the out bean or you want to convert from Collection type to a Set.
+               </p>
+
+           <div class="callout callout-danger">
+               <h4>Maps</h4>
+               <p>
+                   Selma will also process the mapping of <code>java.util.Map</code> ensuring that both the Key and the values will be converted as any type.
+               </p>
+           </div>
+
 
            </div>
           </div>
