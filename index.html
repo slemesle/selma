@@ -168,13 +168,15 @@ OutBean res = mapper.asOutBean(in);
 
         <!-- Docs menu -->
         <div class="col-lg-3">
-          <div id="doc-links" class="doc-links affix-top">
+          <div id="doc-links" class="doc-links">
           <ul class="nav nav-stacked nav-pills ">
             <li><a href="#documentation">Documentation</a></li>
             <li><a href="#mapping">Mapping</a> </li>
+            <li><a href="#ignore-fields">Ignore Fields</a> </li>
             <li> <a href="#nested-bean">Nested bean</a> </li>
             <li><a href="#collections">Collections</a> </li>
-            <li> <a href="#">two</a> </li>
+            <li> <a href="#custom-mapper">Custom Mapper</a> </li>
+            <li> <a href="#sourced-beans">Sourced beans</a> </li>
           </ul>
         </div>
         </div>
@@ -364,9 +366,35 @@ public final class PersonMapperSelmaGeneratedClass
                 <h4>Strict copy</h4>
                 <p>
                   Selma warrants immutability of the in bean, all values setted in the destination bean are strict copy of original values.
-                </p>  
+                </p>
 
-                <h3 id="nested-bean">
+           <h3 id="ignore-fields">Ignore fields</h3>
+                <p>
+                    Selma makes strict copy, so it will try to match each single property. When matching properties are
+                    not found in source or destination bean, the compiler will fail reporting missing properties.
+
+                </p>
+                <p>
+                    At this point, you have 2 solutions:
+                    <ul>
+                        <li>Use the <code>ignoreMissingProperties</code> <code>@Mapper</code> attribute, to totally
+                            disable this strict behavior and silently ignore missing properties.</li>
+                        <li>Use the <code>@IgnoreFields</code> annotation, to list explicitly fields that will be
+                            ignored at compile time.</li>
+                    </ul>
+                </p>
+
+           <div class="callout callout-danger">
+               <h4>Scope the <code>@IgnoreFields</code></h4>
+               <p>
+                   You can define this annotation either at the class level of the Mapper interface, or for specific
+                   mapping methods.
+               </p>
+           </div>
+
+
+
+           <h3 id="nested-bean">
                   Nested bean
                 </h3>
                 <p>
@@ -382,7 +410,7 @@ public final class PersonMapperSelmaGeneratedClass
 
 
                <h3 id="collections">
-                   Collections
+                   Collections and Map
                </h3>
                <p>
                     Selma detects class implementing <code>java.util.Collection</code> and either use a default implementation, or the given one.
@@ -395,6 +423,209 @@ public final class PersonMapperSelmaGeneratedClass
                <h4>Maps</h4>
                <p>
                    Selma will also process the mapping of <code>java.util.Map</code> ensuring that both the Key and the values will be converted as any type.
+                   Both key and value are subject to mapping, so Pojo will be mapped in both case.
+               </p>
+           </div>
+
+           <h4>Defaults</h4>
+            <p> Selma uses default collection implementation, when mapping requires to return an interface. See the table below to find corresponding implementation.</p>
+           <table class="table table-striped">
+               <thead>
+               <tr>
+                   <th>Interface</th>
+                   <th>Implementation</th>
+               </tr>
+               </thead>
+               <tbody>
+               <tr>
+                   <td>Set</td>
+                   <td>HashSet</td>
+               </tr>
+               <tr>
+                   <td>SortedSet</td>
+                   <td>TreeSet</td>
+               </tr>
+               <tr>
+                   <td>BlockingDeque</td>
+                   <td>LinkedBlockingDeque</td>
+               </tr>
+               <tr>
+                   <td>BlockingQueue</td>
+                   <td>LinkedBlockingQueue</td>
+               </tr>
+               <tr>
+                   <td>Queue</td>
+                   <td>PriorityQueue</td>
+               </tr>
+               <tr>
+                   <td>Deque</td>
+                   <td>ArrayDeque</td>
+               </tr>
+               <tr>
+                   <td>List</td>
+                   <td>ArrayList</td>
+               </tr>
+               <tr>
+                   <td>NavigableSet</td>
+                   <td>ConcurrentSkipListSet</td>
+               </tr>
+               <tr>
+                   <td>Map</td>
+                   <td>HashMap</td>
+               </tr>
+               <tr>
+                   <td>ConcurrentMap</td>
+                   <td>ConcurrentHashMap</td>
+               </tr>
+               <tr>
+                   <td>ConcurrentNavigableMap</td>
+                   <td>ConcurrentSkipListMap</td>
+               </tr>
+               <tr>
+                   <td>NavigableMap</td>
+                   <td>TreeMap</td>
+               </tr>
+               <tr>
+                   <td>SortedMap</td>
+                   <td>TreeMap</td>
+               </tr>
+               <tr>
+                   <td>Collection</td>
+                   <td>ArrayList</td>
+               </tr>
+               </tbody>
+           </table>
+
+           <h3 id="custom-mapper">Custom Mapper</h3>
+            <p>
+            Sometimes, Selma will not do what you need. Let say, you want to convert from String to date or from Integer to Float.
+            In Selma, we do not want magic conversion, so converting from boxed Integer to native int and reverse is supported but,
+            we do not support auto-magically convert from int to float because there can be data loss. So you can define youre own custom mapper.
+            </p>
+           <p>
+               A custom mapper is a class that contains methods one or more methods taking an input parameter (the source bean / value)
+               and return the destination value after hand coded mapping. You only need to add the class to the
+               <code>withMapper</code> attribute of the <code>@Mapper</code> annotation.
+           </p>
+           <h4>Let see it</h4>
+           <p>First, we add an address field to Person and PersonDto classes.</p>
+
+           <pre class="prettyprint language-java">
+public class Person {
+
+    private String firstName;
+    // ...
+    private Address address;
+
+               // + Getters and Setters
+}
+</pre>
+
+
+           <p>
+           Here address is stored in a nested bean, but in PersonDto:
+           </p>
+<pre class="prettyprint language-java">
+public class PersonDto {
+
+    private String firstName;
+    // ...
+    private String address;
+    // + Getters and Setters
+}
+</pre>
+
+           <p>
+               We use a simple String to store the address so on mapping we want to serialize the Address to String in PersonDTO.
+               Now lets define the CustomMapper:
+           </p>
+<pre class="prettyprint language-java">
+public class AddressMapper {
+
+    public String addressToString (Address in) {
+        return in.toString();
+    }
+}
+</pre>
+         <p>
+             For simplicity, we use the toString() method to demonstrate the feature. The method name is not relevant since Selma only match methods
+             based on the modifier, return type and single parameter type.
+             Compiler will report Custom Mapper miss use.
+
+         </p>
+
+           <p>Finally, we should define the Mapper interface:</p>
+<pre class="prettyprint language-java">
+@Mapper( withMapper = AddressMapper.class )
+public interface PersonMapper {
+
+    PersonDto asPersonDto(Person in);
+
+}
+</pre>
+
+           <p>Here we are, the custom mapper is now called from Selma generated base code to map our address field from Address class to String.</p>
+
+           <div class="callout callout-danger">
+               <h4>Custom Mapper Tips</h4>
+               <p>
+                   You can define multiple mapping methods in a CustomMapper class. But you can also, define multiple CustomMapper in the <code>@Mapper</code>
+                   definition.
+               </p>
+               <p>
+                   Just remember, for selma method name is nothing, just ensure to define the good In/Out type pair.
+               </p>
+           </div>
+
+           <h3 id="sourced-beans">Sourced beans</h3>
+            <p>
+                Sourced beans ? Whats do you mean ?
+            </p>
+           <p>
+               In some case, the beans needs to be bound to DataSource. With most libraries you'll need to provide a
+               Factory that will be called to get an instance of the targeted bean. But this kind of behaviour drives
+               the developer to use Reflection during the mapping. STOP, this breaks our philosophy because we want static compile code.
+           </p>
+           <p>
+               So how does Selma do ? Well, what we support is passing one or more object to the bean constructor.
+               Doing this we are able to pass a DataSource object to the bean. The only, constraints are to pass the
+               source to Selma when retrieving the generated Mapper and to declare sources type in the mapper interface.
+           </p>
+ <pre class="prettyprint language-java">
+@Mapper(withSource = DataSource.class)
+public interface SourcedBeanMapper {
+
+    AddressOutWithDataSource asAddressOut(AddressIn in);
+}
+</pre>
+
+           <p>Below is the out class:</p>
+<pre class="prettyprint language-java">
+public class AddressOutWithDataSource {
+
+    // ...
+    public final DataSource dataSource;
+
+    public AddressOutWithDataSource(DataSource dataSource) {
+       this.dataSource = dataSource;
+    }
+
+    // ...
+}
+</pre>
+
+           <p>Now you can retrieve, the mapper by passing the dataSource:</p>
+ <pre class="prettyprint language-java">
+       DataSource dataSource = new DataSource();
+       SourcedBeanMapper mapper = Selma.getMapper(SourcedBeanMapper.class, dataSource);
+</pre>
+
+           <div class="callout callout-danger">
+               <h4>Never forget constructors</h4>
+               <p>
+                   For sourced beans, Selma will call a constructor passing the source in the same exact order as
+                   defined in <code>@Mapper</code>. So ensure, that you have defined the constructors, and don't forget
+                   custom mappers !
                </p>
            </div>
 
@@ -440,9 +671,6 @@ public final class PersonMapperSelmaGeneratedClass
       $('.nav-collapse').scrollspy();
       $('html').smoothScroll(500);
 
-      $('#doc-links').affix({
-          offset: { top: $('#doc-links').offset().top -40  }
-      });
 
    });
 
