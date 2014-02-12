@@ -1,274 +1,147 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Selma - Stupid Simple Statically Linked Mapper</title>
+    <link rel="stylesheet" href="css/normalize.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="favicon.ico">
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+      <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
+      <script src="js/jquery.smoothscroll.js"></script>
+    <script>
+      setTimeout(function(){
+        $('body').addClass('onload');
+      }, 0);
 
-        <link rel="shortcut icon" href="favicon.ico">
-        <link rel="stylesheet" href="css/bootstrap.min.css">
+    </script>
+      <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+      <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+      <!--[if lt IE 9]>
+    <script src="html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <a href="https://github.com/xebia-france/selma"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 
-
-        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="css/selma.css">
-
-        <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
-        <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
-    </head>
-    <body id="home">
-        <!--[if lt IE 7]>
-            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-        <![endif]-->
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#"><img src="img/logo-v6-mini.png"></a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#home">Home</a></li>
-            <li><a href="#get-started">Tutorial</a></li>
-            <li><a href="#documentation">Documentation</a></li>
-          
-          </ul>
-            <ul class="nav navbar-nav navbar-right">
-              <li>
-                <a href="https://github.com/xebia-france/selma"><i class="icon-github"></i>Github</a>
-              </li>
-            <li><a class="pure-menu-heading" href="https://travis-ci.org/xebia-france/selma"><img
-                    src="https://travis-ci.org/xebia-france/selma.png?branch=master" alt="Build Status"></a></li>
+    <section id="header" style="display: none;">
+        <div class="wrapper">
+            <div class="left"><a href="/" alt="Selma Homepage">S3LM4</a></div>
+            <ul>
+                <li><a href="#why" data-speed="500" data-easing="easeInOutCubic" data-url="false" class="nav">Why</a></li>
+                <li><a href="#tutorial" data-speed="500" data-easing="easeInOutCubic" data-url="false"  class="nav">Tutorial</a></li>
+                <li><a href="#documentation" data-speed="500" data-easing="easeInOutCubic" data-url="false" class="nav">Documentation</a></li>
             </ul>
-        </div><!--/.navbar-collapse -->
-      </div>
-    </div>
-
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-      <div class="container">
-
-        <img src="img/logo-v6-medium.png" alt="S3lm4 logo" align="left" style="padding: 5px;"/>
-
-        <h2> What is <em>Selma</em> ?</h2>
-        <p>
-          <em><b>S3LMa</b></em> stands for <b>S</b>tupid <b>S</b>imple <b>S</b>tatically <b>L</b>inked <b>Ma</b>pper. 
-        </p>
-        <p>It generates static code to map properties from one bean to another. We <b>K</b>eep <b>I</b>t <b>S</b>tupid <b>S</b>imple: convention over configuration, light footprint, easy ot use, easy to learn, are Selma's roots.
-        </p>
-                <p>
-                    On one side, Selma is an <b>Annotation Processor</b> that generate Java code to handle the mapping from field to field at <b>compile time</b>.
-                  </p>
-                  <p>
-                    On the over side, it is an <b>API</b> to instantiate and invoke the <b>generated Mapper </b>implementation.
-                </p><p class="text-right">
-                <a class=" btn btn-primary btn-lg" href="#get-started">Get started &raquo;</a></p>
-      </div>
-    </div>
-    <div class="container home-white">
-      <!-- Example row of columns -->
-      <div class="row" >
-        <div class="col-lg-12 lead">
-          <h2>Why another mapping framework ?</h2>
-          <p>Existings frameworks massively use reflection API to build dynamicaly the mapper. 
-            Well let me see, it's fine !</p>
-            <p> In fact, it can be, but the better mapping framework I know is vanilla Java code with it's long list of if conditions. Because performance are far better, and I have total control on the mapping. More over, the static code is refactoring proof, and easy to debug.
-            </p>
-            <p>But that is painfull :p. Writing all this code is always my preferred part, almost always since there is sometime more than 3 poor little beans. That's where Selma comes, the idea is simple get advantages of the manual mapping without the pain.
-            </p>
+            <div class="right">
+                <a href="https://travis-ci.org/xebia-france/selma"><img class="travis" src="https://travis-ci.org/xebia-france/selma.png?branch=master" alt="Build Status"></a></li>
+                <!--<a href="#header" alt="Go to Top" class="nav">Top</a>-->
+            </div>
         </div>
 
-      </div>
-      <span id="get-started"></span>
-</div>
-<div class="home-grey">
-    <div class="container">
-      <div class="row">
+    </section>
+    <section id="content">
+    <h1><a href="http://xebia-france.github.io/selma"><img src="img/logo-v6-medium.png" alt="S3lm4 logo"/></a></h1>
+    <p id="tag"><em>S</em>tupid <em>S</em>imple <em>S</em>tatically <em>L</em>inked <em>Ma</em>pper</p>
+    <p>Selma generates static code to map properties from one bean to another. We <em>K</em>eep <em>I</em>t <em>S</em>tupid <em>S</em>imple: convention over configuration, light footprint, easy ot use, easy to learn, are Selma's roots. On one side, Selma is an <em>Annotation Processor</em> that generate Java code to handle the mapping from field to field at <em>compile time</em>. On the over side, it is an API to instantiate and invoke the generated Mapper implementation.</p>
 
-        <div class="col-lg-12 lead">
-        <h2 >The 1 minute tutorial</h2>
-        <h3> First add Selma to your pom </h3>
-        <pre class="prettyprint language-xml">
-          &lt;!-- scope provided because the processor is only needed for the compiler --&gt;
-          &lt;dependency&gt;
-              &lt;groupId&gt;fr.xebia.extras&lt;/groupId&gt;
-              &lt;artifactId&gt;selma-processor&lt;/artifactId&gt;
-              &lt;version&gt;0.1&lt;/version&gt;
-              &lt;scope&gt;provided&lt;/scope&gt;
-          &lt;/dependency&gt;
+    <h2 id="why">Why another mapping framework ?</h2>
 
-          &lt;!-- This is the only real dependency you will have in youre binaries --&gt;
-          &lt;dependency&gt;
-              &lt;groupId&gt;fr.xebia.extras&lt;/groupId&gt;
-              &lt;artifactId&gt;selma&lt;/artifactId&gt;
-              &lt;version&gt;0.1&lt;/version&gt;
-          &lt;/dependency&gt;
-        </pre>
-          <p>There are 2 artifacts</p>
-          <ul>
-            <li><strong>selma-processor</strong> It contains the annotation processor and the code generation part. It should be in a provided scope because we need it only at compilation time.</li>
-            <li><strong>selma</strong> Contains the API to work with the generated mappers. We use the default scope because we need the API at runtime.</li>
-          </ul>
-        </div>
+    <p>Existing frameworks massively use reflection API to build dynamically the mapper. Well let me see, it's fine ! In fact, it can be, but the better mapping framework I know is vanilla Java code with it's long list of if conditions. Because performance are far better, and I have total control on the mapping. More over, the static code is refactoring proof, and easy to debug. But that is painful :p. Writing all this code is always my preferred part, almost always since there is sometime more than 3 poor little beans. That's where Selma comes, the idea is simple get advantages of the manual mapping without the pain.</p>
 
-      </div>
-            <div class="row">
+    <h2 id="tutorial">The 1 minute tutorial</h2>
+    <p class="bullet-point">First add Selma to your <em>pom</em></p>
 
-        <div class="col-lg-12 lead">
- <h3>Then, declare youre mapper</h3>
-          <p>In Selma, a mapper is an interface annotated with <code>@Mapper</code>.
-            They define the mapping methods we want.</p>
-          <pre class="prettyprint language-java">
-@Mapper
+        <pre class="prettyprint language-xml"><code>&lt;!-- scope provided because the processor is only needed for the compiler --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;fr.xebia.extras&lt;/groupId&gt;
+        &lt;artifactId&gt;selma-processor&lt;/artifactId&gt;
+        &lt;version&gt;0.1&lt;/version&gt;
+        &lt;scope&gt;provided&lt;/scope&gt;
+    &lt;/dependency&gt;
+
+    &lt;!-- This is the only real dependency you will have in youre binaries --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;fr.xebia.extras&lt;/groupId&gt;
+        &lt;artifactId&gt;selma&lt;/artifactId&gt;
+        &lt;version&gt;0.1&lt;/version&gt;
+    &lt;/dependency&gt;
+</code></pre>
+
+    <p><i>There are 2 artifacts</i></p>
+    <ul>
+      <li><em>selma-processor</em> - contains the annotation processor and the code generation part. It should be in a provided scope because we need it only at compilation time.</li>
+      <li><em>selma</em> - contains the API to work with the generated mappers. We use the default scope because we need the API at runtime.</li>
+    </ul>
+
+    <p class="bullet-point">Then declare your mapper</p>
+
+<pre class="prettyprint language-xml"><code>@Mapper
 public interface SelmaMapper {
-
     OutBean asOutBean(InBean in);
 }
-          </pre>
-          <p> Here we've defined SelmaMapper which maps InBean to an instance of OutBean.</p>
-        </div>
+</code></pre>
 
-      </div>
-            <div class="row">
+    <p><i>Here we've defined SelmaMapper which maps InBean to an instance of OutBean.</i></p>
+    <p class="bullet-point">Finally, use the mapper</p>
 
-        <div class="col-lg-12 lead">
- <h3>Finaly, use the mapper</h3>
-          <p>In Selma, a mapper is an interface annotated with <code>@Mapper</code>.
-            They define the mapping methods we want.</p>
-          <pre class="prettyprint language-java">
-// Get SelmaMapper
+<pre class="prettyprint language-java"><code>// Get SelmaMapper
 SelmaMapper mapper = Selma.getMapper(SelmaMapper.class);
 
 // Map my InBean
 OutBean res = mapper.asOutBean(in);
-          </pre>
+</code></pre>
 
-           <h3>Last, build and enjoy !</h3>
-           <p>
-            Any issue will be reported in the compiler log, it will also give you fix tips.
-           </p>
-           <p><a href="https://github.com/xebia-france/selma/tree/master/examples">Check our sample app project in github.</a></p>
+    <p class="bullet-point">Build and enjoy!</p>
+    <p>Any issue will be reported in the compiler log, it will also give you fix tips.</p>
+    <p><a href="https://github.com/xebia-france/selma/tree/master/examples">Check our sample app project in github.</a></p>
 
-        </div>
+    </section>
 
-      </div>
-      </div>
-      </div>
+    <section id="documentation">
+        <h1>Documentation</h1>
+        <p>This is where you go when get stuck ! First keep in mind that Selma knows only one thing, generate implementation code for mapper interface.</p>
+        <h2 id="mapping">Mapping</h2>
+        <p>Selma match fields using setter and getter names. What does this mean ? Selma match can map only same field names. We only use setters and getters so don't worry about the inner field name.</p>
+        <p class="alert alert-danger">By default, missing properties aka properties from in bean does not match any field in out bean and reverse, will break compilation.</p>
+        <h2>Let see an example</h2>
+        <p class="bullet-point">First the model object a Person :</p>
 
-    <div class="container">
-      <div class="row">
-
-        <!-- Docs menu -->
-        <div class="col-lg-3">
-          <div id="doc-links" class="doc-links">
-          <ul class="nav nav-stacked nav-pills ">
-            <li><a href="#documentation">Documentation</a></li>
-            <li><a href="#mapping">Mapping</a> </li>
-            <li><a href="#ignore-fields">Ignore Fields</a> </li>
-            <li> <a href="#nested-bean">Nested bean</a> </li>
-            <li><a href="#collections">Collections</a> </li>
-            <li> <a href="#custom-mapper">Custom Mapper</a> </li>
-            <li> <a href="#sourced-beans">Sourced beans</a> </li>
-          </ul>
-        </div>
-        </div>
-        <!-- Docs body -->
-        <div class="col-lg-9">
-          <div class="page-header">
-            <h1 id="documentation"> Documentation </h1>
-           </div>
-           <div class=""><p>
-                This is where you go when get stuck !
-                First keep in mind that Selma knows only one thing, generate implementation code for mapper interface.
-              </p>
-
-
-              <h2 id="mapping">Mapping</h2>
-              <p>
-                 Selma match fields using setter and getter names. 
-              </p>
-              <p>What does this mean ?</p>
-              <p>
-                Selma match can map only same field names. We only use setters and getters so don't worry about the inner field name. 
-              </p>
-              <div class="alert alert-danger">
-                By default, missing properties aka properties from in bean does not match any field in out bean and reverse, will break compilation.
-              </div>
-
-                <h3>Let see an example</h3>
-<p>
-First the model object a Person : 
-</p>
-<pre class="prettyprint language-java">
-public class Person {
+<pre class="prettyprint language-java"><code>public class Person {
 
     private String firstName;
     private String lastName;
     private Date birthDay;
     private int age;
     private Long[] indices;
-    private Collection<String> tags;
+    private Collection tags;
 
     // + Getters and Setters
-}
-</pre>
-
-<p>
-Then the DTO a PersonDto : 
-</p>
-<pre class="prettyprint language-java">
-public class PersonDto {
+}</code></pre>
+        <p class="bullet-point">Then the DTO a PersonDto :</p>
+<pre class="prettyprint language-java"><code>public class PersonDto {
 
     private String firstName;
     private String lastName;
     private Date birthDay;
     private int age;
     private Long[] indices;
-    private List<String> tags;
+    private List tags;
 
     // + Getters and Setters
-}
-</pre>
-<p>
-Now we define the Mapper interface : 
-</p>
-<pre class="prettyprint language-java">
-@Mapper
-public interface PersonMapper {
+}</code></pre>
+        <p class="bullet-point">Now we define the Mapper interface :</p>
+<pre class="prettyprint language-java"><code>@Mapper
+    public interface PersonMapper {
 
     PersonDto asPersonDto(Person in);
-}
-
-</pre>
-              <div class="alert alert-info">
-                All properties are exactly matching so this will work.
-              </div>
-
-<div class="panel-group" id="accordion">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-         Generated code is:
-      </h4>
-    </div>
-    <div id="collapseOne" class="panel-collapse collapse in">
-      <div class="panel-body">
-<pre class="prettyprint language-java">
-// GENERATED BY S3LM4
+}</code></pre>
+        <p>All properties are exactly matching so this will work.</p>
+        <p class="bullet-point">Generated code is:</p>
+<pre class="prettyprint language-java"><code>// GENERATED BY S3LM4
 package fr.xebia.extras.selma.beans;
-
 
 public final class PersonMapperSelmaGeneratedClass
     implements PersonMapper {
-
 
   /**
    * Single constructor
@@ -285,7 +158,7 @@ public final class PersonMapperSelmaGeneratedClass
     if (in != null) {
       out = new fr.xebia.extras.selma.beans.PersonDto();
       if (in.getTags() != null) {
-        java.util.ArrayList<java.lang.String> _TagsTmpCollection = new java.util.ArrayList<java.lang.String>(in.getTags().size());
+        java.util.ArrayList _TagsTmpCollection = new java.util.ArrayList(in.getTags().size());
         out.setTags(_TagsTmpCollection);
         for (java.lang.String _TagsItem : in.getTags()) {
           if (_TagsItem != null) {
@@ -338,177 +211,140 @@ public final class PersonMapperSelmaGeneratedClass
     return out;
   }
 
-}
-</pre>
-      </div>
-    </div>
-  </div>
-  </div>
+}</code></pre>
+        <p><span class="disclaimer">Add the generated source to youre IDE</span><br/>Using a maven build, you will find the generated sources under target/generated-sources/annotations.</p>
 
-              <div class="callout callout-danger">
-                <h4>Add the generated source to youre IDE</h4>
-                <p>
-                  Using a maven build, you will find the generated sources under <code>target/generated-sources/annotations</code>.
-                </p>
+        <h2>Mapper class</h2>
+        <p>All mappers are generated using the name of the interface with a suffix SelmaGeneratedClass. The class are generated in the same package as the interface and declared final.</p>
 
-              </div>
+        <h2>Null values</h2>
+        <p>Selma generated code always protect against NPE. The mapper will process mapping if value is not null else the mapper will explicitely set null to the destination bean.</p>
 
-                <h4>Mapper class</h4>
-                <p>
-                  All mappers are generated using the name of the interface with a suffix <code>SelmaGeneratedClass</code>. The class are generated in the same package as the interface and declared <code>final</code>. 
-                </p>
+        <h2>Strict copy</h2>
+        <p>Selma warrants immutability of the in bean, all values setted in the destination bean are strict copy of original values.</p>
 
-                <h4>Null values</h4>
-                <p>
-                  Selma generated code always protect against NPE.
-                  The mapper will process mapping if value is not null else the mapper will explicitely set null to the destination bean.
-                </p>
-                <h4>Strict copy</h4>
-                <p>
-                  Selma warrants immutability of the in bean, all values setted in the destination bean are strict copy of original values.
-                </p>
+        <h2 id="ignore-fields">Ignore fields</h2>
+        <p>
+            Selma makes strict copy, so it will try to match each single property. When matching properties are
+            not found in source or destination bean, the compiler will fail reporting missing properties.
 
-           <h3 id="ignore-fields">Ignore fields</h3>
-                <p>
-                    Selma makes strict copy, so it will try to match each single property. When matching properties are
-                    not found in source or destination bean, the compiler will fail reporting missing properties.
+        </p>
+        <p>
+            At this point, you have 2 solutions:
+        <ul>
+            <li>Use the <code>ignoreMissingProperties</code> <code>@Mapper</code> attribute, to totally
+                disable this strict behavior and silently ignore missing properties.</li>
+            <li>Use the <code>@IgnoreFields</code> annotation, to list explicitly fields that will be
+                ignored at compile time.</li>
+        </ul>
+        </p>
 
-                </p>
-                <p>
-                    At this point, you have 2 solutions:
-                    <ul>
-                        <li>Use the <code>ignoreMissingProperties</code> <code>@Mapper</code> attribute, to totally
-                            disable this strict behavior and silently ignore missing properties.</li>
-                        <li>Use the <code>@IgnoreFields</code> annotation, to list explicitly fields that will be
-                            ignored at compile time.</li>
-                    </ul>
-                </p>
-
-           <div class="callout callout-danger">
-               <h4>Scope the <code>@IgnoreFields</code></h4>
-               <p>
-                   You can define this annotation either at the class level of the Mapper interface, or for specific
-                   mapping methods.
-               </p>
-           </div>
-
-
-
-           <h3 id="nested-bean">
-                  Nested bean
-                </h3>
-                <p>
-                  Mapper code will declare a single separated method for each nested bean in the graph.
-                </p>
-               <div class="callout callout-danger">
-                   <h4>Declare nested bean methods</h4>
-                   <p>
-                      Selma will override the methods defined in the mapper interface and use it everywhere it is needed.
-                      If they are declared, you will be able to use them from the interface.
-                   </p>
-               </div>
-
-
-               <h3 id="collections">
-                   Collections and Map
-               </h3>
-               <p>
-                    Selma detects class implementing <code>java.util.Collection</code> and either use a default implementation, or the given one.
-               </p>
-               <p>This means that Selma can convert any Collection to another Collection class.
-               Let say you have a LinkedList in the inBean and an ArrayList in the out bean or you want to convert from Collection type to a Set.
-               </p>
-
-           <div class="callout callout-danger">
-               <h4>Maps</h4>
-               <p>
-                   Selma will also process the mapping of <code>java.util.Map</code> ensuring that both the Key and the values will be converted as any type.
-                   Both key and value are subject to mapping, so Pojo will be mapped in both case.
-               </p>
-           </div>
-
-           <h4>Defaults</h4>
-            <p> Selma uses default collection implementation, when mapping requires to return an interface. See the table below to find corresponding implementation.</p>
-           <table class="table table-striped">
-               <thead>
-               <tr>
-                   <th>Interface</th>
-                   <th>Implementation</th>
-               </tr>
-               </thead>
-               <tbody>
-               <tr>
-                   <td>Set</td>
-                   <td>HashSet</td>
-               </tr>
-               <tr>
-                   <td>SortedSet</td>
-                   <td>TreeSet</td>
-               </tr>
-               <tr>
-                   <td>BlockingDeque</td>
-                   <td>LinkedBlockingDeque</td>
-               </tr>
-               <tr>
-                   <td>BlockingQueue</td>
-                   <td>LinkedBlockingQueue</td>
-               </tr>
-               <tr>
-                   <td>Queue</td>
-                   <td>PriorityQueue</td>
-               </tr>
-               <tr>
-                   <td>Deque</td>
-                   <td>ArrayDeque</td>
-               </tr>
-               <tr>
-                   <td>List</td>
-                   <td>ArrayList</td>
-               </tr>
-               <tr>
-                   <td>NavigableSet</td>
-                   <td>ConcurrentSkipListSet</td>
-               </tr>
-               <tr>
-                   <td>Map</td>
-                   <td>HashMap</td>
-               </tr>
-               <tr>
-                   <td>ConcurrentMap</td>
-                   <td>ConcurrentHashMap</td>
-               </tr>
-               <tr>
-                   <td>ConcurrentNavigableMap</td>
-                   <td>ConcurrentSkipListMap</td>
-               </tr>
-               <tr>
-                   <td>NavigableMap</td>
-                   <td>TreeMap</td>
-               </tr>
-               <tr>
-                   <td>SortedMap</td>
-                   <td>TreeMap</td>
-               </tr>
-               <tr>
-                   <td>Collection</td>
-                   <td>ArrayList</td>
-               </tr>
-               </tbody>
-           </table>
-
-           <h3 id="custom-mapper">Custom Mapper</h3>
+            <h3>Scope the <code>@IgnoreFields</code></h3>
             <p>
+                You can define this annotation either at the class level of the Mapper interface, or for specific
+                mapping methods.
+            </p>
+
+
+        <h2>Nested bean</h2>
+        <p>Mapper code will declare a single separated method for each nested bean in the graph.</p>
+
+        <p><span class="disclaimer">Declare nested bean methods</span><br/>
+        Selma will override the methods defined in the mapper interface and use it everywhere it is needed. If they are declared, you will be able to use them from the interface.</p>
+
+        <h2>Collections and Maps</h2>
+        <h3>Collections</h3>
+        <p>Selma detects class implementing java.util.Collection and either use a default implementation, or the given one.
+        This means that Selma can convert any Collection to another Collection class. Let say you have a LinkedList in the inBean and an ArrayList in the out bean or you want to convert from Collection type to a Set.</p>
+
+        <h3>Maps</h3>
+        <p>Selma will also process the mapping of <code>java.util.Map</code> ensuring that both the Key and the values will be converted as any type.
+            Both key and value are subject to mapping, so Pojo will be mapped in both case.
+        </p>
+
+
+                <h3>Defaults</h3>
+                <p> Selma uses default collection implementation, when mapping requires to return an interface. See the table below to find corresponding implementation.</p>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Interface</th>
+                        <th>Implementation</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Set</td>
+                        <td>HashSet</td>
+                    </tr>
+                    <tr>
+                        <td>SortedSet</td>
+                        <td>TreeSet</td>
+                    </tr>
+                    <tr>
+                        <td>BlockingDeque</td>
+                        <td>LinkedBlockingDeque</td>
+                    </tr>
+                    <tr>
+                        <td>BlockingQueue</td>
+                        <td>LinkedBlockingQueue</td>
+                    </tr>
+                    <tr>
+                        <td>Queue</td>
+                        <td>PriorityQueue</td>
+                    </tr>
+                    <tr>
+                        <td>Deque</td>
+                        <td>ArrayDeque</td>
+                    </tr>
+                    <tr>
+                        <td>List</td>
+                        <td>ArrayList</td>
+                    </tr>
+                    <tr>
+                        <td>NavigableSet</td>
+                        <td>ConcurrentSkipListSet</td>
+                    </tr>
+                    <tr>
+                        <td>Map</td>
+                        <td>HashMap</td>
+                    </tr>
+                    <tr>
+                        <td>ConcurrentMap</td>
+                        <td>ConcurrentHashMap</td>
+                    </tr>
+                    <tr>
+                        <td>ConcurrentNavigableMap</td>
+                        <td>ConcurrentSkipListMap</td>
+                    </tr>
+                    <tr>
+                        <td>NavigableMap</td>
+                        <td>TreeMap</td>
+                    </tr>
+                    <tr>
+                        <td>SortedMap</td>
+                        <td>TreeMap</td>
+                    </tr>
+                    <tr>
+                        <td>Collection</td>
+                        <td>ArrayList</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+        <h2 id="custom-mapper">Custom Mapper</h2>
+        <p>
             Sometimes, Selma will not do what you need. Let say, you want to convert from String to date or from Integer to Float.
             In Selma, we do not want magic conversion, so converting from boxed Integer to native int and reverse is supported but,
             we do not support auto-magically convert from int to float because there can be data loss. So you can define youre own custom mapper.
-            </p>
-           <p>
-               A custom mapper is a class that contains methods one or more methods taking an input parameter (the source bean / value)
-               and return the destination value after hand coded mapping. You only need to add the class to the
-               <code>withMapper</code> attribute of the <code>@Mapper</code> annotation.
-           </p>
-           <h4>Let see it</h4>
-           <p>First, we add an address field to Person and PersonDto classes.</p>
+        </p>
+        <p>
+            A custom mapper is a class that contains methods one or more methods taking an input parameter (the source bean / value)
+            and return the destination value after hand coded mapping. You only need to add the class to the
+            <code>withMapper</code> attribute of the <code>@Mapper</code> annotation.
+        </p>
+        <h3>Let see it</h3>
+        <p>First, we add an address field to Person and PersonDto classes.</p>
 
            <pre class="prettyprint language-java">
 public class Person {
@@ -521,10 +357,9 @@ public class Person {
 }
 </pre>
 
-
-           <p>
-           Here address is stored in a nested bean, but in PersonDto:
-           </p>
+        <p>
+            Here address is stored in a nested bean, but in PersonDto:
+        </p>
 <pre class="prettyprint language-java">
 public class PersonDto {
 
@@ -535,10 +370,10 @@ public class PersonDto {
 }
 </pre>
 
-           <p>
-               We use a simple String to store the address so on mapping we want to serialize the Address to String in PersonDTO.
-               Now lets define the CustomMapper:
-           </p>
+        <p>
+            We use a simple String to store the address so on mapping we want to serialize the Address to String in PersonDTO.
+            Now lets define the CustomMapper:
+        </p>
 <pre class="prettyprint language-java">
 public class AddressMapper {
 
@@ -547,14 +382,14 @@ public class AddressMapper {
     }
 }
 </pre>
-         <p>
-             For simplicity, we use the toString() method to demonstrate the feature. The method name is not relevant since Selma only match methods
-             based on the modifier, return type and single parameter type.
-             Compiler will report Custom Mapper miss use.
+        <p>
+            For simplicity, we use the toString() method to demonstrate the feature. The method name is not relevant since Selma only match methods
+            based on the modifier, return type and single parameter type.
+            Compiler will report Custom Mapper miss use.
 
-         </p>
+        </p>
 
-           <p>Finally, we should define the Mapper interface:</p>
+        <p>Finally, we should define the Mapper interface:</p>
 <pre class="prettyprint language-java">
 @Mapper( withMapper = AddressMapper.class )
 public interface PersonMapper {
@@ -564,33 +399,29 @@ public interface PersonMapper {
 }
 </pre>
 
-           <p>Here we are, the custom mapper is now called from Selma generated base code to map our address field from Address class to String.</p>
+        <p>Here we are, the custom mapper is now called from Selma generated base code to map our address field from Address class to String.</p>
 
-           <div class="callout callout-danger">
-               <h4>Custom Mapper Tips</h4>
-               <p>
-                   You can define multiple mapping methods in a CustomMapper class. But you can also, define multiple CustomMapper in the <code>@Mapper</code>
-                   definition.
-               </p>
-               <p>
-                   Just remember, for selma method name is nothing, just ensure to define the good In/Out type pair.
-               </p>
-           </div>
-
-           <h3 id="sourced-beans">Sourced beans</h3>
             <p>
-                Sourced beans ? Whats do you mean ?
+            <span class="disclaimer">Custom Mapper Tips</span><br/>
+                You can define multiple mapping methods in a CustomMapper class. But you can also, define multiple CustomMapper in the <code>@Mapper</code>
+                definition.
             </p>
-           <p>
-               In some case, the beans needs to be bound to DataSource. With most libraries you'll need to provide a
-               Factory that will be called to get an instance of the targeted bean. But this kind of behaviour drives
-               the developer to use Reflection during the mapping. STOP, this breaks our philosophy because we want static compile code.
-           </p>
-           <p>
-               So how does Selma do ? Well, what we support is passing one or more object to the bean constructor.
-               Doing this we are able to pass a DataSource object to the bean. The only, constraints are to pass the
-               source to Selma when retrieving the generated Mapper and to declare sources type in the mapper interface.
-           </p>
+            <p>
+                Just remember, for selma method name is nothing, just ensure to define the good In/Out type pair.
+            </p>
+
+        <h2 id="sourced-beans">Sourced beans</h2>
+        <p>
+           <span class="disclaimer">  Sourced beans ? What do you mean ?</span><br/>
+            In some case, the beans needs to be bound to DataSource. With most libraries you'll need to provide a
+            Factory that will be called to get an instance of the targeted bean. But this kind of behaviour drives
+            the developer to use Reflection during the mapping. STOP, this breaks our philosophy because we want static compile code.
+        </p>
+        <p>
+            So how does Selma do ? Well, what we support is passing one or more object to the bean constructor.
+            Doing this we are able to pass a DataSource object to the bean. The only, constraints are to pass the
+            source to Selma when retrieving the generated Mapper and to declare sources type in the mapper interface.
+        </p>
  <pre class="prettyprint language-java">
 @Mapper(withSource = DataSource.class)
 public interface SourcedBeanMapper {
@@ -599,7 +430,7 @@ public interface SourcedBeanMapper {
 }
 </pre>
 
-           <p>Below is the out class:</p>
+        <p>Below is the out class:</p>
 <pre class="prettyprint language-java">
 public class AddressOutWithDataSource {
 
@@ -614,66 +445,50 @@ public class AddressOutWithDataSource {
 }
 </pre>
 
-           <p>Now you can retrieve, the mapper by passing the dataSource:</p>
+        <p>Now you can retrieve, the mapper by passing the dataSource:</p>
  <pre class="prettyprint language-java">
        DataSource dataSource = new DataSource();
        SourcedBeanMapper mapper = Selma.getMapper(SourcedBeanMapper.class, dataSource);
 </pre>
 
-           <div class="callout callout-danger">
-               <h4>Never forget constructors</h4>
-               <p>
-                   For sourced beans, Selma will call a constructor passing the source in the same exact order as
-                   defined in <code>@Mapper</code>. So ensure, that you have defined the constructors, and don't forget
-                   custom mappers !
-               </p>
-           </div>
+            <p>
+            <span class="disclaimer"> Never forget constructors</span><br/>
+                For sourced beans, Selma will call a constructor passing the source in the same exact order as
+                defined in <code>@Mapper</code>. So ensure, that you have defined the constructors, and don't forget
+                custom mappers !
+            </p>
 
 
-           </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </section>
 
-      <footer>
-        <div id="footer" class="container">
-                    <div class="row">
-
-        <div class="col-lg-12">
-        <p >&copy; Séven Le Mesle and Xebia 2013</p>
-      </div>
-    </div>
-    </div>
-      </footer>
+    <footer>
+      <span>© Séven Le Mesle and Xebia 2014</span>
+    </footer>
 
 
+  <script type="text/javascript">
+      // Show or hide fixed menu
+      var menuFixed = false,
+      $menuFixed = $("#header");
+      var i=0;
+      $(window).scroll(function () {
+          if ($(window).scrollTop() > 149) {
+              if (menuFixed === false) {
+                  $menuFixed.slideDown("0.2");
+                  menuFixed = true;
+              }
+          } else {
+              if (menuFixed === true) {
+                  $menuFixed.slideUp("0.2");
+                  menuFixed = false;
+              }
+          }
+      });
 
+      $( function () {
+          $('html').smoothScroll(500);
+      });
 
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
-        <script src="http://mathiasbynens.be/demo/jquery.smoothscroll.js"></script>
-        <script src="js/vendor/bootstrap.min.js"></script>
-
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
-
-        <script>
-        /*    var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
-            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-            g.src='http://www.google-analytics.com/ga.js';
-            s.parentNode.insertBefore(g,s)}(document,'script'));*/
-        </script>
-                <script type="text/javascript">
-      
-  
-  $( function () {
-      $('.nav-collapse').scrollspy();
-      $('html').smoothScroll(500);
-
-
-   });
-
-        </script>
-    </body>
+  </script>
+  </body>
 </html>
