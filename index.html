@@ -55,7 +55,7 @@
     &lt;dependency&gt;
         &lt;groupId&gt;fr.xebia.extras&lt;/groupId&gt;
         &lt;artifactId&gt;selma-processor&lt;/artifactId&gt;
-        &lt;version&gt;0.1&lt;/version&gt;
+        &lt;version&gt;0.2&lt;/version&gt;
         &lt;scope&gt;provided&lt;/scope&gt;
     &lt;/dependency&gt;
 
@@ -63,7 +63,7 @@
     &lt;dependency&gt;
         &lt;groupId&gt;fr.xebia.extras&lt;/groupId&gt;
         &lt;artifactId&gt;selma&lt;/artifactId&gt;
-        &lt;version&gt;0.1&lt;/version&gt;
+        &lt;version&gt;0.2&lt;/version&gt;
     &lt;/dependency&gt;
 </code></pre>
 
@@ -218,7 +218,7 @@ public final class PersonMapperSelmaGeneratedClass
         <p>All mappers are generated using the name of the interface with a suffix SelmaGeneratedClass. The class are generated in the same package as the interface and declared final.</p>
 
         <h2>Null values</h2>
-        <p>Selma generated code always protect against NPE. The mapper will process mapping if value is not null else the mapper will explicitely set null to the destination bean.</p>
+        <p>Selma generated code always protect against NPE. The mapper will process mapping if value is not null else the mapper will explicitly set null to the destination bean.</p>
 
         <h2>Strict copy</h2>
         <p>Selma warrants immutability of the in bean, all values setted in the destination bean are strict copy of original values.</p>
@@ -244,6 +244,46 @@ public final class PersonMapperSelmaGeneratedClass
                 You can define this annotation either at the class level of the Mapper interface, or for specific
                 mapping methods.
             </p>
+
+        <h2>Enumerations</h2>
+        <p>
+            Default behavior, is to consider that all values in source enum exists in destination enum. We take great care to build a separate method that will be used
+            every time the same enum to enum mapping is needed. This method maps using a Switch block without default.
+        </p>
+        <p>
+            In some situation, you'll need more than the default behavior. The EnumMapper annotation is there for you, with it, Selma will use a slightly different strategy.
+            The processor will still build a separate method but this time it map only identical values from both enums and use the given default value.
+            This annotation can be used at interface level inside the Mapper annotation.
+        </p>
+
+         <pre class="prettyprint language-java">
+@Mapper( enums = @EnumMapper(from=EnumA.class, to=EnumB.class, defaultValue="UNKNOWN"))
+public interface PersonMapper {
+
+    PersonDto asPersonDto(Person in);
+
+}
+         </pre>
+
+        <p>
+            But you can also use it at method level.
+        </p>
+
+        <pre class="prettyprint language-java">
+@Mapper
+public interface PersonMapper {
+
+    @EnumMapper(defaultValue="UNKNOWN")
+    EnumB asEnumB(EnumA in);
+
+}
+         </pre>
+
+        <p>
+            <span class="disclaimer">All parameters are optional but ...</span><br/>
+            At class level, you need to specify from and to, if you don't specify defaultValue it will defaults to null in generated code.
+            At method level, if in and out types are enums, you won't need to specify from and to.
+        </p>
 
 
         <h2>Nested bean</h2>
