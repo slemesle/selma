@@ -55,7 +55,7 @@
     &lt;dependency&gt;
         &lt;groupId&gt;fr.xebia.extras&lt;/groupId&gt;
         &lt;artifactId&gt;selma-processor&lt;/artifactId&gt;
-        &lt;version&gt;0.2&lt;/version&gt;
+        &lt;version&gt;0.3&lt;/version&gt;
         &lt;scope&gt;provided&lt;/scope&gt;
     &lt;/dependency&gt;
 
@@ -63,7 +63,7 @@
     &lt;dependency&gt;
         &lt;groupId&gt;fr.xebia.extras&lt;/groupId&gt;
         &lt;artifactId&gt;selma&lt;/artifactId&gt;
-        &lt;version&gt;0.2&lt;/version&gt;
+        &lt;version&gt;0.3&lt;/version&gt;
     &lt;/dependency&gt;
 </code></pre>
 
@@ -285,6 +285,22 @@ public interface PersonMapper {
             At method level, if in and out types are enums, you won't need to specify from and to.
         </p>
 
+        <h2>Field name mapping</h2>
+        <p>By default the generated mapper, will map fields with same name. But you can also specify a custom name to name mapping using the @Field annotation.</p>
+        <p>@Field are defined in the fields parameter of the @Mapper annotation, it contains the list of custom field name mapping.
+           See below, we map the field "nom" to "lastname" and the field "prenom" to "firstname".
+        </p>
+            <pre class="prettyprint language-java">
+@Mapper(ignoreMissingProperties = true, fields={
+        @Field({"nom", "lastname"}), @Field({"prenom", "firstname"})
+})
+public interface CustomFieldMapper {
+
+    SimplePersonDto convertFrom(SimplePerson in);
+
+}
+         </pre>
+
 
         <h2>Nested bean</h2>
         <p>Mapper code will declare a single separated method for each nested bean in the graph.</p>
@@ -449,6 +465,23 @@ public interface PersonMapper {
             <p>
                 Just remember, for selma method name is nothing, just ensure to define the good In/Out type pair.
             </p>
+
+        <h2>Mapper interceptor</h2>
+        <p>
+            Not convince by custom mapper, you need to do special things on the source or target bean after the mapping occurs.
+            Selma, allows you to define a hook in the custom mapper wich will be executed after the mapping itself.
+            </p>
+        <p>
+            You just need to define a method returning void and taking two parameters the in bean and the out bean. See the example below:
+        </p>
+        <pre class="prettyprint language-java">
+public class AddressMapper {
+
+    public void addressToString (Address in, AddressDto out) {
+        // Do some processing here the out is already filled in using in.
+    }
+}
+</pre>
 
         <h2 id="sourced-beans">Sourced beans</h2>
         <p>
