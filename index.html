@@ -2,7 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Selma - Stupid Simple Statically Linked Mapper</title>
+     <meta name="Description" content=" Selma - Java bean mapping that compiles">
+    <title>Selma</title>
     <link rel="stylesheet" href="css/normalize.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="shortcut icon" href="favicon.ico">
@@ -40,13 +41,13 @@
 
     </section>
     <section id="content">
-    <h1><a href="http://xebia-france.github.io/selma"><img src="img/logo-v6-medium.png" alt="S3lm4 logo"/></a></h1>
-    <p id="tag"><em>S</em>tupid <em>S</em>imple <em>S</em>tatically <em>L</em>inked <em>Ma</em>pper</p>
-    <p>Selma generates static code to map properties from one bean to another. We <em>K</em>eep <em>I</em>t <em>S</em>tupid <em>S</em>imple: convention over configuration, light footprint, easy ot use, easy to learn, are Selma's roots. On one side, Selma is an <em>Annotation Processor</em> that generate Java code to handle the mapping from field to field at <em>compile time</em>. On the over side, it is an API to instantiate and invoke the generated Mapper implementation.</p>
+    <h1><a href="http://xebia-france.github.io/selma"><img src="img/logo-v6-medium.png" alt="S3lm4 logo"/></a> </h1>
+    <p id="tag">Selma - Java bean mapping that compiles !</p>
+    <p>Selma stand for Stupid Simple Statically Linked Mapper, it generates static code to map properties from one bean to another. We <em>K</em>eep <em>I</em>t <em>S</em>tupid <em>S</em>imple: convention over configuration, light footprint, easy ot use, easy to learn, are Selma's roots. On one side, Selma is an <em>Annotation Processor</em> that generate Java code to handle the mapping from field to field at <em>compile time</em>. On the over side, it is an API to instantiate and invoke the generated Mapper implementation.</p>
 
-    <h2 id="why">Why another mapping framework ?</h2>
+    <h2 id="why">Why another Java mapping framework ?</h2>
 
-    <p>Existing frameworks massively use reflection API to build dynamically the mapper. Well let me see, it's fine ! In fact, it can be, but the better mapping framework I know is vanilla Java code with it's long list of if conditions. Because performance are far better, and I have total control on the mapping. More over, the static code is refactoring proof, and easy to debug. But that is painful :p. Writing all this code is always my preferred part, almost always since there is sometime more than 3 poor little beans. That's where Selma comes, the idea is simple get advantages of the manual mapping without the pain.</p>
+    <p>Existing frameworks massively use reflection API to build dynamically the maping code. Well let me see, it's fine ! In fact, it can be, but the better mapping framework I know is vanilla Java code with it's long list of if conditions. Because performance are far better, and I have total control on the mapping. More over, the static code is refactoring proof, and easy to debug. But that is painful :p. Writing all this code is always my preferred part, almost always since there is sometime more than 3 poor little beans. That's where Selma comes, the idea is simple get advantages of the manual mapping without the pain.</p>
 
     <h2 id="tutorial">The 1 minute tutorial</h2>
     <p class="bullet-point">First add Selma to your <em>pom</em></p>
