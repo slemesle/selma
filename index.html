@@ -56,7 +56,7 @@
     &lt;dependency&gt;
         &lt;groupId&gt;fr.xebia.extras&lt;/groupId&gt;
         &lt;artifactId&gt;selma-processor&lt;/artifactId&gt;
-        &lt;version&gt;0.3&lt;/version&gt;
+        &lt;version&gt;0.4&lt;/version&gt;
         &lt;scope&gt;provided&lt;/scope&gt;
     &lt;/dependency&gt;
 
@@ -64,7 +64,7 @@
     &lt;dependency&gt;
         &lt;groupId&gt;fr.xebia.extras&lt;/groupId&gt;
         &lt;artifactId&gt;selma&lt;/artifactId&gt;
-        &lt;version&gt;0.3&lt;/version&gt;
+        &lt;version&gt;0.4&lt;/version&gt;
     &lt;/dependency&gt;
 </code></pre>
 
@@ -302,6 +302,11 @@ public interface CustomFieldMapper {
 }
          </pre>
 
+        <p>
+            <span class="disclaimer">@Field as a scope</span><br/>
+            In the exemple above, we define two @Field available for the whole mapper implmentation class, but you can also
+            define fields name mapping on a per-method basis. @Fields is your friend for this purpose.
+        </p>
 
         <h2>Nested bean</h2>
         <p>Mapper code will declare a single separated method for each nested bean in the graph.</p>
