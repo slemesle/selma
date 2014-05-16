@@ -56,7 +56,7 @@
     &lt;dependency&gt;
         &lt;groupId&gt;fr.xebia.extras&lt;/groupId&gt;
         &lt;artifactId&gt;selma-processor&lt;/artifactId&gt;
-        &lt;version&gt;0.4&lt;/version&gt;
+        &lt;version&gt;0.5&lt;/version&gt;
         &lt;scope&gt;provided&lt;/scope&gt;
     &lt;/dependency&gt;
 
@@ -64,7 +64,7 @@
     &lt;dependency&gt;
         &lt;groupId&gt;fr.xebia.extras&lt;/groupId&gt;
         &lt;artifactId&gt;selma&lt;/artifactId&gt;
-        &lt;version&gt;0.4&lt;/version&gt;
+        &lt;version&gt;0.5&lt;/version&gt;
     &lt;/dependency&gt;
 </code></pre>
 
@@ -253,12 +253,12 @@ public final class PersonMapperSelmaGeneratedClass
         </p>
         <p>
             In some situation, you'll need more than the default behavior. The EnumMapper annotation is there for you, with it, Selma will use a slightly different strategy.
-            The processor will still build a separate method but this time it map only identical values from both enums and use the given default value.
+            The processor will still build a separate method but this time it map only identical values from both @hwithwithEnums and use the given default value.
             This annotation can be used at interface level inside the Mapper annotation.
         </p>
 
          <pre class="prettyprint language-java">
-@Mapper( enums = @EnumMapper(from=EnumA.class, to=EnumB.class, defaultValue="UNKNOWN"))
+@Mapper( withwithwithEnums = @EnumMapper(from=EnumA.class, to=EnumB.class, defaultValue="UNKNOWN"))
 public interface PersonMapper {
 
     PersonDto asPersonDto(Person in);
@@ -283,16 +283,17 @@ public interface PersonMapper {
         <p>
             <span class="disclaimer">All parameters are optional but ...</span><br/>
             At class level, you need to specify from and to, if you don't specify defaultValue it will defaults to null in generated code.
-            At method level, if in and out types are enums, you won't need to specify from and to.
+            At method level, if in and out types are withwithwithEnums, you won't need to specify from and to.
         </p>
 
         <h2>Field name mapping</h2>
         <p>By default the generated mapper, will map fields with same name. But you can also specify a custom name to name mapping using the @Field annotation.</p>
-        <p>@Field are defined in the fields parameter of the @Mapper annotation, it contains the list of custom field name mapping.
+        <p>@Field are defined in the @Fields annotation, it contains the list of custom field name mapping.
            See below, we map the field "nom" to "lastname" and the field "prenom" to "firstname".
         </p>
             <pre class="prettyprint language-java">
-@Mapper(ignoreMissingProperties = true, fields={
+@Mapper(ignoreMissingProperties = true)
+@Fields({
         @Field({"nom", "lastname"}), @Field({"prenom", "firstname"})
 })
 public interface CustomFieldMapper {
@@ -303,7 +304,7 @@ public interface CustomFieldMapper {
          </pre>
 
         <p>
-            <span class="disclaimer">@Field as a scope</span><br/>
+            <span class="disclaimer">@Fields as a scope</span><br/>
             In the exemple above, we define two @Field available for the whole mapper implmentation class, but you can also
             define fields name mapping on a per-method basis. @Fields is your friend for this purpose.
         </p>
@@ -403,7 +404,7 @@ public interface CustomFieldMapper {
         <p>
             A custom mapper is a class that contains methods one or more methods taking an input parameter (the source bean / value)
             and return the destination value after hand coded mapping. You only need to add the class to the
-            <code>withMapper</code> attribute of the <code>@Mapper</code> annotation.
+            <code>withCustom</code> attribute of the <code>@Mapper</code> annotation.
         </p>
         <h3>Let see it</h3>
         <p>First, we add an address field to Person and PersonDto classes.</p>
@@ -453,7 +454,7 @@ public class AddressMapper {
 
         <p>Finally, we should define the Mapper interface:</p>
 <pre class="prettyprint language-java">
-@Mapper( withMapper = AddressMapper.class )
+@Mapper( withCustom = AddressMapper.class )
 public interface PersonMapper {
 
     PersonDto asPersonDto(Person in);
@@ -466,16 +467,26 @@ public interface PersonMapper {
             <p>
             <span class="disclaimer">Custom Mapper Tips</span><br/>
                 You can define multiple mapping methods in a CustomMapper class. But you can also, define multiple CustomMapper in the <code>@Mapper</code>
-                definition.
+                definition.<b>All custom mapper class should define a public default constructor so the generated class can instantiate it.</b>
             </p>
             <p>
                 Just remember, for selma method name is nothing, just ensure to define the good In/Out type pair.
             </p>
 
+        <h2>Injecting your custom mapper instance</h2>
+        <p>
+            Sometimes the default mapping depends on services, as an exemple you need an encryption service to the password from clear string to a
+            ciphered one. Selma allows you to give your custom mapper instance when you get the generated Mapper from Selma.
+        </p>
+        <pre class="prettyprint language-java">
+            // Here we inject the AddressMapper instance to the Selma Mapper
+Selma.getMapperWithCustom(PersonMapper.class, new AddressMapper());
+</pre>
+
         <h2>Mapper interceptor</h2>
         <p>
             Not convince by custom mapper, you need to do special things on the source or target bean after the mapping occurs.
-            Selma, allows you to define a hook in the custom mapper wich will be executed after the mapping itself.
+            Selma, allows you to define a hook in the custom mapper which will be executed after the mapping itself.
             </p>
         <p>
             You just need to define a method returning void and taking two parameters the in bean and the out bean. See the example below:
@@ -502,7 +513,7 @@ public class AddressMapper {
             source to Selma when retrieving the generated Mapper and to declare sources type in the mapper interface.
         </p>
  <pre class="prettyprint language-java">
-@Mapper(withSource = DataSource.class)
+@Mapper(withSources = DataSource.class)
 public interface SourcedBeanMapper {
 
     AddressOutWithDataSource asAddressOut(AddressIn in);
