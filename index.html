@@ -57,7 +57,7 @@
     &lt;dependency&gt;
         &lt;groupId&gt;fr.xebia.extras&lt;/groupId&gt;
         &lt;artifactId&gt;selma-processor&lt;/artifactId&gt;
-        &lt;version&gt;0.6&lt;/version&gt;
+        &lt;version&gt;0.7&lt;/version&gt;
         &lt;scope&gt;provided&lt;/scope&gt;
     &lt;/dependency&gt;
 
@@ -65,7 +65,7 @@
     &lt;dependency&gt;
         &lt;groupId&gt;fr.xebia.extras&lt;/groupId&gt;
         &lt;artifactId&gt;selma&lt;/artifactId&gt;
-        &lt;version&gt;0.6&lt;/version&gt;
+        &lt;version&gt;0.7&lt;/version&gt;
     &lt;/dependency&gt;
 </code></pre>
 
@@ -98,7 +98,17 @@ OutBean res = mapper.asOutBean(in);
     <p><a href="https://github.com/xebia-france/selma/tree/master/examples">Check our sample app project in github.</a></p>
 
     <h2 id="news">News</h2>
-    <p><span class="disclaimer">Brand new release 0.6</span><br/>
+    <p><span class="disclaimer">Brand new release 0.7</span><br/>
+     Few bugs were fixed for this release:<br/>
+        <ul>
+            <li><a href="https://github.com/xebia-france/selma/issues/22">#22</a>: Same enum mapping is now processed as an immutable class</li>
+            <li><a href="https://github.com/xebia-france/selma/issues/23">#23</a>: Ignore field now support fully qualified name</li>
+            <li><a href="https://github.com/xebia-france/selma/issues/11">#11</a>: Report unused IgnoredFields using a compiler warning at class level and method level</li>
+            <li><a href="https://github.com/xebia-france/selma/issues/12">#12</a>: Report unused custom fields mapping with a compiler warning at class level and method level</li>
+        </ul>
+          See <a href="https://github.com/xebia-france/selma/blob/master/RELEASE_NOTES">release notes</a> or <a href="https://github.com/xebia-france/selma/issues?milestone=4&state=closed">Milestone</a>.
+    </p>
+     <p><span class="disclaimer">Brand new release 0.6</span><br/>
      Many performance improvements have been done, immutable class mapping does not generate null checks anymore.<br/>
      We also added support for BigDecimal, and fixed the collections size constructor bug (generated code always
      passed a size parameter to the constructor even if not existing).<br/>
@@ -210,13 +220,13 @@ public final class PersonMapperSelmaGeneratedClass implements PersonMapper {
         <p>Selma generated code always protect against NPE. The mapper will process mapping if value is not null else the mapper will explicitly set null to the destination bean.</p>
 
         <h2>Strict copy</h2>
-        <p>Selma warrants immutability of the in bean, all values setted in the destination bean are strict copy of original values.</p>
+        <p>Selma warrants immutability of the in bean, all values setted in the destination bean are strict copy of original values except for already immutable classes like String, BigDecimal, Enum, ...</p>
+
 
         <h2 id="ignore-fields">Ignore fields</h2>
         <p>
             Selma makes strict copy, so it will try to match each single property. When matching properties are
             not found in source or destination bean, the compiler will fail reporting missing properties.
-
         </p>
         <p>
             At this point, you have 2 solutions:
@@ -233,6 +243,37 @@ public final class PersonMapperSelmaGeneratedClass implements PersonMapper {
                 You can define this annotation either at the class level of the Mapper interface, or for specific
                 mapping methods.
             </p>
+<pre class="prettyprint language-java"><code>
+@Mapper
+@IgnoreFields({"name", "size"}) // Ignore "name" and "size" properties for all beans
+public interface IgnoreFieldMapper {
+
+    PersonOut asPersonOut(PersonIn in);
+
+    @IgnoreFields({"id"})   // Ignore "id" only for the CityIn/Out beans
+    CityOut asCityOut(CityIn in);
+
+}
+</code></pre>
+
+        <h3>Qualify <code>@IgnoreFields</code></h3>
+        <p>
+            The @<code>IgnoredField</code> support 3 notations to qualify the property to ignore:
+            <ol>
+                <li>Simple property name</li>
+                <li>Simple class name with propertie (<code>MyClass.name</code>)</li>
+                <li>Fully qualified class name with propertie (<code>org.package.MyClass.name</code>)</li>
+            </ol>
+
+<pre class="prettyprint language-java"><code>
+        @IgnoreFields("name")  // Will ignore all fields named name
+
+        @IgnoreFields("Library.name") // Will ignore name field if found in any Library class
+
+        @IgnoreFields("fr.xebia.extras.selma.Library.name") // Will Ignore name field for FQCN Library class.
+</code></pre>
+
+        </p>
 
         <h2>Enumerations</h2>
         <p>
@@ -271,7 +312,7 @@ public interface PersonMapper {
         <p>
             <span class="disclaimer">All parameters are optional but ...</span><br/>
             At class level, you need to specify from and to, if you don't specify defaultValue it will defaults to null in generated code.
-            At method level, if in and out types are withwithwithEnums, you won't need to specify from and to.
+            At method level, if in and out types are withEnums, you won't need to specify from and to.
         </p>
 
         <h2>Field name mapping</h2>
@@ -302,6 +343,28 @@ public interface CustomFieldMapper {
 
         <p><span class="disclaimer">Declare nested bean methods</span><br/>
         Selma will override the methods defined in the mapper interface and use it everywhere it is needed. If they are declared, you will be able to use them from the interface.</p>
+
+ <pre class="prettyprint language-java">
+@Mapper
+public interface UseDeclaredMethodMapper {
+
+    /**
+     * Handles mapping of PersonIn to PersonOut
+     */
+    PersonOut asPersonOut(PersonIn in);
+
+    /**
+     * Handles mapping of AddressIn to AddressOut.
+     * will be called by asPersonOut() method to map persons addresses
+     */
+    AddressOut asAddressOut(AddressIn in);
+
+     /*
+        This way you can also customize your mappings at method level
+      */
+}
+ </pre>
+
 
         <h2>Collections and Maps</h2>
         <h3>Collections</h3>
