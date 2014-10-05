@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
      <meta name="Description" content=" Selma - Java bean mapping that compiles v0.6">
-    <title>Selma 0.6</title>
+    <title>Selma 0.8</title>
     <link rel="stylesheet" href="css/normalize.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="shortcut icon" href="favicon.ico">
@@ -31,7 +31,7 @@
             <ul>
                 <li><a href="#why" data-speed="500" data-easing="easeInOutCubic" data-url="false" class="nav">Why</a></li>
                 <li><a href="#tutorial" data-speed="500" data-easing="easeInOutCubic" data-url="false"  class="nav">Tutorial</a></li>
-                <li><a href="#news" data-speed="500" data-easing="easeInOutCubic" data-url="false" class="nav">What's new in 0.7</a></li>
+                <li><a href="#news" data-speed="500" data-easing="easeInOutCubic" data-url="false" class="nav">What's new in 0.8</a></li>
                 <li><a href="#documentation" data-speed="500" data-easing="easeInOutCubic" data-url="false" class="nav">Documentation</a></li>
             </ul>
             <div class="right">
@@ -57,7 +57,7 @@
     &lt;dependency&gt;
         &lt;groupId&gt;fr.xebia.extras&lt;/groupId&gt;
         &lt;artifactId&gt;selma-processor&lt;/artifactId&gt;
-        &lt;version&gt;0.7&lt;/version&gt;
+        &lt;version&gt;0.8&lt;/version&gt;
         &lt;scope&gt;provided&lt;/scope&gt;
     &lt;/dependency&gt;
 
@@ -65,7 +65,7 @@
     &lt;dependency&gt;
         &lt;groupId&gt;fr.xebia.extras&lt;/groupId&gt;
         &lt;artifactId&gt;selma&lt;/artifactId&gt;
-        &lt;version&gt;0.7&lt;/version&gt;
+        &lt;version&gt;0.8&lt;/version&gt;
     &lt;/dependency&gt;
 </code></pre>
 
@@ -98,6 +98,16 @@ OutBean res = mapper.asOutBean(in);
     <p><a href="https://github.com/xebia-france/selma/tree/master/examples">Check our sample app project in github.</a></p>
 
     <h2 id="news">News</h2>
+    <p><span class="disclaimer">Brand new release 0.8</span><br/>
+     Few bugs were fixed for this release:<br/>
+        <ul>
+            <li><a href="https://github.com/xebia-france/selma/issues/13">#13</a>: Raise compiler warnings for unused Enum mapper</li>
+            <li><a href="https://github.com/xebia-france/selma/issues/14">#14</a>: Raise compiler warnings for unused Custom Mapper and insterceptor</li>
+            <li><a href="https://github.com/xebia-france/selma/issues/25">#25</a>: Gives ability to bypass mapper instance cache using the builder API</li>
+            <li><a href="https://github.com/xebia-france/selma/issues/25">#25</a>: Rebuild mapper instance if it is not assignable to the defined interface for use with specific reloding class loaders like Play dev mode</li>
+        </ul>
+          See <a href="https://github.com/xebia-france/selma/blob/master/RELEASE_NOTES">release notes</a> or <a href="https://github.com/xebia-france/selma/issues?milestone=4&state=closed">Milestone</a>.
+    </p>
     <p><span class="disclaimer">Brand new release 0.7</span><br/>
      Few bugs were fixed for this release:<br/>
         <ul>
@@ -222,6 +232,9 @@ public final class PersonMapperSelmaGeneratedClass implements PersonMapper {
         <h2>Strict copy</h2>
         <p>Selma warrants immutability of the in bean, all values setted in the destination bean are strict copy of original values except for already immutable classes like String, BigDecimal, Enum, ...</p>
 
+       <h2>Compiler warnings</h2>
+        <p>Selma tries to notify developpers with clear warnings. When a mapping is not possible, a field should be ignored or something in the mapping configuration is not used during the generation process, you will be notified with a clear warning or error.</p>
+
 
         <h2 id="ignore-fields">Ignore fields</h2>
         <p>
@@ -272,7 +285,13 @@ public interface IgnoreFieldMapper {
 
         @IgnoreFields("fr.xebia.extras.selma.Library.name") // Will Ignore name field for FQCN Library class.
 </code></pre>
-
+        </p>
+        <h3>Unused ignore fields</h3>
+        <p>
+            When one or more fields described in <code>@IgnoreFields</code>, is not found in the graph, so not used, you will get compiler warning. Giving you the opportunity to keep a clean mapping configuration.
+            <pre class="prettyprint"><code>
+            Ignored field "toto" is never used
+            </code></pre>
         </p>
 
         <h2>Enumerations</h2>
@@ -295,9 +314,7 @@ public interface PersonMapper {
 }
          </pre>
 
-        <p>
-            But you can also use it at method level.
-        </p>
+        <h3>Use <code>@EnumMapper</code> on methods</h3>
 
         <pre class="prettyprint language-java">
 @Mapper
@@ -314,6 +331,14 @@ public interface PersonMapper {
             At class level, you need to specify from and to, if you don't specify defaultValue it will defaults to null in generated code.
             At method level, if in and out types are withEnums, you won't need to specify from and to.
         </p>
+        <h3>Unused <code>@EnumMapper</code></h3>
+        <p>
+            When one or more enum described by <code>@EnumMapper</code>, is not found in the graph, so not used, you will get compiler warning. Giving you the opportunity to keep a clean mapping configuration.
+            <pre class="prettyprint"><code>
+            @EnumMapper(from=fr.xebia.extras.selma.beans.EnumIn, to=fr.xebia.extras.selma.beans.EnumOut) is never used
+            </code></pre>
+        </p>
+
 
         <h2>Field name mapping</h2>
         <p>By default the generated mapper, will map fields with same name. But you can also specify a custom name to name mapping using the @Field annotation.</p>
@@ -333,9 +358,17 @@ public interface CustomFieldMapper {
          </pre>
 
         <p>
-            <span class="disclaimer">@Fields as a scope</span><br/>
-            In the exemple above, we define two @Field available for the whole mapper implmentation class, but you can also
+            <span class="disclaimer">@Fields has a scope</span><br/>
+            In the exemple above, we defined two @Field available for the whole mapper implementation class, but you can also
             define fields name mapping on a per-method basis. @Fields is your friend for this purpose.
+        </p>
+
+        <h3>Unused <code>@Fields</code></h3>
+        <p>
+            When one or more field pairs described by <code>@Fields</code>, is not found in the graph, so not used, you will get compiler warning. Giving you the opportunity to keep a clean mapping configuration.
+            <pre class="prettyprint"><code>
+            Custom @Field({"nom","lastname"}) mapping is never used !
+            </code></pre>
         </p>
 
         <h2>Nested bean</h2>
@@ -521,8 +554,16 @@ public interface PersonMapper {
                 definition.<b>All custom mapper class should define a public default constructor so the generated class can instantiate it.</b>
             </p>
             <p>
-                Just remember, for selma method name is nothing, just ensure to define the good In/Out type pair.
+                Just remember, for selma, method name is nothing, just ensure to define the good In/Out type pair.
             </p>
+        <h3>Unused custom Mapper</h3>
+        <p>
+            When one or more custom mapper method described by <code>withCustom</code>, is not used, you will get compiler warning. Giving you the opportunity to keep a clean mapping configuration.
+            <pre class="prettyprint"><code>
+            Custom mapping method "fr.xebia.extras.selma.it.mappers.CustomMapper.asCityOut" is never used
+            </code></pre>
+        </p>
+
 
         <h2>Injecting your custom mapper instance</h2>
         <p>
@@ -536,7 +577,7 @@ Selma.getMapperWithCustom(PersonMapper.class, new AddressMapper());
 
         <h2>Mapper interceptor</h2>
         <p>
-            Not convince by custom mapper, you need to do special things on the source or target bean after the mapping occurs.
+            Not convinced by custom mapper, you need to do special things on the source or target bean after the mapping occurs.
             Selma, allows you to define a hook in the custom mapper which will be executed after the mapping itself.
             </p>
         <p>
@@ -556,10 +597,10 @@ public class AddressMapper {
            <span class="disclaimer">  Sourced beans ? What do you mean ?</span><br/>
             In some case, the beans needs to be bound to DataSource. With most libraries you'll need to provide a
             Factory that will be called to get an instance of the targeted bean. But this kind of behaviour drives
-            the developer to use Reflection during the mapping. STOP, this breaks our philosophy because we want static compile code.
+            the developer to use Reflection during the mapping. STOP, this breaks our philosophy because we want static compiled code.
         </p>
         <p>
-            So how does Selma do ? Well, what we support is passing one or more object to the bean constructor.
+            So how does Selma do ? Well, what we support is passing one or more objects to the bean constructor.
             Doing this we are able to pass a DataSource object to the bean. The only, constraints are to pass the
             source to Selma when retrieving the generated Mapper and to declare sources type in the mapper interface.
         </p>
@@ -607,8 +648,20 @@ public class AddressOutWithDataSource {
  <pre class="prettyprint language-java">
        MyMapper mapper = Selma.builder(MyMapper.class).
                                 withCustom(customMappers).
-                                withSource(dataSources).build();
+                                withSource(dataSources).
+                                disableCache().build();
 </pre>
+
+        <h2 id="mapper-instance">Mapper instance registry</h2>
+    <p>
+        By default <code>Selma</code> class acts as a registry, building and persisting mapper instances.
+        You can call Selma multiple times to get the same mapper instance, once built the instances are stored in private cache
+        so that next calls will return the pre-built instances. You can consider that Mapper instances are Singleton by default.
+    </p>
+    <p>
+        If you need Selma to build a fresh new mapper instance at each call then you should use the builder API described above and call
+    <code>disableCache()</code>.
+    </p>
 
     </section>
 
