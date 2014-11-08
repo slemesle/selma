@@ -298,6 +298,22 @@ public final class PersonMapperSelmaGeneratedClass implements PersonMapper {
         <p>
             You can find help about configuring eclipse <a href="https://github.com/xebia-france/selma/issues/28">here</a>.
         </p>
+        <h2>Snapshot builds</h2>
+        <p>
+            You can retrieve snapshots builds from 0.10-SNAPSHOT in the sonatype snapshot repository. For this to work, you should add Sonatype snaphot repository in your maven settings.xml or pom.xml
+        </p>
+        <pre class="prettyprint language-xml"><code>&lt;repositories&gt;
+        &lt;repository&gt;
+            &lt;id&gt;oss-sonatype&lt;/id&gt;
+            &lt;name&gt;oss-sonatype&lt;/name&gt;
+            &lt;url&gt;https://oss.sonatype.org/content/repositories/snapshots/&lt;/url&gt;
+            &lt;snapshots&gt;
+                &lt;enabled&gt;true&lt;/enabled&gt;
+            &lt;/snapshots&gt;
+        &lt;/repository&gt;
+&lt;/repositories&gt;
+        </code></pre>
+
 
         <h2>Mapper class</h2>
         <p>All mappers are generated using the name of the interface with a suffix SelmaGeneratedClass. The class are generated in the same package as the interface and declared final.</p>
