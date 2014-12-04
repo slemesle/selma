@@ -4,7 +4,6 @@
     <meta charset="utf-8">
      <meta name="Description" content="Selma - Java bean mapping that compiles !">
 
-      <link rel="canonical" href="http://selma-java.org">
     <title>Selma 0.9</title>
     <link rel="stylesheet" href="css/normalize.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -16,6 +15,11 @@
       setTimeout(function(){
         $('body').addClass('onload');
       }, 0);
+
+      if (window.location.href.indexOf('http://xebia-france.github.io/selma') === 0) {
+          document.write( '<meta http-equiv="refresh" content="0;URL=\'http://selma-java.org\'" />',
+          '<link rel="canonical" href="http://selma-java.org">');
+      }
 
     </script>
       <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
