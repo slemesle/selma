@@ -16,4 +16,4 @@
 
 # Selma has moved
 
-New site is http://xebia-france.github.io/selma/
+New site is http://selma-java.org
