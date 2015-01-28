@@ -63,6 +63,10 @@ version: "0.10"
         #top-header nav {
             border: none;
         }
+
+        html, body {
+            font-size: inherit;
+        }
     </style>
 
 
@@ -200,10 +204,10 @@ version: "0.10"
                 <div class="four fifths">
                 <nav class="nav no-border">
                     <ul>
-                    <li><a href="/" alt="Selma Homepage">Selma</a></li>
-                    <li><a href="#get-started" data-speed="500" data-easing="easeInOutCubic" data-url="false"  class="nav">Get Started</a></li>
-                    <li><a href="#news" data-speed="500" data-easing="easeInOutCubic" data-url="false" class="nav">What's new in 0.10</a></li>
-                    <li><a href="#documentation" data-speed="500" data-easing="easeInOutCubic" data-url="false" class="nav">Documentation</a></li>
+                    <li><a href="#welcome-top" alt="Selma Homepage" class="noicon">Selma</a></li>
+                    <li><a href="#get-started" class="noicon">Get Started</a></li>
+                    <li><a href="#news" class="noicon">What's new in 0.10</a></li>
+                    <li><a href="#documentation" class="noicon">Documentation</a></li>
                     </ul>
                 </nav>
                 </div>
@@ -352,8 +356,82 @@ OrderDto res = mapper.asOrderDto(in);
 
         <div class="row triple-gap-top-small-tablet triple-gap-top-desktop ">
             <h1 class="lite-square bordered padded green-bg">Documentation</h1>
+            <h2 class="blue pad-left pad-top">Configuration</h2>
 
+            <p class="pad-left">Selma can be used from Java 6 to 8.</p>
 
+            <h3 class="green pad-left pad-top">Using Maven</h3>
+
+            <p class="pad-left">Old releases of the maven compiler plugin tend to badly support annotation processor messages. We use successfully version 3.2.</p>
+            <div class="block pad-left">
+{% highlight xml %}
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>3.2</version>
+    <configuration>
+        <showWarnings>true</showWarnings>
+        <optimize>true</optimize>
+        <showDeprecation>true</showDeprecation>
+    </configuration>
+</plugin>
+{% endhighlight %}
+            </div>
+
+            <p class="pad-left pad-top">You can also use the annotation processor maven plugin if you can not move to maven compiler 3.2.</p>
+            <div class="block pad-left">
+{% highlight xml %}
+<plugin>
+    <groupId>org.bsc.maven</groupId>
+    <artifactId>maven-processor-plugin</artifactId>
+    <version>2.2.4</version>
+    <configuration>
+        <defaultOutputDirectory>
+            ${project.build.directory}/generated-sources
+        </defaultOutputDirectory>
+        <processors>
+            <processor>fr.xebia.extras.selma.codegen.MapperProcessor</processor>
+        </processors>
+    </configuration>
+    <executions>
+        <execution>
+            <id>process</id>
+            <phase>generate-sources</phase>
+            <goals>
+                <goal>process</goal>
+            </goals>
+        </execution>
+    </executions>
+    <dependencies>
+        <dependency>
+            <groupId>fr.xebia.extras</groupId>
+            <artifactId>selma-processor</artifactId>
+            <version>${selma.version}</version>
+        </dependency>
+    </dependencies>
+</plugin>
+{% endhighlight %}
+            </div>
+
+            <p class="pad-left pad-top">You can find help about configuring eclipse <a href="https://github.com/xebia-france/selma/issues/28" class="noicon">here</a>.</p>
+
+            <h3 class="green pad-left pad-top">Snapshot builds</h3>
+
+            <p class="pad-left">You can retrieve snapshots builds from 0.11-SNAPSHOT in the sonatype snapshot repository. For this to work, you should add Sonatype snaphot repository in your maven settings.xml or pom.xml</p>
+            <div class="block pad-left">
+{% highlight xml %}
+<repositories>
+    <repository>
+        <id>oss-sonatype</id>
+        <name>oss-sonatype</name>
+        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+    </repository>
+</repositories>
+{% endhighlight %}
+            </div>
         </div>
     </div>
 
