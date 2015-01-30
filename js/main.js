@@ -17,7 +17,8 @@
 
         document.onscroll = scroll;
 
-        $('a').smoothScroll();
+        $('#get-started-button').smoothScroll({offset: -40});
+        $('#top-header a').smoothScroll();
 
     });
 

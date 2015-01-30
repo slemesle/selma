@@ -135,7 +135,7 @@ version: "0.10"
             </div>
 
             <div class=" one fourths  triple-gap-top-desktop triple-gap-top-small-tablet padded bounceInLeft animated align-right-desktop align-right-small-tablet">
-                <a href="#get-started" rel="next" class="green button large noicon">Get Started <i class="icon-arrow-right"></i></a>
+                <a id="get-started-button" href="#get-started" rel="next" class="green button large noicon">Get Started <i class="icon-arrow-right"></i></a>
             </div>
         </div>
 
@@ -356,6 +356,15 @@ OrderDto res = mapper.asOrderDto(in);
 
         <div class="row triple-gap-top-small-tablet triple-gap-top-desktop ">
             <h1 class="lite-square bordered padded green-bg">Documentation</h1>
+
+            <h2 class="blue pad-left pad-top">Mapping beans properties</h2>
+            <p class="pad-left">
+                Selma match properties using setter and getter names. Selma can map only same field names.
+                By default, properties not existing in both source and destination beans will break compilation.
+            </p>
+
+
+
             <h2 class="blue pad-left pad-top">Configuration</h2>
 
             <p class="pad-left">Selma can be used from Java 6 to 8.</p>
