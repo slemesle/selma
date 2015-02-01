@@ -363,7 +363,7 @@ OrderDto res = mapper.asOrderDto(in);
             <h3 class="pad-left pad-top green">Same propertie names</h3>
             <h4 class="pad-left pad-top">Duplicate Beans</h4>
             <p class="pad-left">
-                You can use Selma to build duplicates of your beans or map from model to DTO when they shares same propertie names.
+                You can use Selma to build duplicates of your beans or map from model to DTO when they shares same property names.
             </p>
             <div class="container">
                 <div class="row">
@@ -457,7 +457,7 @@ public interface PersonMapper {
                     </div>
             <p class="pad-left">
                 Here we used prefixes <code>Person</code> and <code>fr.xebia.selma.Person</code> to show that you can
-                match ignored fields using simple class name or fqcn prefix.
+                match ignored fields using simple class name or FQCN prefix.
             </p>
 
 
@@ -536,11 +536,13 @@ public interface PersonMapper {
                 @Map configuration inherits and override @Mapper configuration.
             </p>
 
-
+<!--
+            Mapping Nested beans
+-->
             <h3 class="pad-left pad-top green">Mapping nested beans</h3>
             <p class="pad-left">
                 Selma takes care of generating mapping for the complete bean graph. Each embedded bean will be mapped
-                in it's own method of the generated code.
+                in it's own method of the generated code. You can customize the mapping
             </p>
             <div class="container">
                 <div class="row">
@@ -579,7 +581,192 @@ public class Address {
                     </div>
 
                 </div>
+                <div class="row">
+                    <div class="one-up one-up-small-tablet padded">
+  <h5 class="padded info-bg">Mapper declaring nested bean</h5>
+{% highlight java %}
+@Mapper
+public interface PersonMapper {
+
+    // Returns a new instance of PersonDTO mapped from Person source
+    PersonDto asPersonDTO(Person source);
+
+    // Returns a new instance of AddressDTO mapped from Address source
+    @Map(withIgnoreFields = "country")
+    AddressDTO asAddress(Address source);
+}
+{% endhighlight %}
+
+                    </div>
+                </div>
+
             </div>
+            <p class="pad-left">
+                Here we declared the <code>asAddress(Address source)</code> method in the mapper interface to demonstrate
+                we can do it. <code>asPersonDTO(Person source)</code> implementation will call <code>asAddress(Address
+                source)</code>. <b>Note that you do not need to declare this method for the mapping to work.</b>
+            </p>
+
+            <p class="pad-left alert message ">
+                @Map annotation can be used to configure the mapping of each nested bean in the graph.
+            </p>
+
+            <!--
+                Customize property names mapping
+            -->
+            <h3 class="pad-left pad-top green">Customize property names mapping</h3>
+            <p class="pad-left">
+                You can define custom property to property mapping using <code>withCustomFields</code>
+                parameter available in <code>@Mapper</code> and <code>@Map</code>.
+            </p>
+<div class="container">
+                <div class="row">
+                    <div class="two-up two-up-small-tablet padded">
+                        <h5 class="padded info-bg">Person Bean</h5>
+
+{% highlight java %}
+public class Person {
+
+    private String firstName;
+    private String lastName;
+    private Date birthDay;
+
+    // + Getters and Setters
+}
+{% endhighlight %}
+                    </div>
+
+                    <div class="two-up two-up-small-tablet padded">
+                        <h5 class="padded info-bg ">PersonDTO Bean</h5>
+
+{% highlight java %}
+public class PersonDTO {
+
+    private String name;
+    private String lastName;
+    private Date birthDate;
+
+    // + Getters and Setters
+}
+{% endhighlight %}
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="one-up one-up-small-tablet padded">
+  <h5 class="padded info-bg">Mapper with custom property names</h5>
+{% highlight java %}
+@Mapper(
+    withCustomFields = {
+        @Field({"firstName","name"}), @Field({"Person.birthDay","birthDate"})
+    }
+)
+public interface PersonMapper {
+
+    // Returns a new instance of PersonDTO mapped from Person source
+    PersonDto asPersonDTO(Person source);
+
+    // Returns a new instance of Person mapped from PersonDTO source
+    Person asPerson(PersonDTO source);
+}
+{% endhighlight %}
+
+                    </div>
+                </div>
+            </div>
+            <p class="pad-left">
+                This configuration will map <code>firstName</code> to <code>name</code> property and
+                <code>birthDay</code> to <code>birthDate</code> property. The <code>@Field</code> annotation define a
+                route that will be applied from <code>PersonDTO</code> to <code>Person</code> and reverse.
+            </p>
+
+            <p class="pad-left alert message ">
+                @Field supports prefixes to match fields names using simple class name or FQCN prefix. You can also
+                define custom fields in @Map annotation.
+            </p>
+
+            <h3 class="pad-left pad-top green">Flatten bean mapping</h3>
+            <p class="pad-left">
+                You can flatten properties from nested bean using <code>withCustomFields</code>
+                parameter available in <code>@Mapper</code> and <code>@Map</code>.
+            </p>
+<div class="container">
+                <div class="row">
+                    <div class="two-up two-up-small-tablet padded">
+                        <h5 class="padded info-bg">Person Bean</h5>
+
+{% highlight java %}
+public class Person {
+
+    private String firstName;
+    private String lastName;
+    private Date birthDay;
+
+    // See Address bean (line1, line2, zipCode, city, country)
+    private Address address;
+
+    // + Getters and Setters
+}
+{% endhighlight %}
+                    </div>
+
+                    <div class="two-up two-up-small-tablet padded">
+                        <h5 class="padded info-bg ">PersonDTO Bean</h5>
+
+{% highlight java %}
+public class PersonDTO {
+
+    private String firstName;
+    private String lastName;
+    private Date birthDay;
+    private String addressLine1;
+    private String addressLine2;
+    private String addressZipCode;
+    private String addressCity;
+    private String addressCountry;
+
+    // + Getters and Setters
+}
+{% endhighlight %}
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="one-up one-up-small-tablet padded">
+  <h5 class="padded info-bg">Mapper flattening properties from nested bean</h5>
+{% highlight java %}
+@Mapper(
+    withCustomFields = {
+        @Field({"address.line1","addressLine1"}), @Field({"address.line2","addressLine2"}),
+        @Field({"address.zipCode","addressZipCode"}), @Field({"address.city","addressCity"}),
+        @Field({"address.country","addressCountry"})
+    }
+)
+public interface PersonMapper {
+
+    // Returns a new instance of PersonDTO mapped from Person source
+    PersonDto asPersonDTO(Person source);
+
+    // Returns a new instance of Person mapped from PersonDTO source
+    Person asPerson(PersonDTO source);
+}
+{% endhighlight %}
+
+                    </div>
+                </div>
+            </div>
+            <p class="pad-left">
+                This configuration will flatten properties from <code>Address</code> bean to address* properties in
+                <code>PersonDTO</code>. It also works to unflatten the properties from <code>PersonDTO</code> to
+                <code>Person</code> and <code>Address</code>.
+            </p>
+
+            <p class="pad-left alert message ">
+                @Field may flatten from any level of the graph. You are not limited to first nested bean but can point a
+                property from any nesting level.
+            </p>
 
             <h2 class="blue pad-left pad-top">Configuration</h2>
 
@@ -587,7 +774,8 @@ public class Address {
 
             <h3 class="green pad-left pad-top">Using Maven</h3>
 
-            <p class="pad-left">Old releases of the maven compiler plugin tend to badly support annotation processor messages. We use successfully version 3.2.</p>
+            <p class="pad-left">Old releases of the maven compiler plugin tend to badly support annotation processor
+                messages. We use successfully version 3.2.</p>
             <div class="block pad-left">
 {% highlight xml %}
 <plugin>
@@ -603,7 +791,8 @@ public class Address {
 {% endhighlight %}
             </div>
 
-            <p class="pad-left pad-top">You can also use the annotation processor maven plugin if you can not move to maven compiler 3.2.</p>
+            <p class="pad-left pad-top">You can also use the annotation processor maven plugin if you can not move to
+                maven compiler 3.2.</p>
             <div class="block pad-left">
 {% highlight xml %}
 <plugin>
@@ -638,11 +827,14 @@ public class Address {
 {% endhighlight %}
             </div>
 
-            <p class="pad-left pad-top">You can find help about configuring eclipse <a href="https://github.com/xebia-france/selma/issues/28" class="noicon">here</a>.</p>
+            <p class="pad-left pad-top">You can find help about configuring eclipse
+                <a href="https://github.com/xebia-france/selma/issues/28" class="noicon">here</a>.</p>
 
             <h3 class="green pad-left pad-top">Snapshot builds</h3>
 
-            <p class="pad-left">You can retrieve snapshots builds from 0.11-SNAPSHOT in the sonatype snapshot repository. For this to work, you should add Sonatype snaphot repository in your maven settings.xml or pom.xml</p>
+            <p class="pad-left">You can retrieve snapshots builds from 0.11-SNAPSHOT in the sonatype snapshot
+                repository. For this to work, you should add Sonatype snaphot repository in your maven settings.xml or
+                pom.xml</p>
             <div class="block pad-left">
 {% highlight xml %}
 <repositories>
@@ -668,7 +860,8 @@ public class Address {
             <div class="row">
 
                 <div class="whole align-right">
-                    Proudly provided under Apache v2.0 license by <a href="http://twitter.com/XebiaFr">Xebia France</a> and <a href="http://twitter.com/slemesle" target="_blank">S&eacute;ven
+                    Proudly provided under Apache v2.0 license by <a href="http://twitter.com/XebiaFr">Xebia France</a>
+                    and <a href="http://twitter.com/slemesle" target="_blank">S&eacute;ven
                     Le Mesle</a>
                 </div>
 
