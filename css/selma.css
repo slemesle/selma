@@ -1,0 +1,76 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+
+           body {
+                padding-top: 50px;
+            }
+footer {
+  background-color: #000;
+  color: white;
+  padding: 30px;
+}
+
+.home-white {
+padding: 30px;
+margin-bottom: 30px;
+color: inherit;
+
+}
+
+.home-grey {
+padding: 30px;
+
+color: inherit;
+background-color:  #eee;
+}
+
+.doc-links {
+  padding: 30px;
+  margin-top: 30px;
+  background-color:  #eee;
+  border-radius: 10px;
+}
+
+
+/* Common styles for all types */
+.callout {
+  margin: 20px 0;
+  padding: 20px;
+  border-left: 3px solid #eee;
+}
+.callout h4 {
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+.callout p:last-child {
+  margin-bottom: 0;
+}
+
+
+/* Variations */
+.callout-danger {
+  background-color: #fdf7f7;
+  border-color: #eed3d7;
+}
+.callout-danger h4 {
+  color: #b94a48;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
