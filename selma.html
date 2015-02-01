@@ -34,12 +34,11 @@ version: "0.10"
 
         .highlight pre code {
             white-space: inherit;
-        }
-
-        code, .light-grey {
             background-color: #FAFAFA;
             display: block;
+            font-size: 14px;
         }
+
 
         .lite-square {
             border-radius: 4px;
@@ -178,7 +177,6 @@ version: "0.10"
         </div>
         <div class="row double-padded-small-tablet double-padded-desktop"></div>
 
-    </div>
     </div>
 
     <div id="welcome-foot" class="triple-gap-top-small-tablet triple-gap-top-desktop">
@@ -362,8 +360,226 @@ OrderDto res = mapper.asOrderDto(in);
                 Selma match properties using setter and getter names. Selma can map only same field names.
                 By default, properties not existing in both source and destination beans will break compilation.
             </p>
+            <h3 class="pad-left pad-top green">Same propertie names</h3>
+            <h4 class="pad-left pad-top">Duplicate Beans</h4>
+            <p class="pad-left">
+                You can use Selma to build duplicates of your beans or map from model to DTO when they shares same propertie names.
+            </p>
+            <div class="container">
+                <div class="row">
+                    <div class="two-up two-up-small-tablet padded">
+                        <h5 class="padded info-bg">Model Bean</h5>
+
+{% highlight java %}
+public class Person {
+
+    private String firstName;
+    private String lastName;
+    private Date birthDay;
+    private int age;
+    private Long[] indices;
+    private Collection tags;
+
+    // + Getters and Setters
+}
+{% endhighlight %}
+                    </div>
+
+                    <div class="two-up two-up-small-tablet padded">
+                        <h5 class="padded info-bg ">Mapper interface</h5>
+
+{% highlight java %}
+@Mapper
+public interface PersonMapper {
+
+    // Returns a duplicate of the source Person
+    Person duplicatePerson(Person source);
+}
+{% endhighlight %}
+
+                    </div>
+
+                </div>
+            </div>
+            <h4 class="pad-left pad-top">Mapping to DTO</h4>
+            <p class="pad-left">
+                Selma can reduce a model bean to a DTO containing a sublist of the properties.
+            </p>
+            <div class="container">
+                <div class="row">
+                    <div class="two-up two-up-small-tablet padded">
+                        <h5 class="padded info-bg">DTO Bean</h5>
+
+{% highlight java %}
+public class PersonDTO {
+
+    private String firstName;
+    private String lastName;
+    private Date birthDay;
+
+    // + Getters and Setters
+}
+{% endhighlight %}
+                    </div>
+
+                    <div class="two-up two-up-small-tablet padded">
+                        <h5 class="padded info-bg ">Mapper interface</h5>
+
+{% highlight java %}
+@Mapper(withIgnoreMissing = IgnoreMissing.DESTINATION)
+public interface PersonMapper {
+
+    // Returns a new instance of PersonDTO mapped from Person source
+    PersonDto asPersonDTO(Person source);
+}
+{% endhighlight %}
+
+                    </div>
+
+                </div>
+            </div>
+            <p class="pad-left">
+                Here we used <code>IgnoreMissing.DESTINATION</code> to indicate we wish to ignore properties (age,
+                indices, tags) from source bean missing in destination bean. But we could also choose to specify each
+                ignored fields.
+            </p>
+
+                    <div class="padded">
+                        <h5 class="padded info-bg">Mapper listing ignored fields</h5>
+{% highlight java %}
+@Mapper(withIgnoreFields = {"age", "Person.indices", "fr.xebia.selma.Person.tags"})
+public interface PersonMapper {
+
+    // Returns a new instance of PersonDTO mapped from Person source
+    PersonDto asPersonDTO(Person source);
+}
+{% endhighlight %}
+                    </div>
+            <p class="pad-left">
+                Here we used prefixes <code>Person</code> and <code>fr.xebia.selma.Person</code> to show that you can
+                match ignored fields using simple class name or fqcn prefix.
+            </p>
 
 
+            <h4 class="pad-left pad-top">Mapping from DTO</h4>
+            <p class="pad-left">
+                Selma can use a reduced DTO to build a model bean.
+            </p>
+            <div class="padded">
+                <h5 class="padded info-bg">Mapper interface</h5>
+{% highlight java %}
+@Mapper(withIgnoreMissing = IgnoreMissing.SOURCE)
+public interface PersonMapper {
+
+    // Returns a new instance of Person mapped from PersonDTO source
+    Person asPerson(PersonDTO source);
+}
+{% endhighlight %}
+            </div>
+            <p class="pad-left">
+                Here we used <code>IgnoreMissing.SOURCE</code> to indicate we wish to ignore properties (age,
+                indices, tags) missing in source bean.
+            </p>
+
+            <h4 class="pad-left pad-top">Mapping to and from DTO</h4>
+            <p class="pad-left">
+                A mapper interface can describe multiple mapping methods.
+            </p>
+            <div class="padded">
+                <h5 class="padded info-bg">Mapper interface</h5>
+{% highlight java %}
+@Mapper
+public interface PersonMapper {
+
+    // Returns a new instance of PersonDTO mapped from Person source
+    @Map(withIgnoreMissing = IgnoreMissing.DESTINATION)
+    PersonDto asPersonDTO(Person source);
+
+    // Returns a new instance of Person mapped from PersonDTO source
+    @Map(withIgnoreMissing = IgnoreMissing.SOURCE)
+    Person asPerson(PersonDTO source);
+}
+{% endhighlight %}
+            </div>
+            <p class="pad-left">
+                Here we used <code>@Map</code> annotation to describe mapping per method. Please notice that
+                <code>@Mapper</code> configuration is available for all mapping methods while <code>@Map</code> is only
+                applied to a single method. Both annotations provides the exact same parameters.
+            </p>
+            <h5 class="pad-left pad-top">Disabling missing field checks</h5>
+
+            <p class="pad-left">
+                By default Selma checks every single missing properties but you can choose to disable these helpfull
+                checks.
+            </p>
+            <div class="padded">
+                <h5 class="padded info-bg">Mapper ignoring all missing properties</h5>
+{% highlight java %}
+@Mapper(withIgnoreMissing = IgnoreMissing.ALL)
+public interface PersonMapper {
+
+    // Returns a new instance of PersonDTO mapped from Person source
+    PersonDto asPersonDTO(Person source);
+
+    // Returns a new instance of Person mapped from PersonDTO source
+    Person asPerson(PersonDTO source);
+}
+{% endhighlight %}
+            </div>
+            <p class="pad-left">
+                Here we used <code>IgnoreMissing.ALL</code> to disable missing properties checking. So we removed
+                <code>@Map</code> annotation, feel free to combine <code>@Mapper</code> and <code>@Map</code> in the
+                same mapper.
+            </p>
+
+            <p class="pad-left alert message ">
+                @Map configuration inherits and override @Mapper configuration.
+            </p>
+
+
+            <h3 class="pad-left pad-top green">Mapping nested beans</h3>
+            <p class="pad-left">
+                Selma takes care of generating mapping for the complete bean graph. Each embedded bean will be mapped
+                in it's own method of the generated code.
+            </p>
+            <div class="container">
+                <div class="row">
+                    <div class="two-up two-up-small-tablet padded">
+                        <h5 class="padded info-bg">Person Bean</h5>
+
+{% highlight java %}
+public class Person {
+
+    private String firstName;
+    private String lastName;
+    private Date birthDay;
+    private Address residency;
+
+    // + Getters and Setters
+}
+{% endhighlight %}
+                    </div>
+
+                    <div class="two-up two-up-small-tablet padded">
+                        <h5 class="padded info-bg ">Address Bean</h5>
+
+{% highlight java %}
+public class Address {
+
+    private String line1;
+    private String line2;
+    private String zipCode;
+    private String city;
+    private String country;
+
+    // + Getters and Setters
+}
+{% endhighlight %}
+
+                    </div>
+
+                </div>
+            </div>
 
             <h2 class="blue pad-left pad-top">Configuration</h2>
 
