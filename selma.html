@@ -103,7 +103,8 @@ version: "0.10"
             <div class="row" >
                 <div class="two thirds">
                     <h1 class="logo">
-                        <a href="http://www.selma-java.org"><img src="img/logo-v6-medium.png" alt="Selma logo"/> Selma </a>
+                        <a href="http://www.selma-java.org"><img src="img/logo-v6-medium.png" alt="Selma logo"/> Selma
+                        </a>
                     </h1>
                 </div>
                 <div class="one thirds">
@@ -124,7 +125,8 @@ version: "0.10"
         </div>
     </div>
     <div class="container padded">
-        <div class="row double-gap-top-desktop double-gap-top-small-tablet triple-padded-small-tablet triple-padded-desktop"></div>
+        <div class="row double-gap-top-desktop double-gap-top-small-tablet triple-padded-small-tablet
+         triple-padded-desktop"></div>
 
         <div class="row triple-gap-top-desktop triple-gap-top-small-tablet">
 
@@ -133,8 +135,10 @@ version: "0.10"
                 <h4>Clone, map and transform beans like manual without pain</h4>
             </div>
 
-            <div class=" one fourths  triple-gap-top-desktop triple-gap-top-small-tablet padded bounceInLeft animated align-right-desktop align-right-small-tablet">
-                <a id="get-started-button" href="#get-started" rel="next" class="green button large noicon">Get Started <i class="icon-arrow-right"></i></a>
+            <div class=" one fourths  triple-gap-top-desktop triple-gap-top-small-tablet padded bounceInLeft
+            animated align-right-desktop align-right-small-tablet">
+                <a id="get-started-button" href="#get-started" rel="next" class="green button large noicon">Get Started
+                    <i class="icon-arrow-right"></i></a>
             </div>
         </div>
 
@@ -187,7 +191,13 @@ version: "0.10"
                     <div class="g-plusone" data-size="large"></div>
 
                     <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
-                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?
+                            'http':'https';
+                        if(!d.getElementById(id)){
+                            js=d.createElement(s);
+                            js.id=id;
+                            js.src=p+'://platform.twitter.com/widgets.js';
+                            fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
                     <iframe src="http://ghbtns.com/github-btn.html?user=xebia-france&repo=selma&type=watch&count=true"
                             allowtransparency="true" frameborder="0" scrolling="0" width="104" height="20"></iframe>
@@ -210,7 +220,9 @@ version: "0.10"
                 </nav>
                 </div>
                 <div class="right-one fifths ">
-                    <a href="https://travis-ci.org/xebia-france/selma" class="noicon"><img class="travis" src="https://travis-ci.org/xebia-france/selma.png?branch=master" alt="Build Status"></a></li>
+                    <a href="https://travis-ci.org/xebia-france/selma" class="noicon">
+                        <img class="travis" src="https://travis-ci.org/xebia-france/selma.png?branch=master"
+                             alt="Build Status"></a></li>
                     <!--<a href="#header" alt="Go to Top" class="nav">Top</a>-->
                 </div>
             </div>
@@ -251,7 +263,8 @@ version: "0.10"
             <h2 class="blue pad-left pad-top">Declare the mapper</h2>
 
             <p class=" pad-left">
-                Selma uses a mapper interface to describe and configure the needed mapping. Here we want to map Order to OrderDto and reverse.
+                Selma uses a mapper interface to describe and configure the needed mapping. Here we want to map Order
+                to OrderDto and reverse.
             </p>
             <div class="block pad-left">
     {% highlight java %}
@@ -278,9 +291,12 @@ public interface SelmaMapper {
             </p>
             <div class="triple-gap-left">
                 <ol class="list  pad-left ">
-                    <li> Field <code class="inline-block">fullName</code> from the Customer class should be mapped to the field <code class="inline-block">customerFullName</code> in OrderDto  </li>
-                    <li> Field <code class="inline-block">reference</code> from any class should be mapped to the field <code class="inline-block">ref</code> in any matching class</li>
-                    <li> Field <code class="inline-block">id</code> should be skipped because it does not exist in OrderDto</li>
+                    <li> Field <code class="inline-block">fullName</code> from the Customer class should be mapped to
+                        the field <code class="inline-block">customerFullName</code> in OrderDto  </li>
+                    <li> Field <code class="inline-block">reference</code> from any class should be mapped to the
+                        field <code class="inline-block">ref</code> in any matching class</li>
+                    <li> Field <code class="inline-block">id</code> should be skipped because it does not exist in
+                        OrderDto</li>
                 </ol>
             </div>
 
@@ -301,9 +317,11 @@ OrderDto res = mapper.asOrderDto(in);
 
             <h2 class="blue pad-left pad-top">Build and enjoy</h2>
             <p class="pad-left ">
-                Compiler will report any issues like not mappable properties, unused mapping configuration or API miss-use.
+                Compiler will report any issues like not mappable properties, unused mapping configuration or API
+                miss-use.
                 <br>
-                <a href="https://github.com/xebia-france/selma/tree/master/examples">Check out our sample app project.</a>
+                <a href="https://github.com/xebia-france/selma/tree/master/examples">Check out our sample app
+                    project.</a>
             </p>
             <hr>
         </div>
@@ -321,26 +339,42 @@ OrderDto res = mapper.asOrderDto(in);
         <div class="row triple-gap-top-small-tablet triple-gap-top-desktop ">
             <h1 class="lite-square bordered padded green-bg">News</h1>
             <h2 class="blue pad-left pad-top">Brand new release 0.10</h2>
-            <p class="pad-left">   This release deprecates <code class="inline-block">@IgnoreFields</code> and <code class="inline-block">@Fields.</code> The new <code class="inline-block">@Maps</code> annotation should now be used instead.
+            <p class="pad-left">   This release deprecates <code class="inline-block">@IgnoreFields</code> and
+                <code class="inline-block">@Fields.</code> The new <code class="inline-block">@Maps</code> annotation
+                should now be used instead.
                 It supports all the parameters available in <code class="inline-block">@Mapper</code> at the method scope.</p>
             <div class="pad-left">
                 <ul class="unstyled ">
-                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/35">#35</a>: Deploy snapshots to sonatype snapshot repository</li>
-                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/36">#36</a>: Deprecate <code class="inline-block">@IgnoreFields</code> and <code class="inline-block">@Fields</code> in favor of a new annotation</li>
-                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/37">#37</a>: Add support for update graph in custom mappers</li>
-                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/38">#38</a>: Add support for scoped custom mappers</li>
-                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/40">#40</a>: Add compilation error when default enum value does not exist</li>
-                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/41">#41</a>: Compilation error when fields have no getter</li>
-                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/42">#42</a>: Support scoped mapping interceptor</li>
-                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/43">#43</a>: Remove deprecated <code class="inline-block">@IgnoreFields</code> from warning messages</li>
-                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/44">#44</a>: Add support for qualified class name in custom fields mapping</li>
-                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/45">#45</a>: Add support for custom embedded field to root level field</li>
-                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/46">#46</a>: Add support for ignore missing fields in source bean, destination bean or both</li>
-                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/47">#47</a>: Fix missing custom mapper in type mapping registry</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/35">#35</a>: Deploy
+                        snapshots to sonatype snapshot repository</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/36">#36</a>: Deprecate
+                        <code class="inline-block">@IgnoreFields</code> and <code class="inline-block">@Fields</code>
+                        in favor of a new annotation</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/37">#37</a>: Add support
+                        for update graph in custom mappers</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/38">#38</a>: Add support
+                        for scoped custom mappers</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/40">#40</a>: Add
+                        compilation error when default enum value does not exist</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/41">#41</a>: Compilation
+                        error when fields have no getter</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/42">#42</a>: Support
+                        scoped mapping interceptor</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/43">#43</a>: Remove
+                        deprecated <code class="inline-block">@IgnoreFields</code> from warning messages</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/44">#44</a>: Add support
+                        for qualified class name in custom fields mapping</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/45">#45</a>: Add support
+                        for custom embedded field to root level field</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/46">#46</a>: Add support
+                        for ignore missing fields in source bean, destination bean or both</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/47">#47</a>: Fix missing
+                        custom mapper in type mapping registry</li>
                 </ul>
             </div>
             <p class="pad-left pad-top">
-                See <a href="https://github.com/xebia-france/selma/blob/master/RELEASE_NOTES">release notes</a> or <a href="https://github.com/xebia-france/selma/issues?q=milestone%3A0.10">Milestone 0.10</a>.
+                See <a href="https://github.com/xebia-france/selma/blob/master/RELEASE_NOTES">release notes</a> or
+                <a href="https://github.com/xebia-france/selma/issues?q=milestone%3A0.10">Milestone 0.10</a>.
             </p>
             <hr>
         </div>
@@ -363,7 +397,8 @@ OrderDto res = mapper.asOrderDto(in);
             <h3 class="pad-left pad-top green">Same propertie names</h3>
             <h4 class="pad-left pad-top">Duplicate Beans</h4>
             <p class="pad-left">
-                You can use Selma to build duplicates of your beans or map from model to DTO when they shares same property names.
+                You can use Selma to build duplicates of your beans or map from model to DTO when they shares same
+                property names.
             </p>
             <div class="container">
                 <div class="row">
@@ -855,7 +890,7 @@ public interface PersonMapper {
 </section>
 
 <footer>
-    <div id="welcome-foot" class="triple-gap-top-small-tablet triple-gap-top-desktop">
+    <div id="footer" class="triple-gap-top-small-tablet triple-gap-top-desktop">
         <div class="container">
             <div class="row">
 
