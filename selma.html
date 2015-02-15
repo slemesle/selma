@@ -803,7 +803,309 @@ public interface PersonMapper {
                 property from any nesting level.
             </p>
 
-            <h2 class="blue pad-left pad-top">Configuration</h2>
+            <h2 id="update" class="blue pad-left pad-top">Updating destination bean</h2>
+
+            <p class="pad-left">
+                Instead of creating a new instance of the destination bean, you can choose to map the source bean
+                against a given instance of the destination bean. You only need to declare a second parameter in your
+                mapping methods that will be used as destination instance.
+            </p>
+                 <div class="block pad-left">
+                     <h5 class="padded info-bg">Mapper updating a destination bean</h5>
+{% highlight java %}
+@Mapper
+public interface PersonMapper {
+
+    // Returns the given destination PersonDto mapped from Person source
+    PersonDto updatePersonDTOFromPerson(Person source, PersonDto destination);
+
+    // Returns the given destination Person mapped from PersonDTO source
+    Person updatePersonFromPersonDTO(PersonDTO source, Person destination);
+}
+{% endhighlight %}
+            </div>
+
+            <h2 id="enums" class="blue pad-left pad-top">Mapping enums</h2>
+
+            <p class="pad-left">
+                Selma can map enums using a same value strategy by default. Selma will generate a new method for every
+                single enum to enum mapping required, using a switch block without default.
+            </p>
+<div class="container">
+                <div class="row">
+                    <div class="two-up two-up-small-tablet padded">
+                        <h5 class="padded info-bg">Person Bean</h5>
+
+{% highlight java %}
+public class Person {
+
+    private String firstName;
+    private String lastName;
+    private Date birthDay;
+    private PersonKind kind;
+
+    public enum PersonKind {
+       SIMPLE_CUSTOMER, PRODUCER, BUSINESS_CUSTOMER
+    }
+    // + Getters and Setters
+}
+{% endhighlight %}
+                    </div>
+
+                    <div class="two-up two-up-small-tablet padded">
+                        <h5 class="padded info-bg ">PersonDTO Bean</h5>
+
+{% highlight java %}
+public class PersonDTO {
+
+  private String firstName;
+    private String lastName;
+    private Date birthDay;
+    private PersonKindDto kind;
+
+    public enum PersonKindDto {
+       SIMPLE_CUSTOMER, PRODUCER, BUSINESS_CUSTOMER
+    }
+    // + Getters and Setters
+}
+{% endhighlight %}
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="one-up one-up-small-tablet padded">
+  <h5 class="padded info-bg">Mapper mapping same enum values</h5>
+{% highlight java %}
+@Mapper
+public interface PersonMapper {
+
+    // Returns a new instance of PersonDTO mapped from Person source
+    PersonDto asPersonDTO(Person source);
+
+}
+{% endhighlight %}
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="one-up one-up-small-tablet padded">
+  <h5 class="padded info-bg">Generated mapping method</h5>
+{% highlight java %}
+  /**
+   * Mapping method overridden by Selma
+   */
+  public final PersonKindDto asSalesChannelDto(PersonKind in) {
+    fr.xebia.extras.selma.beans.PersonKindDto out = null;
+    if (in != null) {
+      switch (in) {
+        case SIMPLE_CUSTOMER :  {
+          out = fr.xebia.extras.selma.beans.PersonKindDto.SIMPLE_CUSTOMER;
+          break;
+        }
+        case PRODUCER :  {
+          out = fr.xebia.extras.selma.beans.PersonKindDto.PRODUCER;
+          break;
+        }
+        case BUSINESS_CUSTOMER :  {
+          out = fr.xebia.extras.selma.beans.PersonKindDto.BUSINESS_CUSTOMER;
+          break;
+        }
+      }
+    }
+    return out;
+  }
+{% endhighlight %}
+
+                    </div>
+                </div>
+            </div>
+            <p class="pad-left alert message ">
+                Selma will raise compilation errors when both enums does not contain the same values.
+            </p>
+
+            <h3 id="enums-default-value" class="green pad-left pad-top">Enums with default value</h3>
+            <p class="pad-left">
+                Selma can map enums using a same value strategy with a default value. The default value will be used for
+                values not existing in both enums.
+            </p>
+
+            <div class="container">
+                <div class="row">
+                    <div class="one-up one-up-small-tablet padded">
+                        <h5 class="padded info-bg">Person Bean</h5>
+
+{% highlight java %}
+public class PersonDto {
+
+    private String firstName;
+    private String lastName;
+    private Date birthDay;
+    private PersonKindDto kind;
+
+    public enum PersonKindDto {
+       CUSTOMER, PRODUCER
+    }
+    // + Getters and Setters
+}
+{% endhighlight %}
+                    </div>
+                </div>
+                                <div class="row">
+                    <div class="one-up one-up-small-tablet padded">
+  <h5 class="padded info-bg">Default value</h5>
+{% highlight java %}
+@Mapper
+public interface PersonMapper {
+
+    // Map SIMPLE_CUSTOMER and BUSINESS_CUSTOMER to CUSTOMER
+    @Map(
+         withEnums = @EnumMapper(from=PersonKind.class, to=PersonKindDto.class, defaultValue="CUSTOMER")
+    )
+    PersonDto asPersonDTO(Person source);
+
+    // Map SIMPLE_CUSTOMER and BUSINESS_CUSTOMER to CUSTOMER
+    @EnumMapper(defaultValue="CUSTOMER")
+    PersonKindDto asPersonKindDto(PersonKind source);
+
+}
+{% endhighlight %}
+                    </div>
+                </div>
+            </div>
+            <p class="pad-left">
+                Here we demonstrated 2 ways of declaring a default value for your enum mapping:
+            </p>
+            <div class="triple-gap-left">
+                <ol class="list pad-left">
+                    <li>First one, declares a <code>@Map</code> with enum, so we need to declare both from and to enum
+                        with a default value.</li>
+                    <li>Second one, declares a <code>@EnumMapper</code> directly on a method mapping two enums types,
+                        with a default value.</li>
+                </ol>
+            </div>
+            <p class="pad-top pad-left">
+                It is also possible to declare the <code>enumMapper</code> inside <code>@Mapper</code>.<br/>
+                With this configuration <code>SIMPLE_CUSTOMER</code> and <code>BUSINESS_CUSTOMER</code> will be mapped
+                to <code>CUSTOMER</code>.
+            </p>
+            <p class="pad-left alert message ">
+                To have more control over the enum mapping, you will need to declare a custom mapper.
+            </p>
+
+
+            <h2 id="custom-mapper" class="blue pad-left pad-top">Mapping with custom mapper</h2>
+
+            <p class="pad-top pad-left">
+                Sometimes, Selma will not do what you need. Let say, you want to convert from String to date or from
+                Integer to Float. In Selma, we do not want magic conversion, so converting from boxed Integer to native
+                int and reverse is supported but, we do not support auto-magically convert from int to float because
+                there can be data loss. So you can define your own custom mapper. <br/>A custom mapper is a class that
+                contains one or more methods taking an input parameter (the source bean / value) and return the
+                destination value after hand coded mapping. You only need to add the class to the
+                <code>withCustom</code> attribute of the <code>@Mapper</code> or <code>@Map</code> annotation.
+            </p>
+<div class="container">
+                <div class="row">
+                    <div class="two-up two-up-small-tablet padded">
+                        <h5 class="padded info-bg">Person Bean</h5>
+
+{% highlight java %}
+public class Person {
+
+    private String name;
+    private Address address;
+
+    // + Getters and Setters
+}
+{% endhighlight %}
+                    </div>
+
+                    <div class="two-up two-up-small-tablet padded">
+                        <h5 class="padded info-bg ">PersonDTO Bean</h5>
+
+{% highlight java %}
+public class PersonDTO {
+
+    private String name;
+    private String address;
+
+    // + Getters and Setters
+}
+{% endhighlight %}
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="one-up one-up-small-tablet padded">
+  <h5 class="padded info-bg">Custom mapper mapping address to string</h5>
+{% highlight java %}
+public class AddressCustomMapper {
+
+    // Returns a string representation of the address
+    public String addressAsString(Address source){
+
+        return source.toString();
+    }
+
+}
+{% endhighlight %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="one-up one-up-small-tablet padded">
+  <h5 class="padded info-bg">Mapper declaring a custom mapper</h5>
+{% highlight java %}
+@Mapper(withCustom = AddressCustomMapper.class)
+public class PersonMapper {
+
+    // Returns a PersonDTO instance mapped from source
+    PersonDTO asPersonDTO(Person source);
+
+}
+{% endhighlight %}
+                    </div>
+                </div>
+    </div>
+
+            <p class="pad-left">The PersonMapper generated class will use the <code>AddressCustomMapper</code>
+                <code>addressAsString</code> method to map the <code>Address</code> to <code>String</code>.</p>
+
+            <h3 class="green pad-left pad-top">Update destination bean</h3>
+
+            <p class="pad-left">You can use custom mappers to update the destination bean as described in <a class="noicon" href="#update">
+                updating destination bean</a>. For this kind of use the custom mapping method should declare a second
+                parameter giving the destination bean.
+            </p>
+            <div class="block pad-left">
+{% highlight java %}
+public class AddressCustomMapper {
+
+    // Update des CustomMapper
+    public Address carFromDto(String addressString, Address destination) {
+        String [] lines = addressString.split('\n');
+        if (lines.length > 0){
+            dest.setFirstLine(lines[0]);
+        }
+        if (lines.length > 1){
+            dest.setSecondLine(lines[1]);
+        }
+        return dest;
+    }
+
+}
+
+{% endhighlight %}
+            </div>
+            <p class="pad-left">
+                All custom mapper class should define a public default constructor so the generated class can
+                instantiate it. Just remember, for selma, method name is nothing, just ensure to define the good In/Out
+                type pair.<br/>
+                Unused custom mapper will be reported as a compilation warning.
+            </p>
+
+            <h2 id="configuration" class="blue pad-left pad-top">Configuration</h2>
 
             <p class="pad-left">Selma can be used from Java 6 to 8.</p>
 
