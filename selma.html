@@ -1099,11 +1099,41 @@ public class AddressCustomMapper {
 {% endhighlight %}
             </div>
             <p class="pad-left">
-                All custom mapper class should define a public default constructor so the generated class can
+                All custom mapper class should define a <b>public default constructor</b> so the generated class can
                 instantiate it. Just remember, for selma, method name is nothing, just ensure to define the good In/Out
                 type pair.<br/>
                 Unused custom mapper will be reported as a compilation warning.
             </p>
+
+            <h3 class="green pad-left pad-top">Mapping interceptor</h3>
+
+            <p class="pad-left">
+                Not convinced by custom mapper, you need to do special things on the source or target bean after the
+                mapping occurs. Selma, allows you to define a hook in the custom mapper which will be executed after the
+                mapping itself. You just need to define a method returning void and taking two parameters the source
+                bean and the destination bean. See the example below:
+            </p>
+            <div class="block pad-left">
+{% highlight java %}
+public class AddressCustomMapper {
+
+    public void interceptAddressToDto(Address source, AddressDto destination) {
+        // Do some processing here the destination is already mapped.
+    }
+
+}
+
+{% endhighlight %}
+            </div>
+            <p class="pad-left">
+                <code>interceptAddressToDto</code> will be called by the generated mapping code at the end of the
+                mapping process.
+            </p>
+            <p class="pad-left alert message ">
+                Every custom mapper instance can be injected in the generated class when you build it from
+                <code>Selma</code>. This allows custom mappers to use some services of youre application code.
+            </p>
+
 
             <h2 id="configuration" class="blue pad-left pad-top">Configuration</h2>
 
