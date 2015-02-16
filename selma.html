@@ -1079,6 +1079,7 @@ public class PersonMapper {
                 parameter giving the destination bean.
             </p>
             <div class="block pad-left">
+                  <h5 class="padded info-bg">Custom mapper updating destination</h5>
 {% highlight java %}
 public class AddressCustomMapper {
 
@@ -1095,7 +1096,6 @@ public class AddressCustomMapper {
     }
 
 }
-
 {% endhighlight %}
             </div>
             <p class="pad-left">
@@ -1122,7 +1122,6 @@ public class AddressCustomMapper {
     }
 
 }
-
 {% endhighlight %}
             </div>
             <p class="pad-left">
@@ -1135,9 +1134,70 @@ public class AddressCustomMapper {
             </p>
 
 
-
             <h2 id="immutables" class="blue pad-left pad-top">Mapping immutable types</h2>
-<!-- TODO -->
+            <p class="pad-left">
+                By default Selma tries to map every bean. This means that given the same source and destination
+                propertie types, Selma will generate code to build a fresh new instance for the destination field.<br/>
+                If you want to directly use the source field in destination passing source reference to the destination
+                field, you should tell Selma that this is an immutable type.
+            </p>
+            <div class="container">
+                <div class="row">
+                    <div class="two-up two-up-small-tablet padded">
+                        <h5 class="padded info-bg">Person Bean</h5>
+
+{% highlight java %}
+public class Person {
+
+    private String name;
+    private String phoneNumber;
+    private Date birthDate;
+    private Address address;
+
+    // + Getters and Setters
+}
+{% endhighlight %}
+                    </div>
+
+                    <div class="two-up two-up-small-tablet padded">
+                        <h5 class="padded info-bg ">PersonDTO Bean</h5>
+
+{% highlight java %}
+public class PersonDTO {
+
+    private String name;
+    private String phoneNumber;
+    private Address address;
+
+    // + Getters and Setters
+}
+{% endhighlight %}
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="one-up one-up-small-tablet padded">
+                <h5 class="padded info-bg">Mapper passing by reference</h5>
+{% highlight java %}
+@Mapper(withImmutables = Address.class)
+public class PersonMapper {
+
+    // Returns a PersonDTO instance mapped from source with same address
+    @Map(withIgnoreMissing = IgnoreMissing.DESTINATION)
+    PersonDTO asPersonDTO(Person source);
+
+}
+{% endhighlight %}
+                    </div>
+                </div>
+            </div>
+            <p class="pad-left">
+                This mapper will pass by reference any mapping from <code>Address</code> to <code>Address</code>.
+                You can specify as many immutables type as you want. It is also possible to declare immutables inside
+                <code>@Map</code>.
+            </p>
+
 
             <h2 id="sourced-beans" class="blue pad-left pad-top">Using no factory</h2>
 <!-- TODO -->
