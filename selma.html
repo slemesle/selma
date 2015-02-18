@@ -66,6 +66,8 @@ version: "0.10"
         html, body {
             font-size: inherit;
         }
+
+
     </style>
 
 
@@ -241,7 +243,7 @@ version: "0.10"
                 Selma is available in maven central, feel free to add it to your pom dependencies.
             </p>
 
-            <div class="block  pad-left">
+            <div class="block pad-left">
 {% highlight xml %}
 <!-- scope provided because the processor is only needed at compile time-->
 <dependency>
@@ -402,7 +404,7 @@ OrderDto res = mapper.asOrderDto(in);
             </p>
             <div class="container">
                 <div class="row">
-                    <div class="two-up two-up-small-tablet padded">
+                    <div class="one half two-up-small-tablet padded">
                         <h5 class="padded info-bg">Model Bean</h5>
 
 {% highlight java %}
@@ -420,7 +422,7 @@ public class Person {
 {% endhighlight %}
                     </div>
 
-                    <div class="two-up two-up-small-tablet padded">
+                    <div class="one half two-up-small-tablet padded">
                         <h5 class="padded info-bg ">Mapper interface</h5>
 
 {% highlight java %}
@@ -442,7 +444,7 @@ public interface PersonMapper {
             </p>
             <div class="container">
                 <div class="row">
-                    <div class="two-up two-up-small-tablet padded">
+                    <div class="one half two-up-small-tablet padded">
                         <h5 class="padded info-bg">DTO Bean</h5>
 
 {% highlight java %}
@@ -457,7 +459,7 @@ public class PersonDTO {
 {% endhighlight %}
                     </div>
 
-                    <div class="two-up two-up-small-tablet padded">
+                    <div class="one half two-up-small-tablet padded">
                         <h5 class="padded info-bg ">Mapper interface</h5>
 
 {% highlight java %}
@@ -581,7 +583,7 @@ public interface PersonMapper {
             </p>
             <div class="container">
                 <div class="row">
-                    <div class="two-up two-up-small-tablet padded">
+                    <div class="one half two-up-small-tablet padded">
                         <h5 class="padded info-bg">Person Bean</h5>
 
 {% highlight java %}
@@ -597,7 +599,7 @@ public class Person {
 {% endhighlight %}
                     </div>
 
-                    <div class="two-up two-up-small-tablet padded">
+                    <div class="one half two-up-small-tablet padded">
                         <h5 class="padded info-bg ">Address Bean</h5>
 
 {% highlight java %}
@@ -656,8 +658,8 @@ public interface PersonMapper {
             </p>
 <div class="container">
                 <div class="row">
-                    <div class="two-up two-up-small-tablet padded">
-                        <h5 class="padded info-bg">Person Bean</h5>
+                    <div class="one half two-up-small-tablet padded">
+                        <h5 class="padded info-bg ">Person Bean</h5>
 
 {% highlight java %}
 public class Person {
@@ -671,7 +673,7 @@ public class Person {
 {% endhighlight %}
                     </div>
 
-                    <div class="two-up two-up-small-tablet padded">
+                    <div class="one half two-up-small-tablet padded">
                         <h5 class="padded info-bg ">PersonDTO Bean</h5>
 
 {% highlight java %}
@@ -728,7 +730,7 @@ public interface PersonMapper {
             </p>
 <div class="container">
                 <div class="row">
-                    <div class="two-up two-up-small-tablet padded">
+                    <div class="one half two-up-small-tablet padded">
                         <h5 class="padded info-bg">Person Bean</h5>
 
 {% highlight java %}
@@ -746,7 +748,7 @@ public class Person {
 {% endhighlight %}
                     </div>
 
-                    <div class="two-up two-up-small-tablet padded">
+                    <div class="one half two-up-small-tablet padded">
                         <h5 class="padded info-bg ">PersonDTO Bean</h5>
 
 {% highlight java %}
@@ -833,7 +835,7 @@ public interface PersonMapper {
             </p>
 <div class="container">
                 <div class="row">
-                    <div class="two-up two-up-small-tablet padded">
+                    <div class="one half two-up-small-tablet padded">
                         <h5 class="padded info-bg">Person Bean</h5>
 
 {% highlight java %}
@@ -852,7 +854,7 @@ public class Person {
 {% endhighlight %}
                     </div>
 
-                    <div class="two-up two-up-small-tablet padded">
+                    <div class="one half two-up-small-tablet padded">
                         <h5 class="padded info-bg ">PersonDTO Bean</h5>
 
 {% highlight java %}
@@ -1007,7 +1009,7 @@ public interface PersonMapper {
             </p>
 <div class="container">
                 <div class="row">
-                    <div class="two-up two-up-small-tablet padded">
+                    <div class="one half two-up-small-tablet padded">
                         <h5 class="padded info-bg">Person Bean</h5>
 
 {% highlight java %}
@@ -1021,7 +1023,7 @@ public class Person {
 {% endhighlight %}
                     </div>
 
-                    <div class="two-up two-up-small-tablet padded">
+                    <div class="one half two-up-small-tablet padded">
                         <h5 class="padded info-bg ">PersonDTO Bean</h5>
 
 {% highlight java %}
@@ -1078,7 +1080,7 @@ public class PersonMapper {
                 updating destination bean</a>. For this kind of use the custom mapping method should declare a second
                 parameter giving the destination bean.
             </p>
-            <div class="block pad-left">
+            <div class="block padded">
                   <h5 class="padded info-bg">Custom mapper updating destination</h5>
 {% highlight java %}
 public class AddressCustomMapper {
@@ -1113,7 +1115,7 @@ public class AddressCustomMapper {
                 mapping itself. You just need to define a method returning void and taking two parameters the source
                 bean and the destination bean. See the example below:
             </p>
-            <div class="block pad-left">
+            <div class="block padded">
 {% highlight java %}
 public class AddressCustomMapper {
 
@@ -1143,7 +1145,7 @@ public class AddressCustomMapper {
             </p>
             <div class="container">
                 <div class="row">
-                    <div class="two-up two-up-small-tablet padded">
+                    <div class="one half two-up-small-tablet padded">
                         <h5 class="padded info-bg">Person Bean</h5>
 
 {% highlight java %}
@@ -1159,7 +1161,7 @@ public class Person {
 {% endhighlight %}
                     </div>
 
-                    <div class="two-up two-up-small-tablet padded">
+                    <div class="one half two-up-small-tablet padded">
                         <h5 class="padded info-bg ">PersonDTO Bean</h5>
 
 {% highlight java %}
@@ -1199,8 +1201,79 @@ public class PersonMapper {
             </p>
 
 
-            <h2 id="sourced-beans" class="blue pad-left pad-top">Using no factory</h2>
-<!-- TODO -->
+            <h2 id="sourced-beans" class="blue pad-left pad-top">Using factory</h2>
+            <p class="pad-left">
+                Some beans can not be built with a default empty constructor. For some reason the application code use a
+                factory to provide new instances of these beans. Default Selma behavior is to call a default constructor
+                without parameters.<br/>
+                To solve this issue without using reflection at runtime, Selma supports <b>sourced beans</b>, the idea
+                is to pass one or more parameters to the constructor call in the generated code.
+            </p>
+            <div class="container">
+                <div class="row">
+                    <div class="one half two-up-small-tablet padded">
+                        <h5 class="padded info-bg">Person Bean bound to a DataSource</h5>
+
+{% highlight java %}
+public class Person {
+
+    private final DataSource ds;
+    private String name;
+    private String phoneNumber;
+    private Date birthDate;
+
+    // Constructor with DataSource
+    public Person (DataSource ds){
+        this.ds = ds;
+    }
+
+    // + Getters and Setters
+}
+{% endhighlight %}
+                    </div>
+
+                    <div class="one half two-up-small-tablet padded">
+                        <h5 class="padded info-bg ">PersonDTO Bean</h5>
+
+{% highlight java %}
+public class PersonDTO {
+
+    private String name;
+    private String phoneNumbe;
+    private Date birthDate;
+
+    // + Getters and Setters
+}
+{% endhighlight %}
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="one-up one-up-small-tablet padded">
+                <h5 class="padded info-bg ">Mapper declaring a source</h5>
+{% highlight java %}
+@Mapper(withSources = DataSource.class)
+public class PersonMapper {
+
+    // Returns a Person instance mapped from source populated with a DataSource
+    Person asPerson(PersonDTO source);
+
+}
+{% endhighlight %}
+                    </div>
+                </div>
+            </div>
+            <p>
+                This mapper will pass the given <code>DataSource</code> instance to the <code>Person</code> constructor.
+                To see how to inject the <code>DataSource</code> instance refer to
+                <a href="#building-mapper" class="noicon">Building the mapper</a>.
+            </p>
+            <p class="pad-left alert message ">
+                Future releases will support factory methods and factory class, so you can choose to use reflection on
+                youre own.
+            </p>
+
 
             <h2 id="building-mapper" class="blue pad-left pad-top">Building the mapper</h2>
 <!-- TODO -->
@@ -1214,7 +1287,7 @@ public class PersonMapper {
 
             <p class="pad-left">Old releases of the maven compiler plugin tend to badly support annotation processor
                 messages. We use successfully version 3.2.</p>
-            <div class="block pad-left">
+            <div class="block padded">
 {% highlight xml %}
 <plugin>
     <groupId>org.apache.maven.plugins</groupId>
@@ -1231,7 +1304,7 @@ public class PersonMapper {
 
             <p class="pad-left pad-top">You can also use the annotation processor maven plugin if you can not move to
                 maven compiler 3.2.</p>
-            <div class="block pad-left">
+            <div class="block padded">
 {% highlight xml %}
 <plugin>
     <groupId>org.bsc.maven</groupId>
@@ -1273,7 +1346,7 @@ public class PersonMapper {
             <p class="pad-left">You can retrieve snapshots builds from 0.11-SNAPSHOT in the sonatype snapshot
                 repository. For this to work, you should add Sonatype snaphot repository in your maven settings.xml or
                 pom.xml</p>
-            <div class="block pad-left">
+            <div class="block padded">
 {% highlight xml %}
 <repositories>
     <repository>
