@@ -19,6 +19,7 @@
 
         $('#get-started-button').smoothScroll({offset: -40});
         $('#top-header a').smoothScroll();
+        $('#documentation a').smoothScroll({offset: -40});
 
     });
 
