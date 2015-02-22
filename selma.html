@@ -67,6 +67,19 @@ version: "0.10"
             font-size: inherit;
         }
 
+        #toc ul {
+            list-style: none;
+        }
+
+        .h2 {
+           padding-left: 20px;
+        }
+        .h3 {
+           padding-left: 40px;
+        }
+        .h4 {
+           padding-left: 60px;
+        }
 
     </style>
 
@@ -89,6 +102,7 @@ version: "0.10"
 
     </script>
     <script src="js/jquery.smoothscroll.js"></script>
+    <!--<script src="js/toc.min.js"></script>-->
     <script src="js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     <script type="application/javascript" src="js/groundwork.all.js"></script>
     <script src="js/main.js"></script>
@@ -147,34 +161,34 @@ version: "0.10"
         <div class="row double-padded-small-tablet double-padded-desktop"></div>
 
         <div class="row triple-gap-top padded bounceInUp animated">
-            <div class="three-up two-up-small-tablet padded">
+            <div class="three-up-desktop two-up-small-tablet padded">
                 <h3 class="zero"><i class="icon-shield icon-2x gap-right"></i> Rock solid</h3>
 
                 <p>Mapping is checked at compilation, it is refactoring proof
                     and debuggable</p>
             </div>
-            <div class="three-up two-up-small-tablet padded">
+            <div class="three-up-desktop two-up-small-tablet padded">
                 <h3 class="zero"><i class="icon-rocket icon-2x gap-right"></i> Lightening fast</h3>
 
                 <p>Uses no reflection, no runtime processing, works as fast as manual mapping</p>
             </div>
-            <div class="three-up two-up-small-tablet padded">
+            <div class="three-up-desktop two-up-small-tablet padded">
                 <h3 class="zero"><i class="icon-code icon-2x gap-right"></i> Configuration as code</h3>
 
                 <p>Uses only annotations to describe and configure mapping, no external configuration files</p>
             </div>
-            <div class="three-up two-up-small-tablet padded">
+            <div class="three-up-desktop two-up-small-tablet padded">
                 <h3 class="zero"><i class="icon-magic icon-2x gap-right"></i> Annotation processor</h3>
 
                 <p>Built with <a href="https://www.jcp.org/en/jsr/detail?id=269" target="_blank">JSR 269</a>,
                     supports any Java version from v6, works anywhere (IDE, Maven, Gradle, ...)</p>
             </div>
-            <div class="three-up two-up-small-tablet padded">
+            <div class="three-up-desktop two-up-small-tablet padded">
                 <h3 class="zero"><i class="icon-thumbs-up icon-2x gap-right"></i> Stupid Simple</h3>
 
                 <p>Lightweight API, easy to learn, gives rich compiler message with tips for fix</p>
             </div>
-            <div class="three-up two-up-small-tablet padded">
+            <div class="three-up-desktop two-up-small-tablet padded">
                 <h3 class="zero"><i class="icon-edit-sign icon-2x gap-right"></i> Customizable</h3>
 
                 <p>Supports custom mappers, mapping post-processor, custom field to field mapping</p>
@@ -243,7 +257,7 @@ version: "0.10"
                 Selma is available in maven central, feel free to add it to your pom dependencies.
             </p>
 
-            <div class="block pad-left">
+            <div class="block pad-left responsive">
 {% highlight xml %}
 <!-- scope provided because the processor is only needed at compile time-->
 <dependency>
@@ -268,7 +282,7 @@ version: "0.10"
                 Selma uses a mapper interface to describe and configure the needed mapping. Here we want to map Order
                 to OrderDto and reverse.
             </p>
-            <div class="block pad-left">
+            <div class="block pad-left responsive">
     {% highlight java %}
 @Mapper(
     withCustomFields = {
@@ -306,7 +320,7 @@ public interface SelmaMapper {
             <p class="pad-left">
                 Once built the generated mapper can be retrieved via Selma class.
             </p>
-            <div class="block pad-left">
+            <div class="block pad-left responsive">
         {% highlight java %}
 // Get SelmaMapper
 SelmaMapper mapper = Selma.builder(SelmaMapper.class).build();
@@ -391,13 +405,40 @@ OrderDto res = mapper.asOrderDto(in);
         <div class="row triple-gap-top-small-tablet triple-gap-top-desktop ">
             <h1 class="lite-square bordered padded green-bg">Documentation</h1>
 
-            <h2 class="blue pad-left pad-top">Mapping beans properties</h2>
+            <div id="toc" class="padded large">
+                <ul>
+                    <li class="h2"><a class="noicon" href="#bean-properties">Mapping beans properties</a></li>
+                    <li class="h3"><a class="noicon" href="#same-propertie-name">Same propertie names</a></li>
+                    <li class="h4"><a class="noicon" href="#duplicate-beans">Duplicate Beans</a></li>
+                    <li class="h4"><a class="noicon" href="#mapping-to-dto">Mapping to DTO</a></li>
+                    <li class="h4"><a class="noicon" href="#mapping-from-dto">Mapping from DTO</a></li>
+                    <li class="h4"><a class="noicon" href="#mapping-to-and-from-dto">Mapping to and from DTO</a></li>
+                    <li class="h4"><a class="noicon" href="#disabling-missing-field">Disabling missing field checks</a></li>
+                    <li class="h3"><a class="noicon" href="#mapping-nested-beans">Mapping nested beans</a></li>
+                    <li class="h3"><a class="noicon" href="#customize-property-names">Customize property names mapping</a></li>
+                    <li class="h3"><a class="noicon" href="#flatten-bean-mapping">Flatten bean mapping</a></li>
+                    <li class="h2"><a class="noicon" href="#updating-destination-bean">Updating destination bean</a></li>
+                    <li class="h2"><a class="noicon" href="#mapping-enums">Mapping enums</a></li>
+                    <li class="h3"><a class="noicon" href="#enums-default-value">Enums with default value</a></li>
+                    <li class="h2"><a class="noicon" href="#custom-mapper">Mapping with custom mapper</a></li>
+                    <li class="h3"><a class="noicon" href="#update-destination-bean">Update destination bean</a></li>
+                    <li class="h3"><a class="noicon" href="#mapping-interceptor">Mapping interceptor</a></li>
+                    <li class="h2"><a class="noicon" href="#immutables">Mapping immutable types</a></li>
+                    <li class="h2"><a class="noicon" href="#sourced-beans">Using factory</a></li>
+                    <li class="h2"><a class="noicon" href="#building-mapper">Building the mapper</a></li>
+                    <li class="h2"><a class="noicon" href="#configuration">Configuration</a></li>
+                    <li class="h3"><a class="noicon" href="#using-maven">Using Maven</a></li>
+                    <li class="h3"><a class="noicon" href="#snapshots-build">Snapshot builds</a></li>
+                </ul>
+            </div>
+
+            <h2 id="bean-properties" class="blue pad-left pad-top">Mapping beans properties</h2>
             <p class="pad-left">
                 Selma match properties using setter and getter names. Selma can map only same field names.
                 By default, properties not existing in both source and destination beans will break compilation.
             </p>
-            <h3 class="pad-left pad-top green">Same propertie names</h3>
-            <h4 class="pad-left pad-top">Duplicate Beans</h4>
+            <h3 id="same-propertie-name" class="pad-left pad-top green">Same propertie names</h3>
+            <h4 id="duplicate-beans" class="pad-left pad-top">Duplicate Beans</h4>
             <p class="pad-left">
                 You can use Selma to build duplicates of your beans or map from model to DTO when they shares same
                 property names.
@@ -406,7 +447,7 @@ OrderDto res = mapper.asOrderDto(in);
                 <div class="row">
                     <div class="one half two-up-small-tablet padded">
                         <h5 class="padded info-bg">Model Bean</h5>
-
+<div class="responsive">
 {% highlight java %}
 public class Person {
 
@@ -419,12 +460,13 @@ public class Person {
 
     // + Getters and Setters
 }
-{% endhighlight %}
+{% endhighlight %}</div>
                     </div>
 
                     <div class="one half two-up-small-tablet padded">
                         <h5 class="padded info-bg ">Mapper interface</h5>
 
+<div class="responsive">
 {% highlight java %}
 @Mapper
 public interface PersonMapper {
@@ -433,12 +475,13 @@ public interface PersonMapper {
     Person duplicatePerson(Person source);
 }
 {% endhighlight %}
+</div>
 
                     </div>
 
                 </div>
             </div>
-            <h4 class="pad-left pad-top">Mapping to DTO</h4>
+            <h4 id="mapping-to-dto" class="pad-left pad-top">Mapping to DTO</h4>
             <p class="pad-left">
                 Selma can reduce a model bean to a DTO containing a sublist of the properties.
             </p>
@@ -447,6 +490,7 @@ public interface PersonMapper {
                     <div class="one half two-up-small-tablet padded">
                         <h5 class="padded info-bg">DTO Bean</h5>
 
+<div class="responsive">
 {% highlight java %}
 public class PersonDTO {
 
@@ -457,11 +501,11 @@ public class PersonDTO {
     // + Getters and Setters
 }
 {% endhighlight %}
-                    </div>
+</div>                    </div>
 
                     <div class="one half two-up-small-tablet padded">
                         <h5 class="padded info-bg ">Mapper interface</h5>
-
+<div class="responsive">
 {% highlight java %}
 @Mapper(withIgnoreMissing = IgnoreMissing.DESTINATION)
 public interface PersonMapper {
@@ -470,7 +514,7 @@ public interface PersonMapper {
     PersonDto asPersonDTO(Person source);
 }
 {% endhighlight %}
-
+</div>
                     </div>
 
                 </div>
@@ -483,6 +527,7 @@ public interface PersonMapper {
 
                     <div class="padded">
                         <h5 class="padded info-bg">Mapper listing ignored fields</h5>
+<div class="responsive">
 {% highlight java %}
 @Mapper(withIgnoreFields = {"age", "Person.indices", "fr.xebia.selma.Person.tags"})
 public interface PersonMapper {
@@ -491,19 +536,20 @@ public interface PersonMapper {
     PersonDto asPersonDTO(Person source);
 }
 {% endhighlight %}
-                    </div>
+</div>                    </div>
             <p class="pad-left">
                 Here we used prefixes <code>Person</code> and <code>fr.xebia.selma.Person</code> to show that you can
                 match ignored fields using simple class name or FQCN prefix.
             </p>
 
 
-            <h4 class="pad-left pad-top">Mapping from DTO</h4>
+            <h4 id="mapping-from-dto" class="pad-left pad-top">Mapping from DTO</h4>
             <p class="pad-left">
                 Selma can use a reduced DTO to build a model bean.
             </p>
             <div class="padded">
                 <h5 class="padded info-bg">Mapper interface</h5>
+<div class="responsive">
 {% highlight java %}
 @Mapper(withIgnoreMissing = IgnoreMissing.SOURCE)
 public interface PersonMapper {
@@ -512,18 +558,19 @@ public interface PersonMapper {
     Person asPerson(PersonDTO source);
 }
 {% endhighlight %}
-            </div>
+ </div>           </div>
             <p class="pad-left">
                 Here we used <code>IgnoreMissing.SOURCE</code> to indicate we wish to ignore properties (age,
                 indices, tags) missing in source bean.
             </p>
 
-            <h4 class="pad-left pad-top">Mapping to and from DTO</h4>
+            <h4 id="mapping-to-and-from-dto" class="pad-left pad-top">Mapping to and from DTO</h4>
             <p class="pad-left">
                 A mapper interface can describe multiple mapping methods.
             </p>
             <div class="padded">
                 <h5 class="padded info-bg">Mapper interface</h5>
+<div class="responsive">
 {% highlight java %}
 @Mapper
 public interface PersonMapper {
@@ -537,13 +584,13 @@ public interface PersonMapper {
     Person asPerson(PersonDTO source);
 }
 {% endhighlight %}
-            </div>
+</div>            </div>
             <p class="pad-left">
                 Here we used <code>@Map</code> annotation to describe mapping per method. Please notice that
                 <code>@Mapper</code> configuration is available for all mapping methods while <code>@Map</code> is only
                 applied to a single method. Both annotations provides the exact same parameters.
             </p>
-            <h5 class="pad-left pad-top">Disabling missing field checks</h5>
+            <h4 id="disabling-missing-field" class="pad-left pad-top">Disabling missing field checks</h4>
 
             <p class="pad-left">
                 By default Selma checks every single missing properties but you can choose to disable these helpfull
@@ -551,6 +598,7 @@ public interface PersonMapper {
             </p>
             <div class="padded">
                 <h5 class="padded info-bg">Mapper ignoring all missing properties</h5>
+
 {% highlight java %}
 @Mapper(withIgnoreMissing = IgnoreMissing.ALL)
 public interface PersonMapper {
@@ -576,7 +624,7 @@ public interface PersonMapper {
 <!--
             Mapping Nested beans
 -->
-            <h3 class="pad-left pad-top green">Mapping nested beans</h3>
+            <h3 id="mapping-nested-beans" class="pad-left pad-top green">Mapping nested beans</h3>
             <p class="pad-left">
                 Selma takes care of generating mapping for the complete bean graph. Each embedded bean will be mapped
                 in it's own method of the generated code. You can customize the mapping
@@ -651,7 +699,7 @@ public interface PersonMapper {
             <!--
                 Customize property names mapping
             -->
-            <h3 class="pad-left pad-top green">Customize property names mapping</h3>
+            <h3 id="customize-property-names" class="pad-left pad-top green">Customize property names mapping</h3>
             <p class="pad-left">
                 You can define custom property to property mapping using <code>withCustomFields</code>
                 parameter available in <code>@Mapper</code> and <code>@Map</code>.
@@ -723,7 +771,7 @@ public interface PersonMapper {
                 define custom fields in @Map annotation.
             </p>
 
-            <h3 class="pad-left pad-top green">Flatten bean mapping</h3>
+            <h3 id="flatten-bean-mapping" class="pad-left pad-top green">Flatten bean mapping</h3>
             <p class="pad-left">
                 You can flatten properties from nested bean using <code>withCustomFields</code>
                 parameter available in <code>@Mapper</code> and <code>@Map</code>.
@@ -805,7 +853,7 @@ public interface PersonMapper {
                 property from any nesting level.
             </p>
 
-            <h2 id="update" class="blue pad-left pad-top">Updating destination bean</h2>
+            <h2 id="updating-destination-bean" class="blue pad-left pad-top">Updating destination bean</h2>
 
             <p class="pad-left">
                 Instead of creating a new instance of the destination bean, you can choose to map the source bean
@@ -827,7 +875,7 @@ public interface PersonMapper {
 {% endhighlight %}
             </div>
 
-            <h2 id="enums" class="blue pad-left pad-top">Mapping enums</h2>
+            <h2 id="mapping-enums" class="blue pad-left pad-top">Mapping enums</h2>
 
             <p class="pad-left">
                 Selma can map enums using a same value strategy by default. Selma will generate a new method for every
@@ -1074,7 +1122,7 @@ public class PersonMapper {
             <p class="pad-left">The PersonMapper generated class will use the <code>AddressCustomMapper</code>
                 <code>addressAsString</code> method to map the <code>Address</code> to <code>String</code>.</p>
 
-            <h3 class="green pad-left pad-top">Update destination bean</h3>
+            <h3 id="update-destination-bean" class="green pad-left pad-top">Update destination bean</h3>
 
             <p class="pad-left">You can use custom mappers to update the destination bean as described in <a class="noicon" href="#update">
                 updating destination bean</a>. For this kind of use the custom mapping method should declare a second
@@ -1107,7 +1155,7 @@ public class AddressCustomMapper {
                 Unused custom mapper will be reported as a compilation warning.
             </p>
 
-            <h3 class="green pad-left pad-top">Mapping interceptor</h3>
+            <h3 id="mapping-interceptor" class="green pad-left pad-top">Mapping interceptor</h3>
 
             <p class="pad-left">
                 Not convinced by custom mapper, you need to do special things on the source or target bean after the
@@ -1312,7 +1360,7 @@ PersonMapper mapper = Selma.builder(PersonMapper.class).
 
             <p class="pad-left">Selma can be used from Java 6 to 8.</p>
 
-            <h3 class="green pad-left pad-top">Using Maven</h3>
+            <h3 id="using-maven" class="green pad-left pad-top">Using Maven</h3>
 
             <p class="pad-left">Old releases of the maven compiler plugin tend to badly support annotation processor
                 messages. We use successfully version 3.2.</p>
@@ -1370,7 +1418,7 @@ PersonMapper mapper = Selma.builder(PersonMapper.class).
             <p class="pad-left pad-top">You can find help about configuring eclipse
                 <a href="https://github.com/xebia-france/selma/issues/28" class="noicon">here</a>.</p>
 
-            <h3 class="green pad-left pad-top">Snapshot builds</h3>
+            <h3 id="snapshots-build" class="green pad-left pad-top">Snapshot builds</h3>
 
             <p class="pad-left">You can retrieve snapshots builds from 0.11-SNAPSHOT in the sonatype snapshot
                 repository. For this to work, you should add Sonatype snaphot repository in your maven settings.xml or
@@ -1421,6 +1469,24 @@ PersonMapper mapper = Selma.builder(PersonMapper.class).
     ga('create', 'UA-56401742-1', 'auto');
     ga('send', 'pageview');
 
+  /*  $('#toc').toc({
+    'selectors': 'h2,h3,h4', //elements to use as headings
+    'container': '#documentation', //element to find all selectors in
+    'smoothScrolling': true, //enable or disable smooth scrolling on click
+    'prefix': 'toc', //prefix for anchor tags and class names
+    'onHighlight': function(el) {}, //called when a new section is highlighted
+    'highlightOnScroll': true, //add class to heading that is currently in focus
+    'highlightOffset': 100, //offset to trigger the next headline
+    'anchorName': function(i, heading, prefix) { //custom function for anchor name
+        return heading.id
+    },
+    'headerText': function(i, heading, $heading) { //custom function building the header-item text
+        return $heading.text();
+    },
+'itemClass': function(i, heading, $heading, prefix) { // custom function for item class
+  return $heading[0].tagName.toLowerCase()+" noicon";
+}
+});*/
 </script>
 </body>
 </html>
