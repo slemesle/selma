@@ -1132,7 +1132,7 @@ public class AddressCustomMapper {
             </p>
             <p class="pad-left alert message ">
                 Every custom mapper instance can be injected in the generated class when you build it from
-                <code>Selma</code>. This allows custom mappers to use some services of youre application code.
+                <code>Selma</code>. This allows custom mappers to use some services of your application code.
             </p>
 
 
@@ -1264,7 +1264,7 @@ public class PersonMapper {
                     </div>
                 </div>
             </div>
-            <p>
+            <p class="pad-left">
                 This mapper will pass the given <code>DataSource</code> instance to the <code>Person</code> constructor.
                 To see how to inject the <code>DataSource</code> instance refer to
                 <a href="#building-mapper" class="noicon">Building the mapper</a>.
@@ -1274,10 +1274,39 @@ public class PersonMapper {
                 youre own.
             </p>
 
-
             <h2 id="building-mapper" class="blue pad-left pad-top">Building the mapper</h2>
-<!-- TODO -->
-
+            <p class="pad-left">
+               Now that you've define the mapping contract you need, you probably want to retrieve the generated mapper
+                instance. All you need to know for this is the <code>Selma</code> class. It provides a builder API to
+                build and configure your mapper instance.
+            </p>
+            <div class="block pad-left">
+                <h5 class="padded info-bg">Builder API</h5>
+{% highlight java %}
+PersonMapper mapper = Selma.builder(PersonMapper.class).
+                        withCustom(customMappers).
+                        withSource(dataSources).
+                        disableCache().build();
+{% endhighlight %}
+            </div>
+            <p class="pad-left">
+                Here we build a <code>PersonMapper</code>, providing to it custom mappers and sources.
+            </p>
+            <div class="triple-gap-left gap-bottom">
+                <ol class="list pad-left">
+                    <li>We start a builder for the <code>PersonMapper</code> mapper interface.</li>
+                    <li>We use <code>withCustom(...)</code> to provide our <a href="#custom-mapper" class="noicon">custom mappers</a>.
+                    </li>
+                    <li>We use <code>withSource(...)</code> to provide sources to our <a href="#sourced-beans" class="noicon">sourced
+                        beans</a>.</li>
+                    <li>We call <code>disableCache()</code> to bypass mapper instance cache and force Selma to build a
+                        new mapper instance .</li>
+                </ol>
+            </div>
+            <p class="pad-left alert message ">
+                By default Selma maintains a cache of the previously loaded mappers, so mappers instance are considered
+                Singleton.
+            </p>
 
             <h2 id="configuration" class="blue pad-left pad-top">Configuration</h2>
 
