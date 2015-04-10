@@ -1,5 +1,5 @@
 ---
-version: "0.10"
+version: "0.11"
 ---
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html">
@@ -230,7 +230,7 @@ version: "0.10"
                     <ul>
                     <li><a href="#welcome-top" alt="Selma Homepage" class="noicon">Selma</a></li>
                     <li><a href="#get-started" class="noicon">Get Started</a></li>
-                    <li><a href="#news" class="noicon">What's new in 0.10</a></li>
+                    <li><a href="#news" class="noicon">What's new in 0.11</a></li>
                     <li><a href="#documentation" class="noicon">Documentation</a></li>
                     </ul>
                 </nav>
@@ -351,9 +351,26 @@ OrderDto res = mapper.asOrderDto(in);
 
     <div class="container">
         <div class="row triple-gap-top-small-tablet triple-gap-top-desktop "> &nbsp;</div>
+<!--
+This release adds Spring support by annotation. You can now use a Mapper as the custom mapper of another one.
+* #52: Custom mapper are now called even for null values
+* #51: Fix type mapping to identify correctly destination bean type
+* #50: Mapper interface can now be used as a custom mapper for mapper composition
+* #49: Fix Sourced bean handling to be used only when needed
+* #48: Add support for Spring ioc withIoc=SPRING
 
+-->
         <div class="row triple-gap-top-small-tablet triple-gap-top-desktop ">
             <h1 class="lite-square bordered padded green-bg">News</h1>
+            <h2 class="blue pad-left pad-top">Brand new release 0.11</h2>
+            <p class="pad-left">
+            This release adds Spring support using the new <code>withIoc=SPRING</code>. It is also now possible to use
+                a Selma mapper as the custom mapper of another one.
+            </p>
+            <p class="pad-left pad-top">
+                See <a href="https://github.com/xebia-france/selma/blob/master/RELEASE_NOTES">release notes</a> or
+                <a href="https://github.com/xebia-france/selma/issues?q=milestone%3A0.11">Milestone 0.11</a>.
+            </p>
             <h2 class="blue pad-left pad-top">Brand new release 0.10</h2>
             <p class="pad-left">   This release deprecates <code class="inline-block">@IgnoreFields</code> and
                 <code class="inline-block">@Fields.</code> The new <code class="inline-block">@Maps</code> annotation
@@ -1420,7 +1437,7 @@ PersonMapper mapper = Selma.builder(PersonMapper.class).
 
             <h3 id="snapshots-build" class="green pad-left pad-top">Snapshot builds</h3>
 
-            <p class="pad-left">You can retrieve snapshots builds from 0.11-SNAPSHOT in the sonatype snapshot
+            <p class="pad-left">You can retrieve snapshots builds from 0.12-SNAPSHOT in the sonatype snapshot
                 repository. For this to work, you should add Sonatype snaphot repository in your maven settings.xml or
                 pom.xml</p>
             <div class="block padded">
