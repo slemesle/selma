@@ -1,5 +1,5 @@
 ---
-version: "0.12"
+version: "0.13"
 ---
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html">
@@ -230,7 +230,7 @@ version: "0.12"
                     <ul>
                     <li><a href="#welcome-top" alt="Selma Homepage" class="noicon">Selma</a></li>
                     <li><a href="#get-started" class="noicon">Get Started</a></li>
-                    <li><a href="#news" class="noicon">What's new in 0.11</a></li>
+                    <li><a href="#news" class="noicon">What's new in 0.13</a></li>
                     <li><a href="#documentation" class="noicon">Documentation</a></li>
                     </ul>
                 </nav>
@@ -352,17 +352,58 @@ OrderDto res = mapper.asOrderDto(in);
     <div class="container">
         <div class="row triple-gap-top-small-tablet triple-gap-top-desktop "> &nbsp;</div>
 <!--
-This release adds Spring support by annotation. You can now use a Mapper as the custom mapper of another one.
-* #52: Custom mapper are now called even for null values
-* #51: Fix type mapping to identify correctly destination bean type
-* #50: Mapper interface can now be used as a custom mapper for mapper composition
-* #49: Fix Sourced bean handling to be used only when needed
-* #48: Add support for Spring ioc withIoc=SPRING
 
 -->
         <div class="row triple-gap-top-small-tablet triple-gap-top-desktop ">
             <h1 class="lite-square bordered padded green-bg">News</h1>
-            <h2 class="blue pad-left pad-top">Brand new release 0.11</h2>
+
+             <h2 class="blue pad-left pad-top">Brand new release 0.13</h2>
+            <!--
+* #68: Fix bad AnnotationMirror cast not valid in eclipse compiler
+
+            -->
+            <p class="pad-left">
+                This release introduces abstract class mappers, it is now possible to declare custom mappings inside the
+                mapper and call mapping methods from custom mappings. There are also bug fixes.
+                Many thanks to all bug reports and pull requests.
+            </p>
+            <div class="pad-left">
+                <ul class="unstyled ">
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/53">#53</a>: Support for
+                        Abstract class mappers to allow custom mapping method to call mapper methods with
+                        <code class="inline-block">this</code>.</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/65">#65</a>: Fix
+                        properties matching to force exact name match instead of startsWith match</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/66">#66</a>: Fix temporary
+                        variables names on embedded field mapping</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/67">#67</a>: Fix custom
+                        mapper registry to match properly both update and immutable methods</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/68">#68</a>: Fix bad
+                        AnnotationMirror cast not valid in eclipse compiler</li>
+                </ul>
+            </div>
+            <p class="pad-left pad-top">
+                See <a href="https://github.com/xebia-france/selma/blob/master/RELEASE_NOTES">release notes</a> or
+                <a href="https://github.com/xebia-france/selma/issues?q=milestone%3A0.13">Milestone 0.13</a>.
+            </p>
+
+            <h2 class="blue pad-left pad-top">Release 0.12</h2>
+            <p class="pad-left">
+                This release adds support for collection mapping strategy. The mapping strategy allows to choose wether
+                you want to populate collections from getter or not.
+            </p>
+               <div class="block pad-left responsive">
+        {% highlight java %}
+@Mapper(withCollectionStrategy = ALLOW_GETTER) // Enable collections mapping from getter
+        {% endhighlight %}
+            </div>
+
+            <p class="pad-left pad-top">
+                See <a href="https://github.com/xebia-france/selma/blob/master/RELEASE_NOTES">release notes</a> or
+                <a href="https://github.com/xebia-france/selma/issues?q=milestone%3A0.12">Milestone 0.12</a>.
+            </p>
+
+            <h2 class="blue pad-left pad-top">Release 0.11</h2>
             <p class="pad-left">
             This release adds Spring support using the new <code>withIoc=SPRING</code>. It is also now possible to use
                 a Selma mapper as the custom mapper of another one.
@@ -371,11 +412,15 @@ This release adds Spring support by annotation. You can now use a Mapper as the 
                 See <a href="https://github.com/xebia-france/selma/blob/master/RELEASE_NOTES">release notes</a> or
                 <a href="https://github.com/xebia-france/selma/issues?q=milestone%3A0.11">Milestone 0.11</a>.
             </p>
-            <h2 class="blue pad-left pad-top">Brand new release 0.10</h2>
-            <p class="pad-left">   This release deprecates <code class="inline-block">@IgnoreFields</code> and
+
+            <h2 class="blue pad-left pad-top">Release 0.10</h2>
+            <p class="pad-left">
+                This release deprecates <code class="inline-block">@IgnoreFields</code> and
                 <code class="inline-block">@Fields.</code> The new <code class="inline-block">@Maps</code> annotation
                 should now be used instead.
-                It supports all the parameters available in <code class="inline-block">@Mapper</code> at the method scope.</p>
+                It supports all the parameters available in <code class="inline-block">@Mapper</code> at the method
+                scope.
+            </p>
             <div class="pad-left">
                 <ul class="unstyled ">
                     <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/35">#35</a>: Deploy
