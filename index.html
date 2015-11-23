@@ -488,6 +488,7 @@ OrderDto res = mapper.asOrderDto(in);
                     <li class="h2"><a class="noicon" href="#immutables">Mapping immutable types</a></li>
                     <li class="h2"><a class="noicon" href="#sourced-beans">Using factory</a></li>
                     <li class="h2"><a class="noicon" href="#building-mapper">Building the mapper</a></li>
+                    <li class="h3"><a class="noicon" href="#spring-ioc">Spring IoC</a></li>
                     <li class="h2"><a class="noicon" href="#configuration">Configuration</a></li>
                     <li class="h3"><a class="noicon" href="#using-maven">Using Maven</a></li>
                     <li class="h3"><a class="noicon" href="#snapshots-build">Snapshot builds</a></li>
@@ -1416,6 +1417,30 @@ PersonMapper mapper = Selma.builder(PersonMapper.class).
             <p class="pad-left alert message ">
                 By default Selma maintains a cache of the previously loaded mappers, so mappers instance are considered
                 Singleton.
+            </p>
+
+            <h3 id="spring-ioc" class="green pad-left pad-top">Spring IoC</h3>
+
+            <p class="pad-left">
+                If you are using Spring IoC framework, you can configure your mapper interface to be configured as a Spring service.
+                Selma will use a <code>@Service</code> to annotate the generated mapper class and it will use <code>@Autowired</code>
+                for all claimed custom mappers. The only thing you have to do is configure Spring to scan for annotations in the Mapper
+                package.
+            </p>
+            <div class="block pad-left">
+                <h5 class="padded info-bg">Builder API</h5>
+{% highlight java %}
+@Mapper(withCustom =  CustomImmutableMapperClass.class, withIoC = IoC.SPRING)
+public interface AddressMapper {
+
+    AddressOut asAddressOut(AddressIn in);
+
+}
+{% endhighlight %}
+            </div>
+            <p class="pad-left">
+                Here we declared a <code>AddressMapper</code>, which will be annotated using Spring annotations. You can now inject the
+                generated mapper inside your Java beans or services.
             </p>
 
             <h2 id="configuration" class="blue pad-left pad-top">Configuration</h2>
