@@ -486,6 +486,7 @@ OrderDto res = mapper.asOrderDto(in);
                     <li class="h2"><a class="noicon" href="#custom-mapper">Mapping with custom mapper</a></li>
                     <li class="h3"><a class="noicon" href="#update-destination-bean">Update destination bean</a></li>
                     <li class="h3"><a class="noicon" href="#mapping-interceptor">Mapping interceptor</a></li>
+                    <li class="h3"><a class="noicon" href="#abstract-mapper">Abstract mapper</a></li>
                     <li class="h3"><a class="noicon" href="#mapping-selma-mapper">Selma Mapper as custom mapper</a></li>
                     <li class="h2"><a class="noicon" href="#immutables">Mapping immutable types</a></li>
                     <li class="h2"><a class="noicon" href="#sourced-beans">Using factory</a></li>
@@ -1339,6 +1340,51 @@ public class AddressCustomMapper {
                 <code>Selma</code>. This allows custom mappers to use some services of your application code.
             </p>
 
+            <h3 id="abstract-mapper" class="green pad-left pad-top">Abstract mapper</h3>
+
+            <p class="pad-left">
+                The last way to declare custom mappers is to use an abstract class as the mapper de scription
+                instead of an interface. Selma parse non abstract methods and load every custom mapper method it contains.
+                This can simplify the mapping declaration and allows to call a generated mapping method from a custom mapper.
+            </p>
+            <div class="block padded">
+{% highlight java %}
+@Mapper
+public abstract class AbstractMapperWithCustom {
+
+    public static final int NUMBER_INCREMENT = 10000;
+
+    public abstract PersonOut asPersonOut(PersonIn in);
+
+    public abstract CityOut asCityOut(CityIn in);
+
+    /**
+     * Custom mapper inside the Mapper class
+     */
+    public AddressOut mapAddress(AddressIn addressIn){
+        AddressOut res= null;
+        if (addressIn != null){
+            res = new AddressOut();
+            res.setCity(this.asCityOut(addressIn.getCity()));
+            res.setExtras(addressIn.getExtras() == null ? null : new ArrayList<String>(addressIn.getExtras()));
+            res.setNumber(addressIn.getNumber() + NUMBER_INCREMENT);
+            res.setPrincipal(addressIn.isPrincipal());
+            res.setStreet(addressIn.getStreet());
+        }
+        return res;
+    }
+}
+{% endhighlight %}
+            </div>
+            <p class="pad-left">
+                The generated code will call <code>mapAddress()</code> method for each <code>AddressIn</code> it should map.
+                To handle the mapping of <code>CityIn</code> to <code>CityOut</code> the custom mapping method calls
+                <code>asCityOut()</code> implementation of the generated code.
+            </p>
+            <p class="pad-left alert message ">
+              If you need to add some dependencies to use in the custom mapping methods, you can simply add a setter
+              and use it at the mapper build time.
+            </p>
             <h3 id="mapping-selma-mapper" class="green pad-left pad-top">Selma Mapper as custom mapper</h3>
 
             <p class="pad-left">
