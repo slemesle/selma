@@ -480,11 +480,13 @@ OrderDto res = mapper.asOrderDto(in);
                     <li class="h3"><a class="noicon" href="#customize-property-names">Customize property names mapping</a></li>
                     <li class="h3"><a class="noicon" href="#flatten-bean-mapping">Flatten bean mapping</a></li>
                     <li class="h2"><a class="noicon" href="#updating-destination-bean">Updating destination bean</a></li>
+                    <li class="h2"><a class="noicon" href="#mapping-collections">Mapping collections</a></li>
                     <li class="h2"><a class="noicon" href="#mapping-enums">Mapping enums</a></li>
                     <li class="h3"><a class="noicon" href="#enums-default-value">Enums with default value</a></li>
                     <li class="h2"><a class="noicon" href="#custom-mapper">Mapping with custom mapper</a></li>
                     <li class="h3"><a class="noicon" href="#update-destination-bean">Update destination bean</a></li>
                     <li class="h3"><a class="noicon" href="#mapping-interceptor">Mapping interceptor</a></li>
+                    <li class="h3"><a class="noicon" href="#mapping-selma-mapper">Selma Mapper as custom mapper</a></li>
                     <li class="h2"><a class="noicon" href="#immutables">Mapping immutable types</a></li>
                     <li class="h2"><a class="noicon" href="#sourced-beans">Using factory</a></li>
                     <li class="h2"><a class="noicon" href="#building-mapper">Building the mapper</a></li>
@@ -938,6 +940,97 @@ public interface PersonMapper {
 {% endhighlight %}
             </div>
 
+
+            <h2 id="mapping-collections" class="blue pad-left pad-top">Mapping collections</h2>
+
+            <p class="pad-left">
+                Selma can map collections using a copy clone strategy. Selma will generate a new collection
+                containing the values mapped from source collection. We support almost all kind of collections
+                and the generated code takes care of preserving the order of elements.
+            </p>
+            <p class="pad-left">
+                By default Selma uses a setter to populate the newly created collection to the destination bean.
+                When using a Jaxb generated bean you won't have a setter, so you'll need to use the getter to retrieve
+                a fresh new instance of an empty collection to populate with mapped values.
+                For this to work you'll need to use the <code>withCollectionStrategy = ALLOW_GETTER</code> of the
+                <code>@Mapper</code> or <code>@Map</code> annotation.
+            </p>
+
+            <div class="container">
+                            <div class="row">
+                                <div class="one half two-up-small-tablet padded">
+                                    <h5 class="padded info-bg">Collection bean source</h5>
+
+{% highlight java %}
+public class CollectionBeanSource {
+
+  private List<String> strings;
+
+  public CollectionBeanSource(List<String> strings) {
+      this.strings = strings;
+  }
+
+  public List<String> getStrings() {
+      if(strings == null){
+          strings = new ArrayList<String>();
+      }
+      return strings;
+  }
+}
+{% endhighlight %}
+                                </div>
+
+                                <div class="one half two-up-small-tablet padded">
+                                    <h5 class="padded info-bg ">Collection bean destination</h5>
+
+{% highlight java %}
+public class CollectionBeanDestination {
+
+    private List<String> strings;
+
+    public CollectionBeanDestination() {}
+
+    public CollectionBeanDestination(List<String> strings) {
+        this.strings = strings;
+    }
+
+    public List<String> getStrings() {
+        if(strings == null){
+            strings = new ArrayList<String>();
+        }
+        return strings;
+    }
+
+}
+{% endhighlight %}
+
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="one-up one-up-small-tablet padded">
+              <h5 class="padded info-bg">Mapper using getter for collection</h5>
+{% highlight java %}
+@Mapper(withCollectionStrategy = ALLOW_GETTER)
+public interface CollectionMapper {
+
+    CollectionBeanDestination asCollectionBeanDestination(CollectionBeanSource source);
+
+    CollectionBeanDefensiveDestination asCollectionBeanDefensiveDestination(CollectionBeanSource source);
+
+}
+{% endhighlight %}
+
+                                </div>
+                            </div>
+                      </div>
+            <p class="pad-left">
+                The generated code will call <code>getStrings()</code> from destination bean to
+                populate the collection. Be aware that default strategy does not allow to use getter for collection mapping.
+            </p>
+
+
+
             <h2 id="mapping-enums" class="blue pad-left pad-top">Mapping enums</h2>
 
             <p class="pad-left">
@@ -1244,6 +1337,47 @@ public class AddressCustomMapper {
             <p class="pad-left alert message ">
                 Every custom mapper instance can be injected in the generated class when you build it from
                 <code>Selma</code>. This allows custom mappers to use some services of your application code.
+            </p>
+
+            <h3 id="mapping-selma-mapper" class="green pad-left pad-top">Selma Mapper as custom mapper</h3>
+
+            <p class="pad-left">
+                Selma allows to declare a Mapper interface as the custom mapper of another one. Doing this way
+                you can compose a complex mapping strategy made of several mappers calling each other.
+                All mappers will be generated in their private scope.
+            </p>
+            <div class="block padded">
+                  <h5 class="padded info-bg">Person Mapper</h5>
+  {% highlight java %}
+  @Mapper(withCustom = AddressMapper.class)
+  public interface PersonMapper {
+
+      PersonOut mapWithAddressMapper(PersonIn in);
+
+  }
+  {% endhighlight %}
+            </div>
+            <div class="block padded">
+                  <h5 class="padded info-bg">Address Mapper</h5>
+  {% highlight java %}
+  @Mapper
+  public interface AddressMapper {
+
+      AddressOut asAddressOut(AddressIn in);
+
+      AddressOut asAddressOut(AddressIn in, AddressOut out);
+
+  }
+
+  {% endhighlight %}
+            </div>
+            <p class="pad-left">
+                <code>AddressMapper</code> will be called by the generated mapping code to handle the mapping
+                of <code>AddressIn</code> to <code>AddressOut</code>.
+            </p>
+            <p class="pad-left alert message ">
+                As every custom mapper, the mapper instance should be injected in the generated class when you build it from
+                <code>Selma</code>.
             </p>
 
 
