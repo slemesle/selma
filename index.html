@@ -495,8 +495,8 @@ OrderDto res = mapper.asOrderDto(in);
         <div class="row triple-gap-top-small-tablet triple-gap-top-desktop ">
             <h1 class="lite-square bordered padded green-bg">Documentation</h1>
 
-            <div id="toc" class="padded large">
-                <ul>
+            <li id="toc" class="padded large">
+                <a>
                     <li class="h2"><a class="noicon" href="#bean-properties">Mapping beans properties</a></li>
                     <li class="h3"><a class="noicon" href="#same-propertie-name">Same propertie names</a></li>
                     <li class="h4"><a class="noicon" href="#duplicate-beans">Duplicate Beans</a></li>
@@ -517,7 +517,9 @@ OrderDto res = mapper.asOrderDto(in);
                     <li class="h3"><a class="noicon" href="#abstract-mapper">Abstract mapper</a></li>
                     <li class="h3"><a class="noicon" href="#mapping-selma-mapper">Selma Mapper as custom mapper</a></li>
                     <li class="h2"><a class="noicon" href="#immutables">Mapping immutable types</a></li>
-                    <li class="h2"><a class="noicon" href="#sourced-beans">Using factory</a></li>
+                    <li class="h2"><a class="noicon" href="#factory">Using factory</a></li>
+                    <li class="h3"><a class="noicon" href="#sourced-beans">Sourced Beans</a></li>
+                    <li class="h3"><a class="noicon" href="#factory-methods">Factory methods</a></li>
                     <li class="h2"><a class="noicon" href="#building-mapper">Building the mapper</a></li>
                     <li class="h3"><a class="noicon" href="#spring-ioc">Spring IoC</a></li>
                     <li class="h2"><a class="noicon" href="#configuration">Configuration</a></li>
@@ -1691,6 +1693,7 @@ public class MyFactory {
 PersonMapper mapper = Selma.builder(PersonMapper.class).
                         withCustom(customMappers).
                         withSource(dataSources).
+                        withFactories(factories).
                         disableCache().build();
 {% endhighlight %}
             </div>
@@ -1704,6 +1707,7 @@ PersonMapper mapper = Selma.builder(PersonMapper.class).
                     </li>
                     <li>We use <code>withSource(...)</code> to provide sources to our <a href="#sourced-beans" class="noicon">sourced
                         beans</a>.</li>
+                    <li>We use <code>withFactories(...)</code> to provide Factories to our <a href="#factory-methods" class="noicon">Mapper</a>.</li>
                     <li>We call <code>disableCache()</code> to bypass mapper instance cache and force Selma to build a
                         new mapper instance .</li>
                 </ol>
@@ -1718,7 +1722,7 @@ PersonMapper mapper = Selma.builder(PersonMapper.class).
             <p class="pad-left">
                 If you are using Spring IoC framework, you can configure your mapper interface to be configured as a Spring service.
                 Selma will use a <code>@Service</code> to annotate the generated mapper class and it will use <code>@Autowired</code>
-                for all claimed custom mappers. The only thing you have to do is configure Spring to scan for annotations in the Mapper
+                for all claimed custom mappers and factories. The only thing you have to do is configure Spring to scan for annotations in the Mapper
                 package.
             </p>
             <div class="block pad-left">
