@@ -1,5 +1,5 @@
 ---
-version: "0.13"
+version: "0.14"
 ---
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html">
@@ -230,7 +230,7 @@ version: "0.13"
                     <ul>
                     <li><a href="#welcome-top" alt="Selma Homepage" class="noicon">Selma</a></li>
                     <li><a href="#get-started" class="noicon">Get Started</a></li>
-                    <li><a href="#news" class="noicon">What's new in 0.13</a></li>
+                    <li><a href="#news" class="noicon">What's new in {{page.version}}</a></li>
                     <li><a href="#documentation" class="noicon">Documentation</a></li>
                     </ul>
                 </nav>
@@ -356,6 +356,34 @@ OrderDto res = mapper.asOrderDto(in);
 -->
         <div class="row triple-gap-top-small-tablet triple-gap-top-desktop ">
             <h1 class="lite-square bordered padded green-bg">News</h1>
+
+             <h2 class="blue pad-left pad-top">Brand new release 0.14</h2>
+            <p class="pad-left">
+                This release introduces factory methods, it is now possible to declare factory beans inside the
+                mapper. Generic type handling has also been improved to support declaring a Mapper generic interface.
+                Many thanks to all bug reports and pull requests. 1.0 release is coming we just cyclic mapping handling
+                and specific field to field custom mappers.
+            </p>
+            <div class="pad-left">
+                <ul class="unstyled ">
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/63">#63</a>: Support for
+                        generic type in mappers</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/39">#39</a>: Add Factory
+                        method and class support</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/78">#78</a>: Add
+                        WithIoCServiceName to name Spring service using annotation, Thanks to Benoit Charret</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/75">#75</a>: Fix generic
+                        inherited type handling in collections and map, Thanks to @julaudo</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/70">#70</a>: Handle custom
+                        mappers in a .class package, Thanks to Antoine Leveugle</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/57">#57</a>: Improve error
+                        messages for failing custom field to field mapping</li>
+                </ul>
+            </div>
+            <p class="pad-left pad-top">
+                See <a href="https://github.com/xebia-france/selma/blob/master/RELEASE_NOTES">release notes</a> or
+                <a href="https://github.com/xebia-france/selma/issues?q=milestone%3A0.14">Milestone 0.14</a>.
+            </p>
 
              <h2 class="blue pad-left pad-top">Brand new release 0.13</h2>
             <!--
@@ -1492,7 +1520,7 @@ public class PersonMapper {
             </p>
 
 
-            <h2 id="sourced-beans" class="blue pad-left pad-top">Using factory</h2>
+            <h2 id="factory" class="blue pad-left pad-top">Using factory</h2>
             <p class="pad-left">
                 Some beans can not be built with a default empty constructor. For some reason the application code use a
                 factory to provide new instances of these beans. Default Selma behavior is to call a default constructor
@@ -1500,6 +1528,7 @@ public class PersonMapper {
                 To solve this issue without using reflection at runtime, Selma supports <b>sourced beans</b>, the idea
                 is to pass one or more parameters to the constructor call in the generated code.
             </p>
+            <h3 id="sourced-beans" class="pad-left pad-top green">Sourced Beans</h3>
             <div class="container">
                 <div class="row">
                     <div class="one half two-up-small-tablet padded">
@@ -1560,11 +1589,96 @@ public class PersonMapper {
                 To see how to inject the <code>DataSource</code> instance refer to
                 <a href="#building-mapper" class="noicon">Building the mapper</a>.
             </p>
-            <p class="pad-left alert message ">
-                Future releases will support factory methods and factory class, so you can choose to use reflection on
-                youre own.
+            <h3 id="factory-methods" class="pad-left pad-top green">Factory methods</h3>
+            <p class="pad-left">
+                You can also provide one or more Factory using the <code>withFactory</code> Mapper annotation parameter.
+                The Factory instance can be injected using Selma builder see
+                <a href="#building-mapper" class="noicon">Building the mapper</a>.
             </p>
+<div class="container">
+                <div class="row">
+                    <div class="one half two-up-small-tablet padded">
+                        <h5 class="padded info-bg">Person Bean bound to a DataSource</h5>
 
+{% highlight java %}
+public class Person implement SourcedBeans {
+
+    private final DataSource ds;
+    private String name;
+    private String phoneNumber;
+    private Date birthDate;
+
+    // Constructor with DataSource
+    public Person (DataSource ds){
+        this.ds = ds;
+    }
+
+    // + Getters and Setters
+}
+{% endhighlight %}
+                    </div>
+
+                    <div class="one half two-up-small-tablet padded">
+                        <h5 class="padded info-bg ">PersonDTO Bean</h5>
+
+{% highlight java %}
+public class PersonDTO {
+
+    private String name;
+    private String phoneNumbe;
+    private Date birthDate;
+
+    // + Getters and Setters
+}
+{% endhighlight %}
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="one half two-up-small-tablet padded">
+                <h5 class="padded info-bg ">Mapper declaring a Factory</h5>
+{% highlight java %}
+@Mapper(withFactories = MyFactory.class)
+public class PersonMapper {
+
+    // Returns a Person instance mapped from source populated with a DataSource
+    Person asPerson(PersonDTO source);
+
+}
+{% endhighlight %}
+                    </div>
+                    <div class="one half two-up-small-tablet padded">
+                <h5 class="padded info-bg ">MyFactory bean</h5>
+{% highlight java %}
+public class MyFactory {
+
+    private final DataSource ds;
+
+    public MyFactory(DataSource ds){
+        this.ds = ds;
+    }
+
+    public <T extends SourcedBeans>  T newSourceBeansInstance(Class<T> targetType) {
+        /* ... */
+    }
+
+    public City newCity(){
+        return new City(ds);
+    }
+
+}
+{% endhighlight %}
+                    </div>
+                </div>
+            </div>
+            <p class="pad-left">
+                This mapper will call the given <code>MyFactory</code> to build new <code>Person</code> by calling the
+                generic <code>newSourceBeansInstance</code> method. You can also specify methods like
+                <code>newCity</code> to statically provide new instances of the <code>City</code> bean.
+                Selma will always first choose matching static typed factory methods. If none are found, Selma will
+                choose the generic method that matches with the closest type boundaries.
+            </p>
             <h2 id="building-mapper" class="blue pad-left pad-top">Building the mapper</h2>
             <p class="pad-left">
                Now that you've define the mapping contract you need, you probably want to retrieve the generated mapper
@@ -1619,8 +1733,12 @@ public interface AddressMapper {
 {% endhighlight %}
             </div>
             <p class="pad-left">
-                Here we declared a <code>AddressMapper</code>, which will be annotated using Spring annotations. You can now inject the
-                generated mapper inside your Java beans or services.
+                Here we declared a <code>AddressMapper</code>, which will be annotated using Spring annotations. You can
+                inject the generated mapper inside your Java beans or services.
+            </p>
+            <p class="pad-left alert message ">
+                By default Selma does not specify a name for the <code>@Service</code> declared, but you can add since
+                0.14 <code>withIoCServiceName = YourServiceName</code> to specify a name for the Spring service.
             </p>
 
             <h2 id="configuration" class="blue pad-left pad-top">Configuration</h2>
