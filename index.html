@@ -1,5 +1,5 @@
 ---
-version: "0.14"
+version: "0.15"
 ---
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html">
@@ -357,7 +357,46 @@ OrderDto res = mapper.asOrderDto(in);
         <div class="row triple-gap-top-small-tablet triple-gap-top-desktop ">
             <h1 class="lite-square bordered padded green-bg">News</h1>
 
-             <h2 class="blue pad-left pad-top">Brand new release 0.14</h2>
+             <h2 class="blue pad-left pad-top">Brand new release 0.15</h2>
+            <p class="pad-left">
+                This release fixes bugs in generic handling and factory methods.
+                It also implement a new cyclic mapping support using an instance cache. Many thanks to all bug reports
+                and pull requests. 1.0 release will be next big release with specific field to field custom mappers.
+                <b>This will be the last release before final 1.0</b>
+            </p>
+            <div class="pad-left">
+                <ul class="unstyled ">
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/2">#2</a>: Support for
+                        cyclic mapping with new @Mapper(withCyclicMapping = true) Thanks to Julien Audo</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/101">101</a>: Fix generic
+                        types resolving in source and destination bean</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/81">#81</a>: Make a whole
+                        package immutable with new @Mapper(withImmutablesPackages = {"org.project.immutables"})
+                        Thanks to Julien Audo</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/90">#90</a>: Automatic
+                        conversion of primitives types to String</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/80">#80</a>: Add factory
+                        support for beans without public constructor Thanks to @facboy</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/97">#97</a>: Add support
+                        for mapping raw types and improve error handling Thanks to @facboy</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/95">#95</a>: Add support
+                        for Builder-style setters Thanks to @facboy</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/92">#92</a>: Fix using
+                        interceptor inside abstract mapper class Thanks to @vakoroteev</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/104">#104</a>: Remove
+                        compiler warnings in custom mapper validation</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/89">#89</a>: Ignore static
+                        methods in mapped beans</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/101">#101</a>: Fix generic
+                        types mapping support</li>
+                </ul>
+            </div>
+            <p class="pad-left pad-top">
+                See <a href="https://github.com/xebia-france/selma/blob/master/RELEASE_NOTES">release notes</a> or
+                <a href="https://github.com/xebia-france/selma/issues?q=milestone%3A0.14">Milestone 0.14</a>.
+            </p>
+
+            <h2 class="blue pad-left pad-top">Brand new release 0.14</h2>
             <p class="pad-left">
                 This release introduces factory methods, it is now possible to declare factory beans inside the
                 mapper. Generic type handling has also been improved to support declaring a Mapper generic interface.
@@ -505,6 +544,7 @@ OrderDto res = mapper.asOrderDto(in);
                     <li class="h4"><a class="noicon" href="#mapping-to-and-from-dto">Mapping to and from DTO</a></li>
                     <li class="h4"><a class="noicon" href="#disabling-missing-field">Disabling missing field checks</a></li>
                     <li class="h3"><a class="noicon" href="#mapping-nested-beans">Mapping nested beans</a></li>
+                    <li class="h3"><a class="noicon" href="#mapping-cyclic-beans">Mapping cyclic beans</a></li>
                     <li class="h3"><a class="noicon" href="#customize-property-names">Customize property names mapping</a></li>
                     <li class="h3"><a class="noicon" href="#flatten-bean-mapping">Flatten bean mapping</a></li>
                     <li class="h2"><a class="noicon" href="#updating-destination-bean">Updating destination bean</a></li>
@@ -790,6 +830,80 @@ public interface PersonMapper {
 
             <p class="pad-left alert message ">
                 @Map annotation can be used to configure the mapping of each nested bean in the graph.
+            </p>
+
+<!--
+            Mapping Cyclic beans
+-->
+            <h3 id="mapping-cyclic-beans" class="pad-left pad-top green">Mapping cyclic beans</h3>
+            <p class="pad-left">
+                Selma can handle cyclic mapping. This behaviour is disabled by default because it has a small
+                performance impact. You can enable it using the <code>withCyclicMapping</code> parameter available in
+                <code>@Mapper</code>.
+            </p>
+            <div class="container">
+                <div class="row">
+                    <div class="one half two-up-small-tablet padded">
+                        <h5 class="padded info-bg">Person Bean</h5>
+
+{% highlight java %}
+public class Person {
+
+    private String firstName;
+    private String lastName;
+    private Date birthDay;
+    private Address residency;
+
+    // + Getters and Setters
+}
+{% endhighlight %}
+                    </div>
+
+                    <div class="one half two-up-small-tablet padded">
+                        <h5 class="padded info-bg ">Address Bean</h5>
+
+{% highlight java %}
+public class Address {
+
+    private String line1;
+    private String line2;
+    private String zipCode;
+    private String city;
+    private String country;
+    private Person person // Cyclic reference here !
+
+    // + Getters and Setters
+}
+{% endhighlight %}
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="one-up one-up-small-tablet padded">
+  <h5 class="padded info-bg">Mapper supporting cyclic beans</h5>
+{% highlight java %}
+@Mapper(withCyclicMappings = true)
+public interface PersonMapper {
+
+    // Returns a new instance of PersonDTO mapped from Person source
+    PersonDto asPersonDTO(Person source);
+
+}
+{% endhighlight %}
+
+                    </div>
+                </div>
+
+            </div>
+            <p class="pad-left">
+                Here we declared the <code>asPersonDTO(Person source)</code> method in the mapper interface to
+                map Person bean and adress beans. The person bean will be mapped only one time and propagated to the
+                person field of the <code>Address</code> bean.
+            </p>
+
+            <p class="pad-left alert message ">
+                This feature uses a hashmap to know whether a bean has already been mapped.
             </p>
 
             <!--
@@ -1503,7 +1617,7 @@ public class PersonDTO {
                     <div class="one-up one-up-small-tablet padded">
                 <h5 class="padded info-bg">Mapper passing by reference</h5>
 {% highlight java %}
-@Mapper(withImmutables = Address.class)
+@Mapper(withImmutables = Address.class, withImmutablesPackages = "org.project.immutables")
 public class PersonMapper {
 
     // Returns a PersonDTO instance mapped from source with same address
@@ -1518,7 +1632,8 @@ public class PersonMapper {
             <p class="pad-left">
                 This mapper will pass by reference any mapping from <code>Address</code> to <code>Address</code>.
                 You can specify as many immutables type as you want. It is also possible to declare immutables inside
-                <code>@Map</code>.
+                <code>@Map</code>. The <code>withImmutablesPackages</code>, will make Selma consider any bean inside
+                <code>org.project.immutables</code> as immutable class.
             </p>
 
 
@@ -1530,6 +1645,7 @@ public class PersonMapper {
                 To solve this issue without using reflection at runtime, Selma supports <b>sourced beans</b>, the idea
                 is to pass one or more parameters to the constructor call in the generated code.
             </p>
+
             <h3 id="sourced-beans" class="pad-left pad-top green">Sourced Beans</h3>
             <div class="container">
                 <div class="row">
@@ -1809,7 +1925,7 @@ public interface AddressMapper {
 
             <h3 id="snapshots-build" class="green pad-left pad-top">Snapshot builds</h3>
 
-            <p class="pad-left">You can retrieve snapshots builds from 0.12-SNAPSHOT in the sonatype snapshot
+            <p class="pad-left">You can retrieve snapshots builds from 0.16-SNAPSHOT in the sonatype snapshot
                 repository. For this to work, you should add Sonatype snaphot repository in your maven settings.xml or
                 pom.xml</p>
             <div class="block padded">
