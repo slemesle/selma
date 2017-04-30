@@ -1,5 +1,5 @@
 ---
-version: "0.15"
+version: "1.0"
 ---
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html">
@@ -355,10 +355,64 @@ OrderDto res = mapper.asOrderDto(in);
     <div class="container">
         <div class="row triple-gap-top-small-tablet triple-gap-top-desktop "> &nbsp;</div>
 <!--
+his is the first 1.0 release of Selma coming with bug fixes and many new features.
+Like custom field to field mapping, Maps inheritance, Bean Aggregation and CDI support.
+
+* #138: Add @InheritMaps to avoid @Maps duplication
 
 -->
         <div class="row triple-gap-top-small-tablet triple-gap-top-desktop ">
             <h1 class="lite-square bordered padded green-bg">News</h1>
+
+            <h2 class="blue pad-left pad-top">Finally a 1.0 release</h2>
+            <p class="pad-left">
+                <b>Why a 1.0 release now ?</b> Selma now support what I expected in it from the beginning : Custom type to type
+                or field to field and type to type mapping, cyclic mapping, factories, enums, Collections, IoC, Arrays,
+                all kinds of types mapping and so on.
+                The 1.0 release of Selma comes with bug fixes and many new features.
+                Like custom field to field mapping, Maps inheritance, Bean Aggregation and CDI support.
+            </p>
+            <div class="pad-left">
+                <ul class="unstyled ">
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/106">#106</a>: Add support
+                        for custom mapping method on per field basis</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/101">101</a>: Add support
+                        for abstract custom mappers</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/100">#100</a>: Add support
+                        for aggregated bean mapping</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/102">#102</a>: Fix default
+                        lower bound type resolution for generic types</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/109">#109</a>: Fix custom
+                        mapper call with out parameter</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/111">#111</a>: Add support
+                        for inner mapper interface</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/115">#115</a>: Add support
+                        for CDI injection</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/118">#118</a>: Filter enum
+                        private members to avoid</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/104">#104</a>: Remove
+                        compiler warnings in custom mapper validation</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/119">#119</a>: Add support
+                        for mapping interfaces instead of beans</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/120">#120</a>: Add support
+                        for abstract getters and setters in mapped beans</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/126">#125</a>: Fix
+                        declared bean array mapping</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/127">#127</a>: Fix any
+                        type to String default mapping</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/133">#133</a>: Fix mapping
+                        embedded array of prime</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/137">#137</a>: Improve CDI
+                        support with CDI and CDI_SINGLETON</li>
+                    <li> <a class="noicon" href="https://github.com/xebia-france/selma/issues/138">#138</a>: Add
+                        @InheritMaps to avoid @Maps duplication</li>
+                </ul>
+            </div>
+            <p class="pad-left pad-top">
+                See <a href="https://github.com/xebia-france/selma/blob/master/RELEASE_NOTES">release notes</a> or
+                <a href="https://github.com/xebia-france/selma/issues?q=milestone%3A0.15">Milestone 0.15</a>.
+            </p>
+
 
              <h2 class="blue pad-left pad-top">Brand new release 0.15</h2>
             <p class="pad-left">
@@ -549,11 +603,14 @@ OrderDto res = mapper.asOrderDto(in);
                     <li class="h3"><a class="noicon" href="#mapping-cyclic-beans">Mapping cyclic beans</a></li>
                     <li class="h3"><a class="noicon" href="#customize-property-names">Customize property names mapping</a></li>
                     <li class="h3"><a class="noicon" href="#flatten-bean-mapping">Flatten bean mapping</a></li>
+                    <li class="h3"><a class="noicon" href="#inheritmaps">Reduce @Maps duplication with @InheritMaps</a></li>
                     <li class="h2"><a class="noicon" href="#updating-destination-bean">Updating destination bean</a></li>
                     <li class="h2"><a class="noicon" href="#mapping-collections">Mapping collections</a></li>
                     <li class="h2"><a class="noicon" href="#mapping-enums">Mapping enums</a></li>
                     <li class="h3"><a class="noicon" href="#enums-default-value">Enums with default value</a></li>
+                    <li class="h3"><a class="noicon" href="#bean-aggregation">Mapping with multiple source beans</a></li>
                     <li class="h2"><a class="noicon" href="#custom-mapper">Mapping with custom mapper</a></li>
+                    <li class="h3"><a class="noicon" href="#custom-mapper-field">Custom mapper for specific fields</a></li>
                     <li class="h3"><a class="noicon" href="#update-destination-bean">Update destination bean</a></li>
                     <li class="h3"><a class="noicon" href="#mapping-interceptor">Mapping interceptor</a></li>
                     <li class="h3"><a class="noicon" href="#abstract-mapper">Abstract mapper</a></li>
@@ -564,6 +621,7 @@ OrderDto res = mapper.asOrderDto(in);
                     <li class="h3"><a class="noicon" href="#factory-methods">Factory methods</a></li>
                     <li class="h2"><a class="noicon" href="#building-mapper">Building the mapper</a></li>
                     <li class="h3"><a class="noicon" href="#spring-ioc">Spring IoC</a></li>
+                    <li class="h3"><a class="noicon" href="#cdi-ioc">CDI IoC</a></li>
                     <li class="h2"><a class="noicon" href="#configuration">Configuration</a></li>
                     <li class="h3"><a class="noicon" href="#using-maven">Using Maven</a></li>
                     <li class="h3"><a class="noicon" href="#snapshots-build">Snapshot builds</a></li>
@@ -714,18 +772,18 @@ public interface PersonMapper {
 public interface PersonMapper {
 
     // Returns a new instance of PersonDTO mapped from Person source
-    @Map(withIgnoreMissing = IgnoreMissing.DESTINATION)
+    @Maps(withIgnoreMissing = IgnoreMissing.DESTINATION)
     PersonDto asPersonDTO(Person source);
 
     // Returns a new instance of Person mapped from PersonDTO source
-    @Map(withIgnoreMissing = IgnoreMissing.SOURCE)
+    @Maps(withIgnoreMissing = IgnoreMissing.SOURCE)
     Person asPerson(PersonDTO source);
 }
 {% endhighlight %}
 </div>            </div>
             <p class="pad-left">
-                Here we used <code>@Map</code> annotation to describe mapping per method. Please notice that
-                <code>@Mapper</code> configuration is available for all mapping methods while <code>@Map</code> is only
+                Here we used <code>@Maps</code> annotation to describe mapping per method. Please notice that
+                <code>@Mapper</code> configuration is available for all mapping methods while <code>@Maps</code> is only
                 applied to a single method. Both annotations provides the exact same parameters.
             </p>
             <h4 id="disabling-missing-field" class="pad-left pad-top">Disabling missing field checks</h4>
@@ -751,12 +809,12 @@ public interface PersonMapper {
             </div>
             <p class="pad-left">
                 Here we used <code>IgnoreMissing.ALL</code> to disable missing properties checking. So we removed
-                <code>@Map</code> annotation, feel free to combine <code>@Mapper</code> and <code>@Map</code> in the
+                <code>@Maps</code> annotation, feel free to combine <code>@Mapper</code> and <code>@Maps</code> in the
                 same mapper.
             </p>
 
             <p class="pad-left alert message ">
-                @Map configuration inherits and override @Mapper configuration.
+                @Maps configuration inherits and override @Mapper configuration.
             </p>
 
 <!--
@@ -815,7 +873,7 @@ public interface PersonMapper {
     PersonDto asPersonDTO(Person source);
 
     // Returns a new instance of AddressDTO mapped from Address source
-    @Map(withIgnoreFields = "country")
+    @Maps(withIgnoreFields = "country")
     AddressDTO asAddress(Address source);
 }
 {% endhighlight %}
@@ -831,7 +889,7 @@ public interface PersonMapper {
             </p>
 
             <p class="pad-left alert message ">
-                @Map annotation can be used to configure the mapping of each nested bean in the graph.
+                @Maps annotation can be used to configure the mapping of each nested bean in the graph.
             </p>
 
 <!--
@@ -914,7 +972,7 @@ public interface PersonMapper {
             <h3 id="customize-property-names" class="pad-left pad-top green">Customize property names mapping</h3>
             <p class="pad-left">
                 You can define custom property to property mapping using <code>withCustomFields</code>
-                parameter available in <code>@Mapper</code> and <code>@Map</code>.
+                parameter available in <code>@Mapper</code> and <code>@Maps</code>.
             </p>
 <div class="container">
                 <div class="row">
@@ -980,13 +1038,13 @@ public interface PersonMapper {
 
             <p class="pad-left alert message ">
                 @Field supports prefixes to match fields names using simple class name or FQCN prefix. You can also
-                define custom fields in @Map annotation.
+                define custom fields in @Maps annotation.
             </p>
 
             <h3 id="flatten-bean-mapping" class="pad-left pad-top green">Flatten bean mapping</h3>
             <p class="pad-left">
                 You can flatten properties from nested bean using <code>withCustomFields</code>
-                parameter available in <code>@Mapper</code> and <code>@Map</code>.
+                parameter available in <code>@Mapper</code> and <code>@Maps</code>.
             </p>
 <div class="container">
                 <div class="row">
@@ -1065,6 +1123,77 @@ public interface PersonMapper {
                 property from any nesting level.
             </p>
 
+
+        <!-- Reduce @Maps duplication with @InheritMaps -->
+
+         <h3 id="inheritmaps" class="pad-left pad-top green">Reduce @Maps duplication with @InheritMaps</h3>
+            <p class="pad-left">
+                <code>@Maps</code> annotation is powerfull and can be used multiple times in the same mapper interface.
+                The interface can comes to an end where you define the exact same <code>@Maps</code> for multiple
+                method. To avoid this kind of code duplication <code>@InheritMaps</code> is here to help you. Instead of
+                duplicating the <code>@Maps</code> you can simply use <code>@InheritMaps</code> on the corresponding
+                methods.
+            </p>
+<div class="container">
+                <div class="row">
+                    <div class="one-up one-up-small-tablet padded">
+  <h5 class="padded info-bg">Mapper with @InheritMaps</h5>
+{% highlight java %}
+@Mapper
+public interface ExtendMapper {
+
+
+    @Maps(withCustomFields = {
+            @Field({"Proposal.passenger.age", "ProposalDto.passengerAge"}), @Field({"passenger.card", "passengerCard"}),
+            @Field({"Proposal.passenger.date", "ProposalDto.passengerDate"})
+    }) ProposalDto asProposalDto(Proposal proposal);
+
+    @InheritMaps
+    Proposal asProposal(ProposalDto proposal);
+
+    @InheritMaps
+    Proposal asProposal(ProposalDto proposal, Proposal out);
+}
+{% endhighlight %}
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="one-up one-up-small-tablet padded">
+  <h5 class="padded info-bg">Mapper with named @InheritMaps</h5>
+{% highlight java %}
+@Mapper
+public interface ExtendNamedMapper {
+
+
+    @Maps(withCustomFields = {
+            @Field({"Proposal.passenger.age", "ProposalDto.passengerAge"}), @Field({"passenger.card", "passengerCard"}),
+            @Field({"Proposal.passenger.date", "ProposalDto.passengerDate"})
+    }) ProposalDto asProposalDto(Proposal proposal);
+
+    @Maps(withIgnoreFields = {"passengerAge", "passengerDate", "passenger", "passengerCard"})
+    ProposalDto asReducedProposalDto(Proposal proposal);
+
+    @InheritMaps(method = "asReducedProposalDto")
+    Proposal asProposal(ProposalDto proposal);
+
+    @InheritMaps(method = "asReducedProposalDto")
+    Proposal asProposal(ProposalDto proposal, Proposal out);
+}
+{% endhighlight %}
+
+                    </div>
+                </div>
+            </div>
+            <p class="pad-left">
+                As you can see, the <code>@InheritMaps</code> inherits its configuration from the <code>@Maps</code>.
+                Selma does its best to identify the good <code>@Maps</code> decorated method to inherit from. By default
+                Selma choose the method with the same in/out types pair.<br>
+                Sometimes Selma finds multiple eligible methods to inherit from, in such situation you just need to
+                provide the method name to choose in the <code>@InheritMaps</code> parameters.
+            </p>
+
+
             <h2 id="updating-destination-bean" class="blue pad-left pad-top">Updating destination bean</h2>
 
             <p class="pad-left">
@@ -1100,7 +1229,7 @@ public interface PersonMapper {
                 When using a Jaxb generated bean you won't have a setter, so you'll need to use the getter to retrieve
                 a fresh new instance of an empty collection to populate with mapped values.
                 For this to work you'll need to use the <code>withCollectionStrategy = ALLOW_GETTER</code> of the
-                <code>@Mapper</code> or <code>@Map</code> annotation.
+                <code>@Mapper</code> or <code>@Maps</code> annotation.
             </p>
 
             <div class="container">
@@ -1312,7 +1441,7 @@ public class PersonDto {
 public interface PersonMapper {
 
     // Map SIMPLE_CUSTOMER and BUSINESS_CUSTOMER to CUSTOMER
-    @Map(
+    @Maps(
          withEnums = @EnumMapper(from=PersonKind.class, to=PersonKindDto.class, defaultValue="CUSTOMER")
     )
     PersonDto asPersonDTO(Person source);
@@ -1331,7 +1460,7 @@ public interface PersonMapper {
             </p>
             <div class="triple-gap-left">
                 <ol class="list pad-left">
-                    <li>First one, declares a <code>@Map</code> with enum, so we need to declare both from and to enum
+                    <li>First one, declares a <code>@Maps</code> with enum, so we need to declare both from and to enum
                         with a default value.</li>
                     <li>Second one, declares a <code>@EnumMapper</code> directly on a method mapping two enums types,
                         with a default value.</li>
@@ -1346,6 +1475,50 @@ public interface PersonMapper {
                 To have more control over the enum mapping, you will need to declare a custom mapper.
             </p>
 
+            <!--  Docs for multiple source beans -->
+            <h2  id="#bean-aggregation" class="blue pad-left pad-top">Mapping with multiple source beans</h2>
+            <p class="pad-top pad-left">
+                Sometimes, you need to aggregate multiple source beans in the same destination bean. Selma can take care
+                of this, if you define the mapping method with multiple source beans.<br/>
+                This does not change anything for updates method, just add as the last parameter the bean to be updated.
+            </p>
+<div class="container">
+                <div class="row">
+                    <div class="one-up one-up-small-tablet padded">
+  <h5 class="padded info-bg">Mapping method with multiple source beans</h5>
+{% highlight java %}
+/**
+ * This mapper interface demonstrate the use of Bean Aggregation.
+ */
+@Mapper(withIgnoreFields = "missingProperty")
+public interface AggregationMapper {
+
+    AggregatedBean mapFromAggregate(FirstBean first, SecondBean second);
+
+    @Maps(withCustom = AggregatedInterceptor.class)
+    AggregatedBean mapFromAggregateWithInterceptor(FirstBean first, SecondBean second);
+
+    AggregatedBean mapFromAggregateInUpdate(FirstBean first, SecondBean second, AggregatedBean out);
+}
+
+{% endhighlight %}
+                    </div>
+                </div>
+</div>
+        <p class="pad-left">The AggregationMapper generated class maps <code>FirstBean</code> and
+            <code>SecondBean</code> properties to the <code>AggregatedBean</code> properties.
+            You can notice the <code>mapFromAggregateInUpdate</code> method which will update
+            <code>AggregatedBean out</code> and return the result.<br>
+            As you can see in <code>mapFromAggregateWithInterceptor</code> method, interceptors ares also supported.
+            For them to work, just define the intercepting method with all ordered source beans prior to the out bean
+            parameters.
+        </p>
+
+            <p class="pad-left alert message ">
+                Selma for now does not checks for properties present in multiple source beans. This means that such
+                properties can be mapped multiple times in the generated code.
+            </p>
+
 
             <h2 id="custom-mapper" class="blue pad-left pad-top">Mapping with custom mapper</h2>
 
@@ -1356,7 +1529,7 @@ public interface PersonMapper {
                 there can be data loss. So you can define your own custom mapper. <br/>A custom mapper is a class that
                 contains one or more methods taking an input parameter (the source bean / value) and return the
                 destination value after hand coded mapping. You only need to add the class to the
-                <code>withCustom</code> attribute of the <code>@Mapper</code> or <code>@Map</code> annotation.
+                <code>withCustom</code> attribute of the <code>@Mapper</code> or <code>@Maps</code> annotation.
             </p>
 <div class="container">
                 <div class="row">
@@ -1424,6 +1597,96 @@ public class PersonMapper {
 
             <p class="pad-left">The PersonMapper generated class will use the <code>AddressCustomMapper</code>
                 <code>addressAsString</code> method to map the <code>Address</code> to <code>String</code>.</p>
+
+
+        <!--                     <li class="h3"><a class="noicon" href="#custom-mapper-field">Custom mapper for specific fields</a></li> -->
+
+            <h3 id="custom-mapper-field" class="green pad-left pad-top">Custom mapper for specific fields</h3>
+
+            <p class="pad-left">
+                For now we've seen that it's possible to use custom mappers to apply on specific type to type
+                conversion. If you need to apply a specific type to type conversion just for one propertie its also
+                possible.
+            </p>
+            <div class="block padded">
+                  <h5 class="padded info-bg">Custom mapper updating destination</h5>
+{% highlight java %}
+@Mapper(
+        withIgnoreFields = {"fr.xebia.extras.selma.beans.PersonIn.male", "fr.xebia.extras.selma.beans.PersonOut.biography"},
+        withCustomFields = {
+                @Field( value = "age", withCustom = CustomFieldToFieldMapper.CustomAgeAndNamesMapper.class)
+        }
+)
+public interface CustomFieldToFieldMapper {
+
+    String FROM_CUSTOM_FIELD2FIELD_MAPPING = " from custom field2field mapping";
+    int AGE_INCREMENT = 42;
+    String STRING_TEMPLATE_FOR_STREET = " %s from %s  with @Field(value = \"street\", withCustom = CustomStreetMapper.class)";
+    String INTERCEPTED_BY_CUSTOM_INTERCEPTOR = "intercepted by CustomInterceptor";
+
+    @Maps(withCustomFields = {
+            @Field(value = "firstName", withCustom = CustomAgeAndNamesMapper.class),
+            @Field(value = "street", withCustom = CustomStreetMapper.class)
+    })
+    PersonOut mapWithCustom(PersonIn in);
+
+    @Maps(withCustomFields = {
+            @Field(value = {"firstName", "lastName"}, withCustom = CustomAgeAndNamesMapper.class)
+    })
+    PersonIn asPersonInInvertingNames(PersonOut in);
+
+    /**
+     * Test the use of an interceptor against a field
+     */
+    @Maps(withIgnoreFields = "Library.name",
+            withCustomFields = {
+        @Field(value = "books", withCustom = CustomBookInterceptor.class)
+    }) LibraryDTO asBookDTO(Library in);
+
+    /**
+     * This mapper is called to map the firstname field
+     */
+    class CustomAgeAndNamesMapper {
+
+        public String mapFirstname(String firstname){
+            return firstname + FROM_CUSTOM_FIELD2FIELD_MAPPING;
+        }
+
+        public int incrementAge(int age) {
+            return age + AGE_INCREMENT;
+        }
+    }
+
+    /**
+     * This mapper is called to map the Street field for
+     * PersonOut mapWithCustom(PersonIn in);
+     */
+    class CustomStreetMapper {
+        public String mapStreet(String street){
+            return String.format(STRING_TEMPLATE_FOR_STREET,
+                    street, CustomStreetMapper.class);
+        }
+    }
+
+    /**
+     * This interceptor is called after the books to books mapping in
+     * LibraryDTO asBookDTO(Library in);
+     */
+    class CustomBookInterceptor {
+        public void intercept(List<Book> in, List<BookDTO> out){
+            for (BookDTO book : out)
+                book.setAuthor(INTERCEPTED_BY_CUSTOM_INTERCEPTOR);
+        }
+    }
+}
+{% endhighlight %}
+            </div>
+            <p class="pad-left">
+                As you can see, the <code>@Field</code> annotation now provides a parameter <code>withCustom</code> to
+                handle custom mappers to apply to specific fields. They can be applied on Field to Field or on single
+                field name. This does work for both interceptors and custom mappers.
+            </p>
+
 
             <h3 id="update-destination-bean" class="green pad-left pad-top">Update destination bean</h3>
 
@@ -1623,7 +1886,7 @@ public class PersonDTO {
 public class PersonMapper {
 
     // Returns a PersonDTO instance mapped from source with same address
-    @Map(withIgnoreMissing = IgnoreMissing.DESTINATION)
+    @Maps(withIgnoreMissing = IgnoreMissing.DESTINATION)
     PersonDTO asPersonDTO(Person source);
 
 }
@@ -1634,7 +1897,7 @@ public class PersonMapper {
             <p class="pad-left">
                 This mapper will pass by reference any mapping from <code>Address</code> to <code>Address</code>.
                 You can specify as many immutables type as you want. It is also possible to declare immutables inside
-                <code>@Map</code>. The <code>withImmutablesPackages</code>, will make Selma consider any bean inside
+                <code>@Maps</code>. The <code>withImmutablesPackages</code>, will make Selma consider any bean inside
                 <code>org.project.immutables</code> as immutable class.
             </p>
 
@@ -1844,7 +2107,7 @@ PersonMapper mapper = Selma.builder(PersonMapper.class).
                 package.
             </p>
             <div class="block pad-left">
-                <h5 class="padded info-bg">Builder API</h5>
+                <h5 class="padded info-bg">Spring Mapper</h5>
 {% highlight java %}
 @Mapper(withCustom =  CustomImmutableMapperClass.class, withIoC = IoC.SPRING)
 public interface AddressMapper {
@@ -1861,6 +2124,50 @@ public interface AddressMapper {
             <p class="pad-left alert message ">
                 By default Selma does not specify a name for the <code>@Service</code> declared, but you can add since
                 0.14 <code>withIoCServiceName = YourServiceName</code> to specify a name for the Spring service.
+            </p>
+
+        <!--                    <li class="h3"><a class="noicon" href="#cdi-ioc">CDI IoC</a></li> -->
+             <h3 id="cdi-ioc" class="green pad-left pad-top">CDI IoC</h3>
+
+            <p class="pad-left">
+                The <code>withIoC</code> parameter of the mapper has three options to handle CDI annotations.
+                The <code>CDI</code> value generates a <code>@Named</code> bean.
+                The <code>CDI_SINGLETON</code> value generates a <code>@Named</code> and <code>@Singleton</code> bean.
+                The <code>CDI_APPLICATION_SCOPED</code> value generates a <code>@ApplicationScoped</code> bean.
+
+            </p>
+            <div class="block pad-left">
+                <h5 class="padded info-bg">Builder API</h5>
+{% highlight java %}
+@Mapper(withIoC = IoC.CDI)
+public interface CustomCdiMapperInMaps {
+
+    public Book asBook(BookDTO source);
+
+    public BookDTO asBookDto(Book source);
+
+}
+
+
+@Mapper(withIoC = IoC.CDI_SINGLETON)
+public interface CustomCdiSingletonMapperInMaps {
+
+    public Book asBook(BookDTO source);
+
+    public BookDTO asBookDto(Book source);
+
+}
+
+@Mapper(withIgnoreFields = "extras", withCustom = CustomImmutableMapperClass.class, withFactories = BeanFactoryClass.class, withIoC = IoC.CDI_APPLICATION_SCOPED, withFinalMappers = false)
+public interface AddressMapperCDI {
+
+	AddressOut asAddressOut(AddressIn in);
+
+}
+{% endhighlight %}
+            </div>
+            <p class="pad-left">
+                Here we declared three different mappers, to demonstrate the use of the three possible CDI values.
             </p>
 
             <h2 id="configuration" class="blue pad-left pad-top">Configuration</h2>
